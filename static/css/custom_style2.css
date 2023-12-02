@@ -35,21 +35,29 @@ body {
 /* ///////////////////////////////////// */
 
 .all_body {
+    background-color: red;
+    margin: 10px 0;
     display: flex;
-    flex-direction: column;
+    flex-flow: wrap row;
     height: auto;
-    flex-wrap: wrap;
-    /* justify-content: flex-start; */
-    /* align-items: center; */
-    text-align: center;
+    width: 100%; 
+    justify-content: center;
+    align-items: center;
     padding: 0 3%;
 }
 
 
-.all_body section header h4 {
-    width: 100%;
+
+.all_body_header{
+    background-color: yellow;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    /* flex-grow: 1; */
+    /* width: 100%; */
     border-bottom: solid 1px white;
-    padding-bottom: 20px;
 
 }
 

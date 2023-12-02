@@ -1,14 +1,23 @@
-.home_body {
-    width: 100%;
-    height: auto;
+/* .home_body_main{
     display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
-    margin: 20px;
-    flex-direction: row;
-    justify-content: stretch;
-    align-items: center;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: stretch;
+
+
+} */
+
+
+.home_body {
+    background-color: blue;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-around;
+    align-items: flex-start;
+
 }
+
+
 
 
 .home_body section {
@@ -17,14 +26,16 @@
     height: auto;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+    /* flex-direction: column;
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: flex-start; */
     padding: 20px;
     margin: 15px 5px;
     text-align: center;
     border: solid 1px #b8e2e9;
     border-radius: 7px;
+    align-self: flex-start;
+
 }
 
 .home_body section img {
