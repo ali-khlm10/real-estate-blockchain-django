@@ -35,7 +35,7 @@ body {
 /* ///////////////////////////////////// */
 
 .all_body {
-    background-color: red;
+    /* background-color: red; */
     margin: 10px 0;
     display: flex;
     flex-flow: wrap row;
@@ -47,17 +47,4 @@ body {
 }
 
 
-
-.all_body_header{
-    background-color: yellow;
-    padding: 10px;
-    display: flex;
-    flex-flow: wrap row;
-    justify-content: center;
-    align-items: center;
-    /* flex-grow: 1; */
-    /* width: 100%; */
-    border-bottom: solid 1px white;
-
-}
 
