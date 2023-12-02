@@ -7,34 +7,37 @@
 
 
 <div class="all_body">
-    <section>
-        <header>
-            <h4>املاک و مستغلات/ثبت نام</h4>
-        </header>
-    </section>
-    <section class="register_body">
 
-        <main class="register_form">
-            <header class="register_header">
-                <h2>صفحه ثبت نام</h2>
+    <main class="home_body_main">
+        <section class="home_body_header">
+            <header>
+                <h4>املاک و مستغلات/ثبت نام</h4>
             </header>
-            <form action="{% url "register-page" %}" method="post">
-                {% csrf_token %}
-                <label for="register_username">نام کاربری : </label>
-                <input type="text" name="username_input" id="register_username">
-                <label for="register_email">ایمیل کاربری : </label>
-                <input type="email" name="email_input" id="register_email">
-                <label for="register_password">رمز ورود : </label>
-                <input type="password" name="password_input" id="register_password">
-                <label for="register_password_confirm">تکرار رمز ورود : </label>
-                <input type="password" name="password_confirm_input" id="register_password_confirm">
-                <button type="submit" name="button" id="register_button">ثبت نام</button>
+        </section>
+        <section class="register_body">
 
-            </form>    
+            <main class="register_form">
+                <header class="register_header">
+                    <h2>صفحه ثبت نام</h2>
+                </header>
+                <form action="{% url "register-page" %}" method="post">
+                    {% csrf_token %}
+                    <label for="register_username">نام کاربری : </label>
+                    <input type="text" name="username_input" id="register_username">
+                    <label for="register_email">ایمیل کاربری : </label>
+                    <input type="email" name="email_input" id="register_email">
+                    <label for="register_password">رمز ورود : </label>
+                    <input type="password" name="password_input" id="register_password">
+                    <label for="register_password_confirm">تکرار رمز ورود : </label>
+                    <input type="password" name="password_confirm_input" id="register_password_confirm">
+                    <button type="submit" name="button" id="register_button">ثبت نام</button>
 
-        </main>
+                </form>    
 
-    </section>
+            </main>
+
+        </section>
+    </main>
 </div>
 
 {% endblock content %}
