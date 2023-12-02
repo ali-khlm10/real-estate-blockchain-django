@@ -5,17 +5,21 @@
         <header class="menu">
 
             <div class="login_register_container">
-                <div class="user_logo">
+                {% comment %} <div class="user_logo">
                     <img src="{% static "images/bzlnyrrmtcszceimoklzmzcojpqkuyyi.png" %}" alt="">
                 </div>
                 <div class="user_detailes">
                     <a id="user" href="#"> کاربر شماره 1 </a>
                     <div class="dropdown-content" id="myDropdown">
                         <div class="flex_dropdown">
-                            <a href="#">حساب کاربری</a>
+                            <a href="{% url "user-dashboard" %}">حساب کاربری</a>
                             <a href="#">خروج</a>
                         </div>
                     </div>
+                </div> {% endcomment %}
+                <div class="login_register">
+                    <a href="{% url "login-page" %}">ورود</a>/
+                    <a href="{% url "register-page" %}">ثبت نام</a>
                 </div>
             </div>
 
