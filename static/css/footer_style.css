@@ -1,0 +1,23 @@
+.footer_container {
+    padding: 30px;
+    background-color: #abd5e3;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer {
+    background-color: red;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#center_text {
+    color: aliceblue;
+    font-weight: bold;
+    direction: rtl;
+}

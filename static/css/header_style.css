@@ -1,0 +1,147 @@
+.menu_container {
+    padding: 10px 0;
+    background-color: #abd5e3;
+    margin-bottom: 20px 10px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu {
+    background-color: red;
+    display: flex;
+    /* flex-wrap: wrap;
+    flex-direction: row; */
+    flex-flow: wrap row;
+    justify-content: space-around;
+    align-items: flex-end;
+    width: 98%;
+    height: auto;
+    padding: 10px 5px;
+}
+
+
+.login_register_container {
+    background-color: blue;
+    order: 1;
+    flex-grow: 1;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px;
+}
+
+.user_logo {
+    width: 40px;
+    height: 40px;
+    /* border: solid 1px white; */
+    border-radius: 50%;
+    overflow: hidden;
+    /* background-color: blue; */
+    margin-right: 20px;
+    margin-left: 10px;
+}
+
+
+.user_logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.user_detailes {
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#user {
+    text-decoration: none;
+    color: #abd5e3;
+    font-weight: bold;
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgb(115, 155, 175);
+    ;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    margin-top: 30px;
+    margin-right: 4px;
+    margin-left: 2px;
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.flex_dropdown {
+    display: flex;
+    flex-flow: wrap column;
+    padding: 10px;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+}
+
+.flex_dropdown a {
+    color: #abd5e3;
+    text-decoration: none;
+}
+
+.menu_links {
+    background-color: blueviolet;
+    display: flex;
+    flex-flow: wrap row;
+    order: 2;
+    flex-grow: 10;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.menu_links a {
+    text-decoration: none;
+    padding: 0 20px;
+    color: #abd5e3;
+    font-weight: bold;
+}
+
+.real_estate_container {
+    background-color: aqua;
+    order: 3;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-grow: 1;
+    padding: 5px 0;
+
+}
+
+/* .system_title {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column
+} */
+
+
+.system_logo {
+    width: 60px;
+    height: 60px;
+    /* border: solid 1px white; */
+    border-radius: 50%;
+    overflow: hidden;
+    /* background-color: red; */
+    margin-left: 10px;
+}
+
+.system_logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
