@@ -1,0 +1,70 @@
+.register_body{
+    margin: 20px auto;
+    margin-bottom: 50px;
+    /* background-color: red; */
+    width: 90%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+}
+
+
+.register_form{
+    width: 28rem;
+    background-color: #bce2e9;
+    padding: 50px 40px 70px 40px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-end;
+    border: solid 1px #b8e2e9;
+    border-radius: 5px;
+}
+
+.register_header h2{
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+
+
+.register_form form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    vertical-align: top;
+    align-items: flex-end;
+
+}
+
+#register_username,
+#register_email,
+#register_password,
+#register_password_confirm{
+    height: 30px;
+    width: 100%;
+    margin: 10px 0;
+    direction: rtl;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#register_button{
+    height: 40px;
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(20, 151, 151);
+}
+
+label{
+    direction: rtl;
+    margin-top: 5px;
+
+}

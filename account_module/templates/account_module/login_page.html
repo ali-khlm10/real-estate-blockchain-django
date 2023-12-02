@@ -1,0 +1,37 @@
+{% extends "shared/_layout.html" %}
+
+{% block title %}صفحه ورود{% endblock title %}
+
+
+{% block content %}
+
+<div class="all_body">
+    <section>
+        <header>
+            <h4>املاک و مستغلات/ورود</h4>
+        </header>
+    </section>
+
+    <section class="login_body">
+
+        <main class="login_form">
+            <header class="login_header">
+                <h2>ورود به حساب کاربری</h2>
+            </header>
+            <form action="{% url "login-page" %}" method="post">
+                {% csrf_token %}
+                <label for="login_email">ایمیل کاربری : </label>
+                <input type="email" name="email_input" id="login_email">
+                <label for="login_password">رمز ورود : </label>
+                <input type="password" name="password_input" id="login_password">
+                <button type="submit" name="button" id="login_button">ورود</button>
+
+            </form>    
+
+        </main>
+
+    </section>
+</div>
+
+    {% endblock content %}
+

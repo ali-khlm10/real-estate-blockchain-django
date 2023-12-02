@@ -1,0 +1,25 @@
+{% load render_partial %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}صفحه اصلی{% endblock title %}</title>
+    {% include "includes/header_references.html" %}
+  </head>
+  <body>
+
+    {% render_partial 'home_module.views.site_header_partial'%}
+	
+    {% block content %}{% endblock content %}
+        
+    {% render_partial 'home_module.views.site_footer_partial'%}
+    
+    {% include "includes/footer_references.html" %}
+
+
+  </body>
+  
+</html>
