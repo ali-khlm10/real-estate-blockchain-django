@@ -9,7 +9,7 @@
 }
 
 .menu {
-    background-color: red;
+    /* background-color: red; */
     display: flex;
     /* flex-wrap: wrap;
     flex-direction: row; */
@@ -23,7 +23,7 @@
 
 
 .login_register_container {
-    background-color: blue;
+    /* background-color: blue; */
     order: 1;
     flex-grow: 1;
     display: flex;
@@ -94,7 +94,7 @@
 }
 
 .menu_links {
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
     display: flex;
     flex-flow: wrap row;
     order: 2;
@@ -112,7 +112,7 @@
 }
 
 .real_estate_container {
-    background-color: aqua;
+    /* background-color: aqua; */
     order: 3;
     display: flex;
     flex-flow: wrap row;
