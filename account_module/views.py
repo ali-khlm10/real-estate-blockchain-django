@@ -17,8 +17,3 @@ class loginView(View):
         context = {}
         return render(request,"account_module/login_page.html",context)
     
-
-class userDashboardView(View):
-    def get(self, request : HttpRequest):
-        context = {}
-        return render(request,"account_module/dashboard_page.html",context)

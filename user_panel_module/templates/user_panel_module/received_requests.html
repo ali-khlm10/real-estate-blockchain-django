@@ -1,0 +1,30 @@
+{% extends "shared/_layout.html" %}
+
+{% load render_partial %}
+
+
+{% load static %}
+
+{% block title %}صفحه حساب کاربری{% endblock title %}
+
+{% block content %}
+
+    <section class="dashboard_container">
+
+            <section class="home_body_header">
+                <header>
+                    <h4>املاک و مستغلات/حساب کاربری</h4>
+                </header>
+            </section>
+
+            <section class="main_dashbord">
+                <div class="dashboard_body">
+
+                </div>
+                {% render_partial 'user_panel_module.views.user_panel_menu_component' %}
+                
+            </section>
+
+    </section>
+
+{% endblock content %}

@@ -1,0 +1,29 @@
+
+{% load static %}
+
+
+<div class="dashboard_sidebar">
+
+    <section class="dashboard_logo">
+            <img src="{% static "images/team-2.jpg" %}" alt="">                      
+    </section>
+
+    <section class="dashboard_opsions">
+        <div class="dashboard">
+            <a href="{% url "user-dashboard" %}">داشبورد کاربری</a>
+        </div>
+        <div class="create_property">
+            <a href="{% url "create-property" %}">ایجاد ملک</a>
+        </div>
+        <div class="my_ptoperties">
+            <a href="{% url "user-properties" %}">ملک های من</a>
+        </div>
+        <div class="received_requests">
+            <a href="{% url "received-requests" %}">درخواست های دریافتی</a>
+        </div>
+        <div class="sended_requestes">
+            <a href="{% url "sended-requestes" %}">دخواست های ارسالی</a>
+        </div>                        
+    </section>
+
+</div>
