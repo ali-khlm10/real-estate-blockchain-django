@@ -1,4 +1,4 @@
-.dashboard_container{
+.dashboard_container {
     /* background-color: red; */
     margin: 1rem 2rem 2rem 2rem;
     height: auto;
@@ -8,7 +8,7 @@
     align-items: stretch;
 }
 
-.main_dashbord{
+.main_dashbord {
     /* background-color: yellow; */
     display: flex;
     flex-flow: wrap row;
@@ -17,17 +17,18 @@
     width: 100%;
     height: auto;
     margin: 20px 0;
+
 }
 
 
 
-.dashboard_body{
+.dashboard_body {
     background-color: #bce2e9;
     width: 100%;
-    height: 500px;
+    min-height: 500px;
     display: flex;
-    flex-flow: wrap column;
-    justify-content: flex-start;
+    flex-flow: wrap row;
+    justify-content: flex-end;
     align-items: flex-start;
     flex: 7;
     order: 1;
@@ -35,7 +36,60 @@
     border-radius: 5px;
 }
 
-.dashboard_sidebar{
+.dashboard_body header {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
+    align-items: center;
+    /* flex-grow: 1; */
+    padding: 20px 0;
+    border-bottom: solid 1px #78999f;
+}
+
+.dashboard_body header h3 {
+    padding-right: 20px;
+}
+
+
+.user_dashboard_info {
+    /* flex-grow: 3; */
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 0;
+    margin: 10px;
+    border: solid 1px #78999f;
+    border-radius: 5px;
+}
+
+.user_dashboard_info div {
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    direction: rtl;
+}
+
+.user_dashboard_info div label {
+    margin: 0 10px;
+}
+
+.wallet_address_dashbord {
+
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    flex-flow: wrap row;
+    flex-basis: 50%;
+    
+}
+
+/* ///////////////////////////////////////////// */
+.dashboard_sidebar {
     background-color: #bce2e9;
     width: 100%;
     height: auto;
@@ -72,7 +126,7 @@
 }
 
 
-.dashboard_opsions{
+.dashboard_opsions {
     width: 100%;
     display: flex;
     flex-flow: wrap row;
@@ -83,7 +137,7 @@
 
 }
 
-.dashboard_opsions div{
+.dashboard_opsions div {
     background-color: #9ac5cc;
     width: 100%;
     height: 40px;
@@ -96,7 +150,7 @@
     border-radius: 5px;
 }
 
-.dashboard_opsions div a{
+.dashboard_opsions div a {
     text-decoration: none;
     font-weight: bold;
     color: #abd5e3;

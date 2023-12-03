@@ -5,10 +5,11 @@
         <header class="menu">
 
             <div class="login_register_container">
-                {% if request.user.is_authenticated is False %}
+
+                {% comment %} {% if request.user.is_authenticated %} {% endcomment %}
                 
                     <div class="user_logo">
-                        <img src="{% static "images/team-2.jpg"" %}" alt="">
+                        <img src="{% static "images/team-2.jpg" %}" alt="">
                     </div>
                     <div class="user_detailes">
                         <a id="user" href="#"> کاربر شماره 1 </a>
@@ -20,14 +21,14 @@
                         </div>
                     </div>
 
-                {% else %}
+                {% comment %} {% else %}
                 
                     <div class="login_register">
                         <a href="{% url "login-page" %}">ورود</a>/
                         <a href="{% url "register-page" %}">ثبت نام</a>
                     </div>
                 
-                {% endif %}
+                {% endif %} {% endcomment %}
 
 
             </div>
