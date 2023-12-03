@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # internal modules
     "home_module",
     "account_module",
+    "user_panel_module",
 
     # external modules
     "django_render_partial",
