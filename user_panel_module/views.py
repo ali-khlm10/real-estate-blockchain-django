@@ -39,6 +39,11 @@ class sendedRequestsView(View):
         return render(request,"user_panel_module/sended_requests.html",context)
 
 
+class userWalletView(View):
+    def get(self, request : HttpRequest):
+        context = {}
+        return render(request,"user_panel_module/user_wallet.html",context)
+
 
 def user_panel_menu_component(request: HttpRequest):
     return render(request, 'user_panel_module/components/user_panel_menu_component.html')
