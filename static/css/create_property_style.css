@@ -1,0 +1,78 @@
+.dashboard_create_property form{
+    /* background-color: red; */
+    display: flex;
+    width: 100%;
+    width: auto;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 25px;
+    margin: 25px;
+    border: solid 1px #78999f;
+    border-radius: 5px;
+}
+
+.dashboard_create_property div{
+    width: 50%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-evenly;
+    align-items: center;
+    direction: rtl;
+    margin: 10px 0;
+}
+
+
+.dashboard_create_property div label{
+    width: 80%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+    /* flex-grow: 1; */
+}
+
+.dashboard_create_property div input{
+
+    width: 80%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 10px;
+    margin: 10px 0;
+    /* flex-grow: 3; */
+    border: hidden;
+    border-radius: 5px;
+    background-color: rgb(20, 151, 151);
+}
+
+#property_address, #property_description{
+    width: 80%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 10px;
+    margin: 15px 0;
+    /* flex-grow: 3; */
+    border: hidden;
+    border-radius: 5px;
+    background-color: rgb(20, 151, 151);
+}
+
+#create_property_button{
+    width: 50%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 10px;
+    margin: 15px 0;
+    /* flex-grow: 3; */
+    border: hidden;
+    border-radius: 5px;
+    background-color: #9ac5cc;
+    font-weight: bold;
+    color: #abd5e3;
+}

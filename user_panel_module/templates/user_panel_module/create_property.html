@@ -23,7 +23,48 @@
                         <h3>صفحه ایجاد ملک جدید</h3>
                     </header>
                     <main class="dashboard_create_property">                     
-                          
+                        <form action="{% url "create-property" %}" method="post">
+                            {% csrf_token %}
+                            <div>
+                                <label for="property_type">نوع ملک : </label>
+                                <input type="text" name="type" id="property_type">                                
+                            </div>
+                            <div>
+                                <label for="property_title">عنوان ملک : </label>
+                                <input type="text" name="title" id="property_title">                                
+                            </div>
+                            <div>
+                                <label for="property_price">قیمت ملک : </label>
+                                <input type="number" name="price" id="property_price">
+                            </div>
+                            <div>
+                                <label for="property_length">متراژ ملک : </label>
+                                <input type="number" name="length" id="property_length">
+                            </div>
+                            <div>
+                                <label for="property_image">تصویر ملک : </label>
+                                <input type="file" name="image" id="property_image">
+                            </div>
+                            <div>
+                                <label for="property_short_description">توضیحات کوتاه : </label>
+                                <input type="text" name="short_description" id="property_short_description">
+                            </div>
+                            <div>
+                                <label for="property_description">توضیحات کامل ملک : </label>
+                                <textarea name="description" id="property_description" cols="30" rows="12"></textarea>
+                                
+                            </div>
+                            <div>
+                                <label for="property_address">آدرس ملک : </label>
+                                <textarea name="address" id="property_address" cols="30" rows="8"></textarea>
+                                
+                            </div>
+
+                            {% comment %} <div> {% endcomment %}
+                                <button type="submit" name="button" id="create_property_button">ایجاد</button>
+                            {% comment %} </div> {% endcomment %}
+        
+                        </form>
                     </main>
                 </div>
                 {% render_partial 'user_panel_module.views.user_panel_menu_component' %}
