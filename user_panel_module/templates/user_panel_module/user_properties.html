@@ -22,9 +22,88 @@
                     <header>
                         <h3>صفحه ملک های من</h3>
                     </header>
-                    <main class="dashboard_user_properties">                     
-                          
+                    <main class="dashboard_user_properties">
+                        <table>
+                            <thead>
+                                <tr class="row_of_table">
+                                    <th>شماره</th>
+                                    <th>عنوان ملک</th>
+                                    <th>قیمت ملک</th>
+                                    <th>تایید شده/نشده</th>
+                                    <th>وضعیت</th>
+                                    <th>توکن سازی</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row_of_table">
+                                    <td>1</td>
+                                    <td>خانه ویلاییگ گیلان دره</td>
+                                    <td>1000000</td>
+                                    <td>خیر</td>
+                                    <td>در حال بررسی</td>
+                                    <td><a href="#">شروع</a></td>
+                                </tr>
+
+                                <tr class="row_of_table">
+                                    <td>1</td>
+                                    <td>خانه ویلایی</td>
+                                    <td>1000000</td>
+                                    <td>خیر</td>
+                                    <td>در حال بررسی</td>
+                                    <td><a href="#">شروع</a></td>
+                                </tr>
+
+                                <tr class="row_of_table">
+                                    <td>1</td>
+                                    <td>خانه ویلایی</td>
+                                    <td>1000000</td>
+                                    <td>خیر</td>
+                                    <td>در حال بررسی</td>
+                                    <td><a href="#">شروع</a></td>
+                                </tr>
+                            </tbody>
+                            </table>       
+                        </table>
                     </main>
+                    <footer class="created_properties">
+                        <h4>ملک های توکن شده</h4>
+
+                        <section>
+                            <div>
+                                <label for="">عنوان ملک توکن شده : </label>
+                                خانه ویلایی
+                            </div>
+                            <div>
+                                <label for="">شماره توکن ملک توکن شده : </label>
+                                <p>546543416354444444444444444444431684533316354111111111546845316354163451654316435</p>
+                            </div>
+                            <button>نمایش جزئیات</button>                            
+                        </section>
+                        {% comment %} <section>
+                            <div>
+                                <label for="">عنوان ملک توکن شده : </label>
+                                خانه ویلایی
+                            </div>
+                            <div>
+                                <label for="">شماره توکن ملک توکن شده : </label>
+                                546543416354444444444444444444431684533316354111111111546845316354163451654316435
+                            </div>      
+                            <button>نمایش جزئیات</button>                      
+                        </section>
+                        <section>
+                            <div>
+                                <label for="">عنوان ملک توکن شده : </label>
+                                خانه ویلایی
+                            </div>
+                            <div>
+                                <label for="">شماره توکن ملک توکن شده : </label>
+                                546543416354444444444444444444431684533316354111111111546845316354163451654316435
+                            </div>    
+                            <button>نمایش جزئیات</button>                        
+                        </section>                             {% endcomment %}
+
+
+                    </footer>
                 </div>
                 {% render_partial 'user_panel_module.views.user_panel_menu_component' %}
                 
