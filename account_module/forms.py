@@ -3,7 +3,7 @@ from django.core import validators
 from django.core.exceptions import ValidationError
 
 class registerForm(forms.Form):
-    avatar = forms.FileField(
+    avatar = forms.ImageField(
         label="عکس پروفایل",
         widget=forms.FileInput(attrs={
                 "id":"register_username",
