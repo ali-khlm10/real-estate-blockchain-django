@@ -69,3 +69,14 @@ label{
     margin-top: 5px;
 
 }
+
+/* ///////////////////////////////// */
+
+
+
+.errorlist {
+    color: red;
+    font-size: 0.8em;
+    direction: rtl;
+    list-style: none;
+}
