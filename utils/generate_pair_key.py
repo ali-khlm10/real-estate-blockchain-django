@@ -1,6 +1,7 @@
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import utils
+from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_pem_public_key
 
 
 
@@ -22,6 +23,7 @@ def generate_pair_key():
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
+    
     return {
         'private_key': private_key,
         'private_pem': private_pem,
@@ -36,26 +38,17 @@ def generate_pair_key():
 
 
 
-keys = generate_pair_key()
-private_key_pem = keys['private_pem']
-public_key_pem = keys['public_pem']
+def pem_to_private_key(private_key_pem):
+    # بازیابی کلید خصوصی
+    private_key = load_pem_private_key(
+        private_key_pem,
+        password=None,
+    )
+    return private_key
 
-
-
-from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_pem_public_key
-
-# بازیابی کلید خصوصی
-private_key = load_pem_private_key(
-    private_key_pem,
-    password=None,
-)
-
-# بازیابی کلید عمومی
-public_key = load_pem_public_key(
-    public_key_pem,
-)
-
-
-
-print(private_key_pem)
-print(public_key_pem)
+def pem_to_public_key(public_key_pem):
+    # بازیابی کلید عمومی
+    public_key = load_pem_public_key(
+        public_key_pem,
+    )
+    return public_key
