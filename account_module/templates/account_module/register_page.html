@@ -20,16 +20,30 @@
                 <header class="register_header">
                     <h2>صفحه ثبت نام</h2>
                 </header>
-                <form action="{% url "register-page" %}" method="post">
+                <form action="{% url "register-page" %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <label for="register_username">نام کاربری : </label>
+                    {{ registeration_form.username.label_tag }} {{ registeration_form.username }}
+                    {{ registeration_form.username.errors }}
+
+                    {{ registeration_form.avatar.label_tag }} {{ registeration_form.avatar }}
+                    {{ registeration_form.avatar.errors }}
+                    
+                    {{ registeration_form.email.label_tag }} {{ registeration_form.email }}
+                    {{ registeration_form.email.errors }}
+                    
+                    {{ registeration_form.password.label_tag }} {{ registeration_form.password }}
+                    {{ registeration_form.password.errors }}
+                
+                    {{ registeration_form.confirm_password.label_tag }} {{ registeration_form.confirm_password }}
+                    {{ registeration_form.confirm_password.errors }}
+                    {% comment %} <label for="register_username">نام کاربری : </label>
                     <input type="text" name="username_input" id="register_username">
                     <label for="register_email">ایمیل کاربری : </label>
                     <input type="email" name="email_input" id="register_email">
                     <label for="register_password">رمز ورود : </label>
                     <input type="password" name="password_input" id="register_password">
                     <label for="register_password_confirm">تکرار رمز ورود : </label>
-                    <input type="password" name="password_confirm_input" id="register_password_confirm">
+                    <input type="password" name="password_confirm_input" id="register_password_confirm"> {% endcomment %}
                     <button type="submit" name="button" id="register_button">ثبت نام</button>
 
                 </form>    
