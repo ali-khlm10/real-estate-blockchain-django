@@ -9,11 +9,14 @@
                 {% if request.user.is_authenticated %}
                 
                     <div class="user_logo">
-                        {% comment %} <img src="{% static "images/team-2.jpg" %}" alt=""> {% endcomment %}
+                        {% if request.user.avatar %}
                         <img src="{{request.user.avatar.url}}" alt="تصویر کاربر">
+                        {% else %}
+                        <img src="" alt="تصویر کاربر">
+                        {% endif %}
                     </div>
                     <div class="user_detailes">
-                        <a id="user" href="#"> کاربر شماره 1 </a>
+                        <a id="user" href="#"> {{request.user.email}}</a>
                         <div class="dropdown-content" id="myDropdown">
                             <div class="flex_dropdown">
                                 <a href="{% url "user-dashboard" %}">حساب کاربری</a>
