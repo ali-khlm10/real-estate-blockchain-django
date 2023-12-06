@@ -35,32 +35,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for property in user_properties %}
                                 <tr class="row_of_table">
-                                    <td>1</td>
-                                    <td>خانه ویلاییگ گیلان دره</td>
-                                    <td>1000000</td>
-                                    <td>خیر</td>
-                                    <td>در حال بررسی</td>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{property.property_detailes.property_title}}</td>
+                                    <td>{{property.property_detailes.property_price}}</td>
+                                    {% if property.is_verified %}
+                                    <td>بله</td>
+                                    <td style="color:green;">تایید شده</td>
                                     <td><a href="#">شروع</a></td>
-                                </tr>
+                                    {% else %}
+                                    <td style="color:red;">خیر</td>
+                                    <td style="color:yellow;">در حال بررسی</td>
+                                    <td style="color:red;">غیرفعال</td>
+                                    {% endif %}
+                                </tr>                                
+                                {% endfor %}
 
-                                <tr class="row_of_table">
-                                    <td>1</td>
-                                    <td>خانه ویلایی</td>
-                                    <td>1000000</td>
-                                    <td>خیر</td>
-                                    <td>در حال بررسی</td>
-                                    <td><a href="#">شروع</a></td>
-                                </tr>
-
-                                <tr class="row_of_table">
-                                    <td>1</td>
-                                    <td>خانه ویلایی</td>
-                                    <td>1000000</td>
-                                    <td>خیر</td>
-                                    <td>در حال بررسی</td>
-                                    <td><a href="#">شروع</a></td>
-                                </tr>
                             </tbody>
                             </table>       
                         </table>

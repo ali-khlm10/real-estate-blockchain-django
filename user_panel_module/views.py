@@ -1,11 +1,13 @@
-from django.shortcuts import render,redirect
-from django.http import HttpRequest,Http404,HttpResponseNotFound
+from django.shortcuts import render, redirect
+from django.http import HttpRequest, Http404, HttpResponseNotFound
 from django.urls import reverse
 
 
 from django.views import View
 
 from account_module.models import userModel
+
+from property_module.models import propertyModel, propertyDetailesModel
 
 # Create your views here.
 
@@ -25,15 +27,15 @@ class userDashboardView(View):
             raise HttpResponseNotFound()
 
 
-class createPropertyView(View):
-    def get(self, request: HttpRequest):
-        context = {}
-        return render(request, "user_panel_module/create_property.html", context)
-
-
 class userPropertiesView(View):
     def get(self, request: HttpRequest):
-        context = {}
+        current_user: userModel = userModel.objects.filter(
+            id=request.user.id).first()
+        user_properties: propertyModel = propertyModel.objects.filter(
+            property_creator__exact=current_user).all()
+        context = {
+            "user_properties": user_properties,
+        }
         return render(request, "user_panel_module/user_properties.html", context)
 
 
