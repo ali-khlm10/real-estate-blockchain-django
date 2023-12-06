@@ -88,6 +88,11 @@
     
 }
 
+.font_family_style{
+    font-family: 'Courier New', Courier, monospace;
+
+}
+
 /* ///////////////////////////////////////////// */
 .dashboard_sidebar {
     background-color: #bce2e9;

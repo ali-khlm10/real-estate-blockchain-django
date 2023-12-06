@@ -5,7 +5,11 @@
 <div class="dashboard_sidebar">
 
     <section class="dashboard_logo">
-            <img src="{% static "images/team-2.jpg" %}" alt="">                      
+        {% if current_user.avatar %}
+        <img src="{{current_user.avatar.url}}" alt="تصویر کاربر">                      
+        {% else %}
+        <img src="" alt="تصویر کاربر">                      
+        {% endif %}
     </section>
 
     <section class="dashboard_opsions">
