@@ -16,21 +16,27 @@
         <div class="dashboard">
             <a href="{% url "user-dashboard" %}">داشبورد کاربری</a>
         </div>
+        {% if not request.user.is_gov_agent %}
         <div class="create_property">
             <a href="{% url "create-property" %}">ایجاد ملک</a>
         </div>
         <div class="my_ptoperties">
             <a href="{% url "user-properties" %}">ملک های من</a>
-        </div>
+        </div>        
+        {% endif %}
+
         <div class="received_requests">
             <a href="{% url "received-requests" %}">درخواست های دریافتی</a>
         </div>
         <div class="sended_requestes">
             <a href="{% url "sended-requestes" %}">دخواست های ارسالی</a>
         </div>   
+        {% if not request.user.is_gov_agent%}
         <div class="sended_requestes">
             <a href="{% url "user-wallet" %}">کیف پول من</a>
-        </div>                       
+        </div>          
+        {% endif %}
+                     
     </section>
 
 </div>
