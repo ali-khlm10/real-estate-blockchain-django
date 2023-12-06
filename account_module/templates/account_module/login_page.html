@@ -23,10 +23,15 @@
                 </header>
                 <form action="{% url "login-page" %}" method="post">
                     {% csrf_token %}
-                    <label for="login_email">ایمیل کاربری : </label>
+                    {{ logination_form.email.label_tag }} {{ logination_form.email }}
+                    {{ logination_form.email.errors }}
+                    
+                    {{ logination_form.password.label_tag }} {{ logination_form.password }}
+                    {{ logination_form.password.errors }}
+                    {% comment %} <label for="login_email">ایمیل کاربری : </label>
                     <input type="email" name="email_input" id="login_email">
                     <label for="login_password">رمز ورود : </label>
-                    <input type="password" name="password_input" id="login_password">
+                    <input type="password" name="password_input" id="login_password"> {% endcomment %}
                     <button type="submit" name="button" id="login_button">ورود</button>
 
                 </form>    

@@ -36,10 +36,10 @@ class registerView(View):
             )
             new_user.set_password(request.POST.get("password"))
             new_user_wallet: userWalletModel = userWalletModel.objects.create(
-                private_key = privat_key_pem,
-                public_key = public_key_pem,
-                inventory = 0.0,
-                wallet_address = wallet_address,
+                private_key=privat_key_pem,
+                public_key=public_key_pem,
+                inventory=0.0,
+                wallet_address=wallet_address,
             )
             new_user.wallet = new_user_wallet
             new_user.save()
@@ -50,5 +50,19 @@ class registerView(View):
 
 class loginView(View):
     def get(self, request: HttpRequest):
-        context = {}
+        logination_form: loginForm = loginForm()
+        context = {
+            "logination_form": logination_form,
+        }
         return render(request, "account_module/login_page.html", context)
+    
+    def post(self, request : HttpRequest):
+        logination_form: loginForm = loginForm(request.POST)
+        if logination_form.is_valid():
+            pass
+        else:
+            context = {
+                "logination_form": logination_form,
+            }
+            return render(request, "account_module/login_page.html", context)
+        

@@ -6,7 +6,7 @@
 
             <div class="login_register_container">
 
-                {% comment %} {% if request.user.is_authenticated %} {% endcomment %}
+                {% if request.user.is_authenticated is True %}
                 
                     <div class="user_logo">
                         <img src="{% static "images/team-2.jpg" %}" alt="">
@@ -21,14 +21,14 @@
                         </div>
                     </div>
 
-                {% comment %} {% else %}
+                {% else %}
                 
                     <div class="login_register">
                         <a href="{% url "login-page" %}">ورود</a>/
                         <a href="{% url "register-page" %}">ثبت نام</a>
                     </div>
                 
-                {% endif %} {% endcomment %}
+                {% endif %}
 
 
             </div>

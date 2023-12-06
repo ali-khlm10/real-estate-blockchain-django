@@ -51,6 +51,7 @@
     border: none;
     border-radius: 5px;
     padding: 5px;
+    background-color: rgb(16, 139, 139);
 }
 
 #login_button{
@@ -59,11 +60,22 @@
     margin-top: 20px;
     border: none;
     border-radius: 5px;
-    background-color: rgb(20, 151, 151);
+    background-color: rgb(25, 204, 204);
 }
 
 label{
     direction: rtl;
     margin-top: 5px;
 
+}
+
+/* ///////////////////////////////// */
+
+
+
+.errorlist {
+    color: red;
+    font-size: 0.8em;
+    direction: rtl;
+    list-style: none;
 }
