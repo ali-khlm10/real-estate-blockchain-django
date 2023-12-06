@@ -6,6 +6,7 @@ from .forms import *
 from utils.generate_pair_key import generate_pair_key, pem_to_public_key
 from utils.create_wallet_address import generate_wallet_address
 from .models import userModel, userWalletModel
+from django.contrib.auth import login, logout
 # Create your views here.
 
 
@@ -59,10 +60,35 @@ class loginView(View):
     def post(self, request : HttpRequest):
         logination_form: loginForm = loginForm(request.POST)
         if logination_form.is_valid():
-            pass
-        else:
-            context = {
-                "logination_form": logination_form,
-            }
-            return render(request, "account_module/login_page.html", context)
+            current_user_email = logination_form.cleaned_data.get('email')
+            current_user_password = logination_form.cleaned_data.get('password')
+            current_user: userModel = userModel.objects.filter(
+                email__iexact=current_user_email).first()
+            if current_user is not None:
+                if not current_user.is_active:
+                    logination_form.add_error(
+                        "email", "حساب کاربری شما فعال نشده است.")
+                else:
+                    is_password_correct: bool = current_user.check_password(
+                        current_user_password)
+                    if is_password_correct:
+                        login(request=request, user=current_user)
+                        return redirect(reverse("user-dashboard"))
+                    else:
+                        logination_form.add_error(
+                            "password", "رمز عبور اشتباه وارد شده است")
+            else:
+                logination_form.add_error(
+                    "email", "شما ابتدا نیاز به ثبت نام در سایت دارید.")
+
+        context = {
+            "logination_form": logination_form,
+        }
+        return render(request, "account_module/login_page.html", context)
         
+
+
+class logoutView(View):
+    def get(self,request):
+        logout(request)
+        return redirect(reverse("login-page"))
