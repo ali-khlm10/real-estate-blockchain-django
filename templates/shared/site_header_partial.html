@@ -15,6 +15,7 @@
                         <img src="" alt="تصویر کاربر">
                         {% endif %}
                     </div>
+
                     <div class="user_detailes">
                         <a id="user" href="#"> {{request.user.email}}</a>
                         <div class="dropdown-content" id="myDropdown">
@@ -22,9 +23,8 @@
                                 <a href="{% url "user-dashboard" %}">حساب کاربری</a>
                                 <a href="{% url "logout-page" %}">خروج</a>
                             </div>
-                        </div>
-                    </div>
-
+                        </div>           
+                    </div>                    
                 {% else %}
                 
                     <div class="login_register">

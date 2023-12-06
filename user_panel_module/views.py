@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpRequest
+from django.shortcuts import render,redirect
+from django.http import HttpRequest,Http404,HttpResponseNotFound
+from django.urls import reverse
+
 
 from django.views import View
 
@@ -12,10 +14,15 @@ class userDashboardView(View):
     def get(self, request: HttpRequest):
         current_user: userModel = userModel.objects.filter(
             id=request.user.id).first()
-        context = {
-            "current_user": current_user,
-        }
-        return render(request, "user_panel_module/user_dashboard.html", context)
+        if current_user and not current_user.is_superuser:
+            context = {
+                "current_user": current_user,
+            }
+            return render(request, "user_panel_module/user_dashboard.html", context)
+        else:
+            if current_user.is_superuser:
+                return redirect(reverse('admin:index'))
+            raise HttpResponseNotFound()
 
 
 class createPropertyView(View):
