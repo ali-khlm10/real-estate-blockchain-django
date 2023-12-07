@@ -40,10 +40,10 @@
                                     <td>{{forloop.counter}}</td>
                                     <td>{{property.property_detailes.property_title}}</td>
                                     <td>{{property.property_detailes.property_price}}</td>
-                                    {% if property.is_verified %}
+                                    {% if not property.is_verified %}
                                     <td>بله</td>
                                     <td style="color:green;">تایید شده</td>
-                                    <td><a href="#">شروع</a></td>
+                                    <td><a href="#" style="padding:10px; background-color: green;">شروع</a></td>
                                     {% else %}
                                     <td style="color:red;">خیر</td>
                                     <td style="color:yellow;">در حال بررسی</td>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import propertyModel,propertyDetailesModel
+from .models import propertyModel,propertyDetailesModel,propertyStatusModel
 # Register your models here.
 
 
@@ -17,7 +17,15 @@ class propertyDetailesAdmin(admin.ModelAdmin):
         'property_title',
         'property_price',
     ]
-    
+ 
+ 
+class propertyStatusAdmin(admin.ModelAdmin):
+    list_display = [
+        'pending',
+        'accepted',
+        'rejected',
+    ]   
 
 admin.site.register(propertyModel,propertyAdmin)
 admin.site.register(propertyDetailesModel,propertyDetailesAdmin)
+admin.site.register(propertyStatusModel,propertyStatusAdmin)

@@ -36,11 +36,33 @@ class propertyDetailesModel(models.Model):
         return property
 
 
+class propertyStatusModel(models.Model):
+    pending = models.BooleanField(verbose_name="در حال بررسی",  default=True)
+    accepted = models.BooleanField(verbose_name="پذیرفتن",  default=False)
+    rejected = models.BooleanField(verbose_name="رد کردن",  default=False)
+
+    class Meta:
+        verbose_name = "وضعیت ملک"
+        verbose_name_plural = "وضعیت ملک ها"
+
+    def __str__(self):
+        if self.accepted:
+            return "پذیرفته شده"
+
+        elif self.rejected:
+            return "رد شده"
+
+        else:
+            return "در حال بررسی"
+
+
 class propertyModel(models.Model):
     property_detailes = models.ForeignKey(to=propertyDetailesModel, verbose_name="جزئیات ملک",
                                           on_delete=models.CASCADE, related_name="property_detailes")
     property_creator = models.ForeignKey(to=userModel, verbose_name="ایجاد کننده ملک",
                                          on_delete=models.CASCADE, related_name="property_creator")
+    property_status = models.ForeignKey(to=propertyStatusModel, verbose_name="وضعیت ملک",
+                                        on_delete=models.CASCADE, related_name="property_status", null=True, blank=True)
     property_owner_address = models.CharField(
         verbose_name="آدرس مالک ملک", max_length=500, null=True, blank=True)
     is_verified = models.BooleanField(
