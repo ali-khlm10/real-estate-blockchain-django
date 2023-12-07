@@ -56,8 +56,10 @@
                                     <td style="color:red;">رد شده</td>
                                     {% endif %}
                                     
-                                    {% if property.is_verified and property.property_status.all.first.status == "accepted" %}
+                                    {% if property.is_verified and property.property_status.all.first.status == "accepted" and not property.token_generated%}
                                     <td><a href="#" style="padding:10px 20px; background-color: green; border-radius: 5px; text-decoration:none; color:white;">شروع</a></td>
+                                    {% elif property.is_verified and property.token_generated %}
+                                    <td style="color:blue;">توکن شده</td>
                                     {% else %}
                                     <td>غیرفعال</td>
                                     {% endif %}
