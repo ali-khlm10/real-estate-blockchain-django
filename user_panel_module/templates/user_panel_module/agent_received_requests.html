@@ -26,44 +26,24 @@
                         <table>
                             <thead>
                                 <tr class="row_of_table">
-                                    <th>شماره</th>
-                                    <th>عنوان ملک</th>
-                                    <th>قیمت ملک</th>
-                                    <th>تایید شده/نشده</th>
-                                    <th>وضعیت</th>
-                                    <th>توکن سازی</th>
+                                    <th id="number_length">شماره</th>
+                                    <th id="title_length">عنوان ملک</th>
+                                    <th id="applicant_length">درخواست کننده</th>
+                                    <th id="detail_length">جزئیات ملک</th>
+                                    <th id="status_length">وضعیت</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for property in user_properties %}
+                                {% for request in agent_request_received %}
                                 <tr class="row_of_table">
                                     <td>{{forloop.counter}}</td>
-                                    <td>{{property.property_detailes.property_title}}</td>
-                                    <td>{{property.property_detailes.property_price}}</td>
-                                    {% if property.is_verified and property.property_status.all.first.status == "accepted" %}
-                                    <td style="color:green;">تایید شد</td>
-                                    {% elif not property.is_verified and property.property_status.all.first.status == "rejected"  %}
-                                    <td style="color:red;">تایید نشد</td>
-                                    {% else %}
-                                    <td>هنوز تایید نشده</td>
-                                    {% endif %}
-
-                                    {% if property.property_status.all.first.status == "pending" %}
-                                    <td style="color:yellow;">در حال بررسی</td>
-                                    {% elif property.property_status.all.first.status == "accepted" %}
-                                    <td style="color:green;">پذیرفته شده</td>
-                                    {% else %}
-                                    <td style="color:red;">رد شده</td>
-                                    {% endif %}
-                                    
-                                    {% if property.is_verified and property.property_status.all.first.status == "accepted" and not property.token_generated%}
-                                    <td><a href="#" style="padding:10px 20px; background-color: green; border-radius: 5px; text-decoration:none; color:white;">شروع</a></td>
-                                    {% elif property.is_verified and property.token_generated %}
-                                    <td style="color:blue;">توکن شده</td>
-                                    {% else %}
-                                    <td>غیرفعال</td>
-                                    {% endif %}
-
+                                    <td>{{request.property_detailes.property_title}}</td>
+                                    <td id="applicant_wallet_address">{{request.property_creator.wallet.wallet_address}}</td>
+                                    <td><a href="#" style="padding:10px; background-color: skyblue; border-radius: 5px; text-decoration:none; color:white;">مشاهده</a></td>
+                                    <td>
+                                        <a href="#" style="padding:10px; background-color: green; border-radius: 5px; text-decoration:none; color:white;">تایید</a>
+                                        <a href="#" style="padding:10px; background-color: red; border-radius: 5px; text-decoration:none; color:white;">رد</a>
+                                    </td>
                                 </tr>                                
                                 {% endfor %}
 

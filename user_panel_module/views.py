@@ -39,10 +39,12 @@ class userPropertiesView(View):
         return render(request, "user_panel_module/user_properties.html", context)
 
 
-
 class agentReceivedRequestsView(View):
     def get(self, request: HttpRequest):
-        context = {}
+        agent_request_received: propertyModel = propertyModel.objects.all()
+        context = {
+            "agent_request_received": agent_request_received,
+        }
         return render(request, "user_panel_module/agent_received_requests.html", context)
 
 
