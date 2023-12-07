@@ -34,16 +34,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for request in agent_request_received %}
+                                {% for req in agent_request_received %}
                                 <tr class="row_of_table">
                                     <td>{{forloop.counter}}</td>
-                                    <td>{{request.property_detailes.property_title}}</td>
-                                    <td id="applicant_wallet_address">{{request.property_creator.wallet.wallet_address}}</td>
-                                    <td><a href="#" style="padding:10px; background-color: skyblue; border-radius: 5px; text-decoration:none; color:white;">مشاهده</a></td>
+                                    <td>{{req.property_detailes.property_title}}</td>
+                                    <td id="applicant_wallet_address">{{req.property_creator.wallet.wallet_address}}</td>
+                                    <td><a href="#" style="padding:10px; background-color: skyblue; border-radius: 5px; text-decoration:none; color:white; color:white;">مشاهده</a></td>
+                                    {% if req.is_verified and req.property_status.all.first.status == "accepted" %}
                                     <td>
-                                        <a href="#" style="padding:10px; background-color: green; border-radius: 5px; text-decoration:none; color:white;">تایید</a>
-                                        <a href="#" style="padding:10px; background-color: red; border-radius: 5px; text-decoration:none; color:white;">رد</a>
+                                        <span style="padding:10px 15px; background-color: rgb(42, 182, 42); border-radius: 5px;">
+                                            تایید شده
+                                        </span>
                                     </td>
+                                    {% elif not req.is_verified and req.property_status.all.first.status == "rejected" %}
+                                    <td>
+                                        <span style="padding:10px 15px; background-color: rgb(216, 77, 77); border-radius: 5px;">
+                                            رد شده
+                                        </span>
+                                    </td>
+                                    {% else %}
+                                    <td>
+                                        <a href="{% url "agent-accept-request" property_id=req.id %}" style="padding:10px; background-color: green; border-radius: 5px; text-decoration:none; color:white;">تایید</a>
+                                        <a href="{% url "agent-reject-request" property_id=req.id %}" style="padding:10px; background-color: red; border-radius: 5px; text-decoration:none; color:white;">رد</a>
+                                    </td>
+                                    {% endif %}
+
                                 </tr>                                
                                 {% endfor %}
 

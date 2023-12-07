@@ -7,7 +7,7 @@ from django.views import View
 
 from account_module.models import userModel
 
-from property_module.models import propertyModel, propertyDetailesModel
+from property_module.models import propertyModel, propertyStatusModel
 
 # Create your views here.
 
@@ -38,6 +38,8 @@ class userPropertiesView(View):
         }
         return render(request, "user_panel_module/user_properties.html", context)
 
+# //////////////////////////////////////////////////////////////////
+
 
 class agentReceivedRequestsView(View):
     def get(self, request: HttpRequest):
@@ -46,6 +48,37 @@ class agentReceivedRequestsView(View):
             "agent_request_received": agent_request_received,
         }
         return render(request, "user_panel_module/agent_received_requests.html", context)
+
+
+class agentAcceptRequestView(View):
+    def get(self, request: HttpRequest, property_id: int):
+        current_property: propertyModel = propertyModel.objects.filter(
+            id__exact=property_id).first()
+        current_property_status: propertyStatusModel = propertyStatusModel.objects.filter(
+            property__exact=current_property).first()
+        current_property_status.pending = False
+        current_property_status.accepted = True
+        current_property_status.pending = False
+        current_property.is_verified = True
+        current_property_status.save()
+        current_property.save()
+        return redirect(reverse("agent-received-requests"))
+
+
+class agentRejectRequestView(View):
+    def get(self, request: HttpRequest, property_id: int):
+        current_property: propertyModel = propertyModel.objects.filter(
+            id__exact=property_id).first()
+        current_property_status: propertyStatusModel = propertyStatusModel.objects.filter(
+            property__exact=current_property).first()
+        current_property_status.pending = False
+        current_property_status.accepted = False
+        current_property_status.rejected = True
+        current_property.is_verified = False
+        current_property_status.save()
+        current_property.save()
+        return redirect(reverse("agent-received-requests"))
+# ///////////////////////////////////////////////////////////////////////
 
 
 class receivedRequestsView(View):
