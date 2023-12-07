@@ -5,7 +5,7 @@
 
 {% load static %}
 
-{% block title %}صفحه ملک های من{% endblock title %}
+{% block title %}صفحه درخواست های دریافتی{% endblock title %}
 
 {% block content %}
 
@@ -20,9 +20,9 @@
             <section class="main_dashbord">
                 <div class="dashboard_body">
                     <header>
-                        <h3>صفحه ملک های من</h3>
+                        <h3>صفحه درخواست های دریافتی</h3>
                     </header>
-                    <main class="dashboard_user_properties">
+                    <main class="dashboard_agent_received_requests">
                         <table>
                             <thead>
                                 <tr class="row_of_table">
@@ -71,39 +71,6 @@
                             </table>       
                         </table>
                     </main>
-                    <div class="created_properties_body_and_header">
-                        <footer class="created_properties">
-                                <span class="created_properties_title_of_footer">
-                                    <h4>ملک های توکن شده</h4>
-                                </span>
-                                <span id="created_properties_body_of_footer">
-                                    <section>
-                                        <div>
-                                            <label for="">عنوان ملک توکن شده : </label>
-                                            خانه ویلایی
-                                        </div>
-                                        <div>
-                                            <label for="">شماره توکن ملک : </label>
-                                            <p>5434w5f4va3we4fgwae54gf3a5e4g3as5gr43a5r4g3ar4fg3a5dr4g35ad4fbg35ds4f3bg5sd41f35b4sd3f541b23sd5f14g235s1df5</p>
-                                        </div>
-                                        <button>نمایش جزئیات</button>                            
-                                    </section>                                     
-                                    <section>
-                                        <div>
-                                            <label for="">عنوان ملک توکن شده : </label>
-                                            خانه ویلایی
-                                        </div>
-                                        <div>
-                                            <label for="">شماره توکن ملک : </label>
-                                            <p>5434w5f4va3we4fgwae54gf3a5e4g3as5gr43a5r4g3ar4fg3a5dr4g35ad4fbg35ds4f3bg5sd41f35b4sd3f541b23sd5f14g235s1df5</p>
-                                        </div>
-                                        <button>نمایش جزئیات</button>                            
-                                    </section> 
-                                </span>
-                           
-
-                        </footer>
-                    </div>
                 </div>
                 {% render_partial 'user_panel_module.views.user_panel_menu_component' %}
                 

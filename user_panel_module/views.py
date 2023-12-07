@@ -39,6 +39,13 @@ class userPropertiesView(View):
         return render(request, "user_panel_module/user_properties.html", context)
 
 
+
+class agentReceivedRequestsView(View):
+    def get(self, request: HttpRequest):
+        context = {}
+        return render(request, "user_panel_module/agent_received_requests.html", context)
+
+
 class receivedRequestsView(View):
     def get(self, request: HttpRequest):
         context = {}

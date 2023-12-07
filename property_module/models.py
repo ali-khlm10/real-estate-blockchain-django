@@ -73,6 +73,10 @@ class propertyStatusModel(models.Model):
         verbose_name = "وضعیت ملک"
         verbose_name_plural = "وضعیت ملک ها"
 
+
+    def __str__(self):
+        return self.property
+
     def status(self):
         if self.accepted:
             return "accepted"

@@ -6,8 +6,7 @@
     align-items: flex-start;
     width: 100%;
     /* min-height: 500px; */
-    padding: 10px;
-    margin: 20px;
+    padding: 30px;
 }
 
 .dashboard_user_properties table {
@@ -21,7 +20,8 @@
     table-layout: fixed;
 }
 
-.dashboard_user_properties table thead,tbody {
+.dashboard_user_properties table thead,
+tbody {
     width: 100%;
     padding: 20px;
     display: flex;
@@ -31,16 +31,16 @@
     direction: rtl;
 }
 
-.dashboard_user_properties table thead{
+.dashboard_user_properties table thead {
     border-radius: 5px 5px 0 0;
     background-color: #67a4af;
 }
 
-.dashboard_user_properties table tbody .row_of_table{
+.dashboard_user_properties table tbody .row_of_table {
     background-color: #396972;
 }
 
-.row_of_table{
+.dashboard_user_properties .row_of_table {
     width: 100%;
     display: flex;
     flex-flow: wrap row;
@@ -53,26 +53,39 @@
     border-radius: 5px;
 }
 
-.dashboard_user_properties table thead .row_of_table{
+.dashboard_user_properties table thead .row_of_table {
     padding: 0;
 }
 
 /* ////////////////////////////////////// */
 
-.created_properties{
+.created_properties_body_and_header {
+    /* background-color: red; */
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 30px;
+}
+
+
+.created_properties {
     width: 100%;
     display: flex;
     flex-flow: wrap row;
     justify-content: flex-start;
     align-items: center;
     border: solid 1px #78999f;
-    margin: 25px;
     padding: 20px 0;
     border-radius: 5px;
-
 }
 
-.created_properties h4{
+.created_properties_title_of_footer {
+    width: 100%;
+}
+
+.created_properties .created_properties_title_of_footer h4 {
     width: 100%;
     display: flex;
     flex-flow: wrap row;
@@ -82,32 +95,44 @@
     padding-bottom: 20px;
     padding-right: 25px;
     direction: rtl;
+    margin: 10px 0;
 }
 
-.created_properties section{
+#created_properties_body_of_footer{
+    width: 100%;
+    padding: 25px;
+}
+
+.created_properties #created_properties_body_of_footer section {
     width: 100%;
     display: flex;
     flex-flow: wrap row;
     justify-content: flex-start;
     align-items: flex-start;
-    margin: 20px 25px;
-    padding: 10px;
+    padding: 20px;
     border-radius: 5px;
     background-color: #396972;
+    margin: 10px 0 20px 0;
 }
 
-.created_properties section div{
+.created_properties #created_properties_body_of_footer section div {
     width: 100%;
     display: flex;
     flex-flow: wrap row;
     justify-content: flex-start;
-    align-items: center;
+    align-items: baseline;
     direction: rtl;
-    overflow: hidden;
-
 }
 
-.created_properties section button{
+.created_properties #created_properties_body_of_footer section div p,label {
+    max-width: 600px;
+    overflow-wrap: break-word;
+    /* word-wrap: break-word; */
+    overflow: hidden;
+    margin: 10px;
+}
+
+.created_properties #created_properties_body_of_footer section button {
     width: 30%;
     display: flex;
     flex-flow: wrap row;

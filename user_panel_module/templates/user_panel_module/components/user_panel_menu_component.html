@@ -13,29 +13,40 @@
     </section>
 
     <section class="dashboard_opsions">
+        {% if not request.user.is_gov_agent %}
         <div class="dashboard">
             <a href="{% url "user-dashboard" %}">داشبورد کاربری</a>
         </div>
-        {% if not request.user.is_gov_agent %}
         <div class="create_property">
             <a href="{% url "create-property" %}">ایجاد ملک</a>
         </div>
         <div class="my_ptoperties">
             <a href="{% url "user-properties" %}">ملک های من</a>
         </div>        
-        {% endif %}
-
         <div class="received_requests">
             <a href="{% url "received-requests" %}">درخواست های دریافتی</a>
         </div>
         <div class="sended_requestes">
             <a href="{% url "sended-requestes" %}">دخواست های ارسالی</a>
-        </div>   
-        {% if not request.user.is_gov_agent%}
+        </div> 
         <div class="sended_requestes">
             <a href="{% url "user-wallet" %}">کیف پول من</a>
-        </div>          
+        </div>   
+        {% else %}
+        <div class="dashboard">
+            <a href="{% url "user-dashboard" %}">داشبورد کاربری</a>
+        </div>
+        <div class="received_requests">
+            <a href="{% url "agent-received-requests" %}">درخواست های دریافتی</a>
+        </div>
+        {% comment %} <div class="accepted_requests">
+            <a href="{% url "accepted-requests" %}">درخواست های پذیرفته شده</a>
+        </div>
+        <div class="rejected_requests">
+            <a href="{% url "rejected-requests" %}">درخواست های رد شده</a>
+        </div> {% endcomment %}
         {% endif %}
+
                      
     </section>
 

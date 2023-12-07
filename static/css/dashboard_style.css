@@ -27,9 +27,9 @@
     width: 100%;
     min-height: 500px;
     display: flex;
-    flex-flow: wrap row;
-    justify-content: flex-end;
-    align-items: flex-start;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: center;
     flex: 7;
     order: 1;
     margin: 5px;
@@ -43,7 +43,7 @@
     justify-content: flex-end;
     align-items: center;
     /* flex-grow: 1; */
-    padding: 20px 0;
+    padding: 20px;
     border-bottom: solid 1px #78999f;
 }
 
@@ -51,7 +51,7 @@
     padding-right: 20px;
 }
 
-
+/* ////////////////////////////////////////////// */
 .user_dashboard_info {
     /* flex-grow: 3; */
     display: flex;
@@ -59,7 +59,7 @@
     justify-content: flex-end;
     align-items: center;
     padding: 20px 0;
-    margin: 10px;
+    margin: 20px;
     border: solid 1px #78999f;
     border-radius: 5px;
 }
