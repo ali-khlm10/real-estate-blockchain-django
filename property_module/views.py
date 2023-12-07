@@ -23,7 +23,7 @@ class createPropertyView(View):
         if property_form.is_valid():
             current_user: userModel = userModel.objects.filter(
                 id=request.user.id).first()
-            
+
             current_title = request.POST.get('title')
             current_type = request.POST.get('type')
             current_length = request.POST.get('length')
@@ -43,16 +43,18 @@ class createPropertyView(View):
                 property_address=current_address,
             )
             new_property_detailes.save()
-            
-            new_property_status: propertyStatusModel = propertyStatusModel.objects.create()
-            
+
             new_property: propertyModel = propertyModel.objects.create(
                 property_detailes=new_property_detailes,
                 property_creator=current_user,
-                property_status=new_property_status,
             )
             new_property.save()
-            
+
+            new_property_status: propertyStatusModel = propertyStatusModel.objects.create(
+                property=new_property,
+            )
+            new_property_status.save()
+
             return redirect(reverse("user-properties"))
         context = {
             "property_form": property_form,

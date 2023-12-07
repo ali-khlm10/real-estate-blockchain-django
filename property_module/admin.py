@@ -21,6 +21,7 @@ class propertyDetailesAdmin(admin.ModelAdmin):
  
 class propertyStatusAdmin(admin.ModelAdmin):
     list_display = [
+        'property',
         'pending',
         'accepted',
         'rejected',
