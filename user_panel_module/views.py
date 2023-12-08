@@ -43,26 +43,41 @@ class userPropertiesView(View):
 
 class agentReceivedRequestsView(View):
     def get(self, request: HttpRequest):
-        agent_request_received: propertyModel = propertyModel.objects.all()
-        context = {
-            "agent_request_received": agent_request_received,
-        }
-        return render(request, "user_panel_module/agent_received_requests.html", context)
+        current_user: userModel = userModel.objects.filter(
+            id__exact=request.user.id).first()
+        if current_user.is_gov_agent:
+            agent_request_received: propertyModel = propertyModel.objects.all()
+            context = {
+                "agent_request_received": agent_request_received,
+            }
+            return render(request, "user_panel_module/agent_received_requests.html", context)
+        else:
+            raise Http404()
 
 
 class agentAcceptRequestView(View):
     def get(self, request: HttpRequest, property_id: int):
+        current_user: userModel = userModel.objects.filter(
+            id__exact=request.user.id).first()
+
         current_property: propertyModel = propertyModel.objects.filter(
             id__exact=property_id).first()
         current_property_status: propertyStatusModel = propertyStatusModel.objects.filter(
             property__exact=current_property).first()
-        current_property_status.pending = False
-        current_property_status.accepted = True
-        current_property_status.pending = False
-        current_property.is_verified = True
-        current_property_status.save()
-        current_property.save()
-        return redirect(reverse("agent-received-requests"))
+
+        if current_user.is_gov_agent:
+            current_property_status.pending = False
+            current_property_status.accepted = True
+            current_property_status.pending = False
+
+            current_property.is_verified = True
+            current_property.property_owner_address = current_property.property_creator.wallet.wallet_address
+
+            current_property_status.save()
+            current_property.save()
+            return redirect(reverse("agent-received-requests"))
+        else:
+            raise Http404()
 
 
 class agentRejectRequestView(View):
