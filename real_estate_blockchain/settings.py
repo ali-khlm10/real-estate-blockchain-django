@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "account_module",
     "user_panel_module",
     "property_module",
+    "token_module",
 
     # external modules
     "django_render_partial",
