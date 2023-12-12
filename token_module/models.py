@@ -22,3 +22,26 @@ class propertyTokenModel(models.Model):
 
     def __str__(self):
         return self.token_id
+
+
+# ///////////////////////////////////////////////////////////
+
+
+class smartContractModel(models.Model):
+    contract_name = models.CharField(
+        verbose_name="نام قرارداد هوشمند", max_length=250)
+    contract_address = models.CharField(
+        max_length=2000, verbose_name="آدرس قرارداد هوشمند", editable=False)
+    contract_inventory = models.FloatField(
+        default=0.0, verbose_name="موجودی قرارداد هوشمند",)
+    nonce = models.IntegerField(verbose_name="تعداد دفعات فراخوانی", default=0)
+    
+    def counter(self):
+        self.nonce += 1
+
+    class Meta:
+        verbose_name = "قرارداد هوشمند"
+        verbose_name_plural = "قراردادهای هوشمند"
+
+    def __str__(self):
+        return self.contract_address

@@ -29,7 +29,7 @@ class propertyDetailesModel(models.Model):
             "property_length": self.property_length,
             "property_price": self.property_price,
             "property_short_description": self.property_short_description,
-            "property_image": self.property_image,
+            "property_image": str(self.property_image),
             "property_description": self.property_description,
             "property_address": self.property_address,
         }

@@ -2,6 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('create_property_sign/', views.createPropertySignature,
-         name="create-property-sign"),
+    path('create_signature_to_tokenization/', views.create_signature_to_tokenization,
+         name="create-signature-to-tokenization"),
 ]
