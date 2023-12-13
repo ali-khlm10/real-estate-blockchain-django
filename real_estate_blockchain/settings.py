@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     # external modules
     "django_render_partial",
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
