@@ -9,13 +9,41 @@
 
 {% block content %}
 
-    <div id="mymodal" class="modal">
+    <div id="tokenization_modal" class="modal">
         <div class="internal_modal">
-            <p>این باکس جدید است</p>
-            <button>بستن</button>
+            <button>x</button>
+            <p>آیا مایل به توکن سازی ملک با مشخصات زیر و با هزینه انجام تراکنش مورد نظر هستید؟</p>
+            <div>
+                <label>شماره ملک : </label>
+                <span id="property_number" >2</span>
+            </div>
+            <div>
+                <label>عنوان ملک : </label>
+                <span id="property_title">آپارتمان</span>
+            </div>
+            <div>
+                <label>قیمت ملک : </label>
+                <span id="property_price">2000000000000</span>
+            </div>
+            <div>
+                <label>هزینه انجام تراکنش : </label>
+                <span>10000</span>
+            </div>
+            <section>
+                <a id="do_tokenization" href="#">انجام</a>
+                <a id="dont_tokenization" href="#">لغو</a>
+            </section>             
         </div>
     </div>
-
+    <div id="tokenization_result_modal" class="result_modal">
+        <div class="internal_result_modal">
+            <button>x</button>
+            <p>عمل توکن سازی شما با موفقیت انجام شد.</p>
+            <section>
+                <a id="ok_result" href="#">فهمیدم</a>
+            </section>             
+        </div>
+    </div>
     <section class="dashboard_container">
 
             <section class="home_body_header">
@@ -65,7 +93,7 @@
                                     {% endif %}
                                     
                                     {% if property.is_verified and property.property_status.all.first.status == "accepted" and not property.token_generated%}
-                                    <td><a class="start_tokenization" href="#" data-property_id={{ property.id }} style="padding:10px 20px; background-color: green; border-radius: 5px; text-decoration:none; color:white;">شروع</a></td>
+                                    <td><a class="start_tokenization" href="#" data-property_id="{{ property.id }}" data-property_title="{{property.property_detailes.property_title}}" data-property_price="{{ property.property_detailes.property_price}}" style="padding:10px 20px; background-color: green; border-radius: 5px; text-decoration:none; color:white;">شروع</a></td>
                                     {% elif property.is_verified and property.token_generated %}
                                     <td style="color:blue;">توکن شده</td>
                                     {% else %}
