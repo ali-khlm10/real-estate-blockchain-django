@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "user_panel_module",
     "property_module",
     "token_module",
+    "node_module",
+    "blockchain_module",
 
     # external modules
     "django_render_partial",
@@ -66,7 +68,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / "templates",
-            ],
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,4 +149,3 @@ MEDIA_URL = "/medias/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # SESSION_COOKIE_NAME = "real_estate_blockchain_session"
-
