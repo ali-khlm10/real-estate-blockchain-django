@@ -16,15 +16,16 @@ class userDashboardView(View):
     def get(self, request: HttpRequest):
         current_user: userModel = userModel.objects.filter(
             id=request.user.id).first()
-        if current_user and not current_user.is_superuser:
-            context = {
-                "current_user": current_user,
-            }
-            return render(request, "user_panel_module/user_dashboard.html", context)
-        else:
-            if current_user.is_superuser:
+        if current_user is not None:
+            if not current_user.is_superuser:
+                context = {
+                    "current_user": current_user,
+                }
+                return render(request, "user_panel_module/user_dashboard.html", context)
+            else:
                 return redirect(reverse('admin:index'))
-            raise HttpResponseNotFound()
+        else:
+            raise Http404()
 
 
 class userPropertiesView(View):
