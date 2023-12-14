@@ -8,6 +8,7 @@ class nodeAdmin(admin.ModelAdmin):
         'node_name',
         'node_port',
         'node_url',
+        'node_inventory',
     ]
 
 
