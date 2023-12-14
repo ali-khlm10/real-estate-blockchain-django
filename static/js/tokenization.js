@@ -45,19 +45,25 @@ $(document).ready(function () {
     });
     // var jsonData = JSON.stringify(response);
 
-    var tokenization_modal_element = document.getElementById("tokenization_modal");
+    var tokenization_modal_element =
+      document.getElementById("tokenization_modal");
     var body_element = document.body;
     tokenization_modal_element.style.display = "block";
     body_element.style.overflow = "hidden";
-    tokenization_modal_element.querySelector("#property_number").innerHTML = property_id;
-    tokenization_modal_element.querySelector("#property_title").innerHTML = property_title;
-    tokenization_modal_element.querySelector("#property_price").innerHTML = property_price;
+    tokenization_modal_element.querySelector("#property_number").innerHTML =
+      property_id;
+    tokenization_modal_element.querySelector("#property_title").innerHTML =
+      property_title;
+    tokenization_modal_element.querySelector("#property_price").innerHTML =
+      property_price;
 
-    $("#tokenization_modal #dont_tokenization,.internal_modal button").click(function (e) {
-      e.preventDefault();
-      tokenization_modal_element.style.display = "none";
-      body_element.style.overflow = "auto";
-    });
+    $("#tokenization_modal #dont_tokenization,.internal_modal button").click(
+      function (e) {
+        e.preventDefault();
+        tokenization_modal_element.style.display = "none";
+        body_element.style.overflow = "auto";
+      }
+    );
 
     $("#tokenization_modal #do_tokenization").click(function (e) {
       e.preventDefault();
@@ -71,10 +77,29 @@ $(document).ready(function () {
         },
         dataType: "json",
         success: function (response) {
-          console.log(response);
-          tokenization_modal_element.style.display = "none";
-          body_element.style.overflow = "auto";
-          window.location.reload();
+          if (response.status) {
+            console.log(response.status);
+            tokenization_modal_element.style.display = "none";
+            body_element.style.overflow = "auto";
+            var tokenization_result_modal_element = document.getElementById(
+              "tokenization_result_modal"
+            );
+            tokenization_result_modal_element.style.display = "block";
+            body_element.style.overflow = "hidden";
+            tokenization_result_modal_element.querySelector("p").innerHTML =
+              response.message;
+
+            $(
+              "#tokenization_result_modal #ok_result,.internal_result_modal button"
+            ).click(function (e) {
+              e.preventDefault();
+              tokenization_result_modal_element.style.display = "none";
+              body_element.style.overflow = "auto";
+              window.location.reload();
+            });
+          } else {
+            console.log(response.message);
+          }
         },
         error: function () {
           console.log("مشکل در ارتباط با سرور");

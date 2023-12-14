@@ -8,13 +8,15 @@ from account_module.models import userModel
 
 class propertyTokenModel(models.Model):
     property_of_token: propertyModel = models.ForeignKey(
-        to=propertyModel, verbose_name="ملک مربوط به توکن", on_delete=models.CASCADE, related_name="property_of_token")
+        to=propertyModel, verbose_name="ملک مربوط به توکن", on_delete=models.CASCADE, related_name="property_of_token", null=True, blank=True)
     property_owner_address: str = models.CharField(
-        verbose_name="آدرس مالک توکن", max_length=500)
+        verbose_name="آدرس مالک توکن", max_length=500, null=True, blank=True)
     token_id = models.CharField(
         verbose_name="شماره توکن ملک", max_length=500, unique=True)
     token_created_date = models.DateTimeField(
         auto_now_add=True, editable=False, verbose_name="زمان ایجاد توکن", null=True)
+    is_published = models.BooleanField(
+        verbose_name="منتشر شده/نشده", default=False)
 
     class Meta:
         verbose_name = "توکن"
@@ -35,7 +37,7 @@ class smartContractModel(models.Model):
     contract_inventory = models.FloatField(
         default=0.0, verbose_name="موجودی قرارداد هوشمند",)
     nonce = models.IntegerField(verbose_name="تعداد دفعات فراخوانی", default=0)
-    
+
     def counter(self):
         self.nonce += 1
 

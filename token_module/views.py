@@ -10,7 +10,43 @@ from property_module.models import propertyModel
 from account_module.models import userModel
 from django.views import View
 from utils.create_and_verify_signature import verify_signature
+from .models import propertyTokenModel
+import hashlib
 # Create your views here.
+
+
+def create_token_id(token_information):
+    token_information_str: str = json.dumps(token_information)
+    hex_hash = hashlib.sha512(
+        token_information_str.encode('utf-8')).hexdigest()
+    int_hash = int(hex_hash, 16)  # convert hexadecimal to integer
+
+    return int_hash
+
+
+def create_token(data: dict):
+    property_signature = data.get("signature")
+    property_information: dict = data.get("property_information")
+    property_id = property_information.get("property_id")
+    current_property: propertyModel = propertyModel.objects.filter(
+        id__exact=property_id).first()
+    token_info: dict = current_property.property_detailes.detailes()
+    token_info["property_creator_id"] = current_property.property_creator_id
+    token_info["property_owner_address"] = current_property.property_owner_address
+    token_info["property_signature"] = property_signature
+    new_token_id = create_token_id(token_information=token_info)
+    new_token: propertyTokenModel = propertyTokenModel.objects.create(
+        property_of_token=current_property,
+        property_owner_address=current_property.property_owner_address,
+        token_id=new_token_id,
+    )
+    new_token.save()
+    current_property.token_generated = True
+    current_property.save()
+    return {
+        "status": True,
+        "message": "ملک شما با موفقیت به توکن تبدیل شد وتراکنش مربوطه در بلوک شماره 10 قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد توکن شما در بازار املاک منتشر خواهد شد.",
+    }
 
 
 def verify_tokenization_transaction(data: dict):
@@ -36,18 +72,23 @@ def verify_tokenization_transaction(data: dict):
     verify_result: bool = verify_signature(
         public_key=sender_public_key, signature=bytes.fromhex(property_signature), message=message_str)
     if verify_result:
-        pass
+        return True
+    else:
+        return False
 
 
 class tokenizationView(View):
     @csrf_exempt
     def post(self, request: HttpRequest):
         received_data: dict = json.loads(request.body)
-        verify_tokenization_transaction(data=received_data)
-        return JsonResponse({
-            "status": True,
-            "redirect_url": "user_properteis/"
-        })
+        if verify_tokenization_transaction(data=received_data):
+            response_data = create_token(data=received_data)
+        else:
+            response_data = {
+                "status": False,
+                "message": "خطا در تایید امضای مالک!!"
+            }
+        return JsonResponse(response_data)
 
 
 @csrf_exempt
