@@ -149,4 +149,4 @@ MEDIA_URL = "/medias/"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SESSION_COOKIE_NAME = "real_estate_blockchain_session"
+SESSION_COOKIE_NAME = "real_estate_blockchain_session"

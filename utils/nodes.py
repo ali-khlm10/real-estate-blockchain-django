@@ -7,6 +7,13 @@ def create_and_update_nodes():
         return "there are not any node in database"
     else:
         for node in nodes:
-            print(node.node_name)
-
-
+            with open(f"real_estate_blockchain/settings_{node.node_port}.py", "") as file:
+                file.write(
+                    f"""
+from .settings import *
+                    
+SESSION_COOKIE_NAME = 'real_estate_blockchain_session_port_{node.node_port}'
+                    
+"""
+                )
+                file.close()
