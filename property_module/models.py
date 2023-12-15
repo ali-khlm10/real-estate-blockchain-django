@@ -36,9 +36,6 @@ class propertyDetailesModel(models.Model):
         return property
 
 
-
-
-
 class propertyModel(models.Model):
     property_detailes = models.ForeignKey(to=propertyDetailesModel, verbose_name="جزئیات ملک",
                                           on_delete=models.CASCADE, related_name="property_detailes")
@@ -61,10 +58,9 @@ class propertyModel(models.Model):
         return self.property_detailes.property_title
 
 
-
 class propertyStatusModel(models.Model):
     property = models.ForeignKey(to=propertyModel, verbose_name="ملک",
-                                    on_delete=models.CASCADE, related_name="property_status", null=True, blank=True)
+                                 on_delete=models.CASCADE, related_name="property_status", null=True, blank=True)
     pending = models.BooleanField(verbose_name="در حال بررسی",  default=True)
     accepted = models.BooleanField(verbose_name="پذیرفتن",  default=False)
     rejected = models.BooleanField(verbose_name="رد کردن",  default=False)
@@ -73,9 +69,8 @@ class propertyStatusModel(models.Model):
         verbose_name = "وضعیت ملک"
         verbose_name_plural = "وضعیت ملک ها"
 
-
     def __str__(self):
-        return self.property
+        return self.property.property_detailes.property_title
 
     def status(self):
         if self.accepted:

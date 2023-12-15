@@ -7,9 +7,6 @@ from django.views.generic.base import TemplateView
 
 class homeView(TemplateView):
     template_name = "home_module/home_page.html"
-    
-    
-
 
 
 def site_header_partial(request):

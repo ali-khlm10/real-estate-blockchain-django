@@ -9,6 +9,7 @@ from account_module.models import userModel
 
 from property_module.models import propertyModel, propertyStatusModel
 
+from token_module.models import propertyTokenModel
 # Create your views here.
 
 
@@ -34,8 +35,11 @@ class userPropertiesView(View):
             id=request.user.id).first()
         user_properties: propertyModel = propertyModel.objects.filter(
             property_creator__exact=current_user).all()
+        user_tokens: propertyTokenModel = propertyTokenModel.objects.filter(
+            property_owner_address__iexact=current_user.wallet.wallet_address).all()
         context = {
             "user_properties": user_properties,
+            "user_tokens": user_tokens,
         }
         return render(request, "user_panel_module/user_properties.html", context)
 

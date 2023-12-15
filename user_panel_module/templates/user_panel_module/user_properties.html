@@ -114,28 +114,34 @@
                                     <h4>ملک های توکن شده</h4>
                                 </span>
                                 <span id="created_properties_body_of_footer">
-                                    <section>
-                                        <div>
-                                            <label for="">عنوان ملک توکن شده : </label>
-                                            خانه ویلایی
-                                        </div>
-                                        <div>
-                                            <label for="">شماره توکن ملک : </label>
-                                            <p>5434w5f4va3we4fgwae54gf3a5e4g3as5gr43a5r4g3ar4fg3a5dr4g35ad4fbg35ds4f3bg5sd41f35b4sd3f541b23sd5f14g235s1df5</p>
-                                        </div>
-                                        <button>نمایش جزئیات</button>                            
-                                    </section>                                     
-                                    <section>
-                                        <div>
-                                            <label for="">عنوان ملک توکن شده : </label>
-                                            خانه ویلایی
-                                        </div>
-                                        <div>
-                                            <label for="">شماره توکن ملک : </label>
-                                            <p>5434w5f4va3we4fgwae54gf3a5e4g3as5gr43a5r4g3ar4fg3a5dr4g35ad4fbg35ds4f3bg5sd41f35b4sd3f541b23sd5f14g235s1df5</p>
-                                        </div>
-                                        <button>نمایش جزئیات</button>                            
-                                    </section> 
+                                    {% for token in user_tokens %}
+                                        <section>
+                                            <div>
+                                                <label for="">عنوان ملک توکن شده : </label>
+                                                {{token.property_of_token.property_detailes.property_title}}
+                                            </div>
+                                            <div>
+                                                <label for="">شماره توکن ملک : </label>
+                                                <p>
+                                                    {{token.token_id}}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <label for="">وضعیت توکن ملک : </label>
+                                                {% if token.is_published %}
+                                                <p style="color:green;">
+                                                    منتشر شده در بازار املاک.
+                                                </p>
+                                                {% else %}
+                                                <p style="color:yellow;">
+                                                    در صف انتشار
+                                                </p>
+                                                {% endif %}
+                                            </div>
+                                            <button>نمایش جزئیات</button>                            
+                                        </section> 
+                                    {% endfor %}
+                                    
                                 </span>
                            
 
