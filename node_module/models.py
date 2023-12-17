@@ -14,6 +14,8 @@ class nodeModel(models.Model):
         verbose_name="موجودی حساب گره", default=0.0, editable=False)
     node_join_to_network = models.DateTimeField(
         auto_now_add=True, editable=False, verbose_name="زمان ملحق شدن گره به شبکه", null=True, blank=True)
+    node_address = models.CharField(
+        verbose_name="آدرس گره", max_length=500, unique=True, editable=False, null=True, blank=True)
 
     class Meta:
         verbose_name = "گره"
