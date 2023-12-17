@@ -17,6 +17,13 @@ class blockModel(models.Model):
     block_nonce = models.IntegerField(
         verbose_name="شماره نانس بلوگ", default=0)
 
+    class Meta:
+        verbose_name = "بلاک"
+        verbose_name_plural = "بلاک ها"
+
+    def __str__(self):
+        return self.block_hash
+
 
 class blockStatusModel(models.Model):
     block = models.ForeignKey(to=blockModel, verbose_name="بلوک",
@@ -57,6 +64,13 @@ class transactionsModel(models.Model):
     transaction_position_in_block = models.IntegerField(
         verbose_name="جایگاه تراکنش در بلاک", default=0)
 
+    class Meta:
+        verbose_name = "تراکنش"
+        verbose_name_plural = "تراکنش ها"
+
+    def __str__(self):
+        return self.transaction_hash
+
 
 class transactionStatusModel(models.Model):
     transaction = models.ForeignKey(to=transactionsModel, verbose_name="تراکنش",
@@ -67,7 +81,7 @@ class transactionStatusModel(models.Model):
         verbose_name="منتشر نشده",  default=False)
 
     class Meta:
-        verbose_name = "وضعیت راکنش"
+        verbose_name = "وضعیت تراکنش"
         verbose_name_plural = "وضعیت تراکنش ها"
 
     def __str__(self):
