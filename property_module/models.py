@@ -81,3 +81,4 @@ class propertyStatusModel(models.Model):
 
         else:
             return "pending"
+
