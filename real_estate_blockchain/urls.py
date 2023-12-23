@@ -21,6 +21,7 @@ from django.conf import settings
 
 
 urlpatterns = [
+    path("", include("blockchain_module.urls")),
     path("", include("token_module.urls")),
     path("", include("property_module.urls")),
     path("", include("user_panel_module.urls")),

@@ -42,6 +42,7 @@ $(document).ready(function () {
     var jsonData = JSON.stringify({
       signature: response.signature,
       property_information: response.property_information,
+      transaction_fee: 10000,
     });
     // var jsonData = JSON.stringify(response);
 

@@ -12,6 +12,13 @@ from django.views import View
 from utils.create_and_verify_signature import verify_signature
 from .models import propertyTokenModel
 import hashlib
+from utils.blockchain import real_estate_blockchain
+
+
+from node_module.models import nodeModel
+from django.middleware import csrf
+import requests
+
 # Create your views here.
 
 
@@ -39,17 +46,40 @@ def create_token(data: dict):
         property_of_token=current_property,
         property_owner_address=current_property.property_owner_address,
         token_id=new_token_id,
+        token_information=json.dumps(token_info),
     )
     new_token.save()
-    current_property.token_generated = True
-    current_property.save()
+    # current_property.token_generated = True
+    # current_property.save()
+
+    create_new_transaction: dict = real_estate_blockchain.add_transaction(
+        transaction_info={
+            "transaction_type": "tokenization",
+            "data": data,
+            "token_id": new_token.token_id,
+        }
+    )
+    # print(create_new_transaction)
+
+    if len(real_estate_blockchain.real_estate_transactions) == 4:
+        miner_node: nodeModel = real_estate_blockchain.proof_of_stake()
+        csrf_token = csrf.get_token(request=HttpRequest())
+
+        response = requests.post(
+            f"{miner_node.node_url}/mine_new_block_by_winner_node/",
+            data=json.dumps({
+                "message": "tokenization"}),
+            headers={"Content-Type": "application/json",
+                     "X-CSRFToken": csrf_token})
+        print(response)
+
     return {
         "status": True,
-        "message": "ملک شما با موفقیت به توکن تبدیل شد وتراکنش مربوطه در بلوک شماره 10 قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد توکن شما در بازار املاک منتشر خواهد شد.",
+        "message": f"ملک شما با موفقیت به توکن تبدیل شد وتراکنش مربوطه در بلوک شماره {create_new_transaction.get('block_index')} قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد توکن شما در بازار املاک منتشر خواهد شد.",
     }
 
 
-def verify_tokenization_transaction(data: dict):
+def signature_verification(data: dict):
     property_signature = data.get("signature")
     property_information: dict = data.get("property_information")
     message_str: str = json.dumps(property_information)
@@ -71,8 +101,39 @@ def verify_tokenization_transaction(data: dict):
 
     verify_result: bool = verify_signature(
         public_key=sender_public_key, signature=bytes.fromhex(property_signature), message=message_str)
+
     if verify_result:
-        return True
+        current_sender: userModel = userModel.objects.filter(
+            wallet__wallet_address__iexact=property_information.get("sender")).first()
+        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")) and current_sender.wallet.wallet_address == current_property.property_owner_address:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+def verify_tokenization_transaction(data: dict):
+
+    result: bool = signature_verification(data=data)
+    if result:
+        verification_counter = 0
+        nodes: nodeModel = nodeModel.objects.all()
+        for node in nodes:
+            node: nodeModel
+            csrf_token = csrf.get_token(request=HttpRequest())
+            response = requests.post(
+                f"{node.node_url}/verification_transaction_by_nodes/",
+                data=json.dumps(data),
+                headers={"Content-Type": "application/json",
+                         "X-CSRFToken": csrf_token})
+            if response.json()["status"]:
+                verification_counter += 1
+        if verification_counter >= (nodes.count())*2 / 3:
+            return True
+        else:
+            return False
+
     else:
         return False
 
@@ -123,7 +184,7 @@ def create_signature_to_tokenization(request: HttpRequest):
                                              message=message_str)["signature_hex"]
                 # print(signature)
                 # print(bytes.fromhex(signature))
-                print(message_str)
+                # print(message_str)
                 return JsonResponse({
                     "status": True,
                     "property_information": property_information,
@@ -141,3 +202,33 @@ def create_signature_to_tokenization(request: HttpRequest):
                 "status": False,
                 "error": error,
             })
+
+
+# ///////////////////////////////////////////////////////////////
+
+@csrf_exempt
+def verification_transaction_by_nodes(request: HttpRequest):
+    if request.method == "POST":
+        data: dict = json.loads(request.body)
+        print(data)
+        result: bool = signature_verification(data=data)
+        print(result)
+        return JsonResponse({"status": True})
+
+
+@csrf_exempt
+def mine_new_block_by_winner_node(request: HttpRequest):
+    if request.method == "POST":
+        data: dict = json.loads(request.body)
+        print(data)
+    return JsonResponse({
+        "status": True,
+    })
+    # real_estate_blockchain.create_block(
+    #     proof=2, previous_block_hash="0x5trdfu6rgser4ger4g6hsb54s")
+    # for trx in real_estate_blockchain.real_estate_transactions:
+    #     for field in trx.trx_status.all():
+    #         field.published = True
+    #         field.save()
+
+    # print(real_estate_blockchain.real_estate_transactions.count())

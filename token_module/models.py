@@ -17,6 +17,8 @@ class propertyTokenModel(models.Model):
         auto_now_add=True, editable=False, verbose_name="زمان ایجاد توکن", null=True)
     is_published = models.BooleanField(
         verbose_name="منتشر شده/نشده", default=False)
+    token_information = models.TextField(
+        verbose_name="اطلاعات مربوط به توکن", null=True, blank=True)
 
     class Meta:
         verbose_name = "توکن"

@@ -1,8 +1,153 @@
+from blockchain_module.models import blockModel, transactionsModel, blockchainModel, transactionStatusModel
+import random
+import json
+import hashlib
+from node_module.models import nodeModel
 
 
-class Blackchain:
+class Blockchain:
     def __init__(self):
-        self.chain = []
-        self.transactions = []
-        self.create_block(proof=1, previous_hash='0' * 64)
-        self.nodes = set()
+        self.real_estate_chain = self.get_real_estate_chain()
+        self.real_estate_transactions = self.get_real_estate_transactions()
+        if len(self.real_estate_chain) == 0:
+            self.create_block(proof=1, previous_block_hash="0x" + ('0' * 64))
+        self.real_estate_nodes = set()
+    # //////////////////////////////////////////////////
+
+    def get_real_estate_chain(self):
+        current_chain: blockModel = blockModel.objects.all()
+        if current_chain is None:
+            return []
+        else:
+            chain = []
+            for block in current_chain:
+                chain.append(block)
+            return chain
+
+    def get_real_estate_transactions(self):
+        current_transactions: transactionsModel = transactionsModel.objects.filter(
+            trx_status__published=False)
+        if current_transactions is None:
+            return []
+        else:
+            trxs = []
+            for trx in current_transactions:
+                trxs.append(trx)
+            return trxs
+
+    def real_estate_blockchain_system(self) -> dict:
+        system_blockchain: blockchainModel = blockchainModel.objects.filter(
+            blockchain_name__ieaxt="real_estate_blockchain_system").first()
+        if system_blockchain is None:
+            new_system_blockchain: blockchainModel = blockchainModel.objects.create()
+            new_system_blockchain.blockchain_name = "real_estate_blockchain_system"
+            new_system_blockchain.blockchain_address = self.create_blockchain_address(
+                blockchain_name="real_estate_blockchain_system")
+            new_system_blockchain.save()
+            system_blockchain = new_system_blockchain
+        return {
+            "name": system_blockchain.blockchain_name,
+            "address": system_blockchain.blockchain_address,
+            "inventory": system_blockchain.blockchain_inventory,
+        }
+
+    def create_blockchain_address(self, blockchain_name: str):
+        sha512 = hashlib.sha512()
+        sha512.update(blockchain_name.encode('utf-8'))
+        sha512_digest = sha512.digest()
+        blockchain_address = sha512_digest[-20:].hex()
+        return f'0x{blockchain_address}({blockchain_name})'
+
+    # ///////////////////////////////////////////////////////////////////
+
+    def create_block(self,
+                     proof,
+                     previous_block_hash,
+                     miner_address=None,
+                     block_reward=0.0,
+                     ):
+        new_block: blockModel = blockModel.objects.create()
+        new_block.block_number = len(self.real_estate_chain)+1
+        new_block.mined_by = miner_address
+        new_block.block_reward = block_reward
+        new_block.previous_block_hash = previous_block_hash
+        new_block.block_nonce = 1
+        new_block.block_proof_number = proof
+        new_block.save()
+        self.real_estate_chain = self.get_real_estate_chain()
+        self.real_estate_transactions = self.get_real_estate_transactions()
+        return new_block
+
+    def get_last_block(self):
+        return self.real_estate_chain[-1]
+
+    def proof_of_work(self, previous_proof):
+        new_proof = 1
+        check_proof = False
+        while check_proof is False:
+            hash_operation = hashlib.sha256(
+                str(new_proof**3 - previous_proof**3).encode()).hexdigest()
+
+            if hash_operation[:5] == '00000':
+                check_proof = True
+            else:
+                new_proof += 1
+        return new_proof
+
+# //////////////////////////////////////////////////////
+
+    def choose_winner(*probabilities):
+        rand = random.random()
+        cumulative_probability = 0
+        for i, probability in enumerate(probabilities[1]):
+            cumulative_probability += probability
+            if rand < cumulative_probability:
+                return i
+
+    def calculate_win_probabilities(*balances):
+        total_balance = sum(balances[1])
+        probabilities = [balance / total_balance for balance in balances[1]]
+        return probabilities
+
+    def proof_of_stake(self):
+        nodes: nodeModel = nodeModel.objects.all()
+        balances: list = []
+        for node in nodes:
+            node: nodeModel
+            balances.append(float(node.node_inventory))
+        probabilities: list = self.calculate_win_probabilities(balances)
+        winner_id: int = self.choose_winner(probabilities)
+        print(winner_id)
+        winner_node: nodeModel = nodes[winner_id]
+        return winner_node
+# /////////////////////////////////////////////////////////////////
+
+    def hash(self, block):
+        encoded_block = json.dumps(block, sort_keys=True).encode()
+        hashed_block = hashlib.sha256(encoded_block).hexdigest()
+        return hashed_block
+
+    def add_transaction(self, transaction_info: dict) -> dict:
+        new_transaction: transactionsModel = transactionsModel.objects.create()
+        # print(transaction_info)
+        new_transaction.transaction_from_address = transaction_info.get(
+            "data").get("property_information").get("sender")
+        new_transaction.transaction_to_address = transaction_info.get(
+            "data").get("property_information").get("receiver")
+        new_transaction.transaction_type = transaction_info.get(
+            "transaction_type")
+        new_transaction.save()
+
+        new_transaction_status: transactionStatusModel = transactionStatusModel.objects.create()
+        new_transaction_status.transaction = new_transaction
+        new_transaction_status.save()
+
+        self.real_estate_transactions = self.get_real_estate_transactions()
+        # print(self.real_estate_transactions)
+        previous_block = self.get_last_block()
+        return {
+            "block_index": int(previous_block.block_number) + 1,
+        }
+
+
+real_estate_blockchain: Blockchain = Blockchain()

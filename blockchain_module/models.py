@@ -16,13 +16,15 @@ class blockModel(models.Model):
         verbose_name="هش بلوک قبلی", max_length=500, null=True, blank=True)
     block_nonce = models.IntegerField(
         verbose_name="شماره نانس بلوگ", default=0)
+    block_proof_number = models.IntegerField(
+        verbose_name="شماره اثبات کار بلوک", default=0)
 
     class Meta:
         verbose_name = "بلاک"
         verbose_name_plural = "بلاک ها"
 
     def __str__(self):
-        return self.block_hash
+        return str(self.block_hash)
 
 
 class blockStatusModel(models.Model):
@@ -63,6 +65,8 @@ class transactionsModel(models.Model):
         verbose_name="شماره نانس تراکنش", default=0)
     transaction_position_in_block = models.IntegerField(
         verbose_name="جایگاه تراکنش در بلاک", default=0)
+    transaction_data = models.TextField(
+        verbose_name="داده های اضافی تراکنش", null=True, blank=True)
 
     class Meta:
         verbose_name = "تراکنش"
@@ -96,3 +100,15 @@ class transactionStatusModel(models.Model):
 
         else:
             return "pending"
+
+
+# ////////////////////////////////////////////////////
+
+
+class blockchainModel(models.Model):
+    blockchain_name = models.CharField(
+        verbose_name="نام زنجیره بوکی", max_length=250)
+    blockchain_address = models.CharField(
+        verbose_name="آدرس سسیستم زنجیره بلوکی", max_length=500)
+    blockchain_inventory = models.FloatField(
+        verbose_name="موجودی سیستم زنجیره بلوکی", default=0.0)
