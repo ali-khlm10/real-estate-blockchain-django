@@ -13,6 +13,11 @@ class nodeAdmin(admin.ModelAdmin):
         'node_port',
         'node_url',
         'node_inventory',
+        'is_disable',
+    ]
+
+    list_editable = [
+        'is_disable',
     ]
 
     def save_model(self, request: HttpRequest, obj: models.nodeModel, form: Any, change: Any) -> None:

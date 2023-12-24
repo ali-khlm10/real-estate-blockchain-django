@@ -16,6 +16,7 @@ class nodeModel(models.Model):
         auto_now_add=True, editable=False, verbose_name="زمان ملحق شدن گره به شبکه", null=True, blank=True)
     node_address = models.CharField(
         verbose_name="آدرس گره", max_length=500, unique=True, editable=False, null=True, blank=True)
+    is_disable = models.BooleanField(verbose_name="فعال/غیرفعال", default=False)
 
     class Meta:
         verbose_name = "گره"
