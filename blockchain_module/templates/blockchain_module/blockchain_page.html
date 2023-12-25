@@ -1,10 +1,18 @@
-{% extends "shared/_laypute.html" %}
+{% extends "shared/_layout.html" %}
 
-
-{% block title %}صفحه ی زنجیره بلوکی{% endblock title %}
+{% block title %}صفحه ی زنجیره بلوکی{%endblock title %} 
 
 
 {% block content %}
 
+    {% for block in blocks %}
 
+        <p>{{block.block_number}}</p>
+
+    {% endfor %}
+
+    <hr>
+    {% for block in blocks_of_blockchain %}
+    <p>{{block.block_number}}</p>
+    {% endfor %}
 {% endblock content %}

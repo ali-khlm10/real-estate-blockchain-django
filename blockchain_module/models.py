@@ -24,7 +24,20 @@ class blockModel(models.Model):
         verbose_name_plural = "بلاک ها"
 
     def __str__(self):
-        return str(self.block_hash)
+        return str(self.block_number)
+
+    def block_information(self):
+        information = {
+            "block_number": self.block_number,
+            "block_timestamp": str(self.block_timestamp),
+            "mined_by": self.mined_by,
+            "block_reward": self.block_reward,
+            "block_hash": self.block_hash,
+            "previous_block_hash": self.previous_block_hash,
+            "block_nonce": self.block_nonce,
+            "block_proof_number": self.block_proof_number,
+        }
+        return information
 
 
 class blockStatusModel(models.Model):
@@ -74,6 +87,23 @@ class transactionsModel(models.Model):
 
     def __str__(self):
         return self.transaction_hash
+
+    def transaction_information(self):
+        information = {
+            "transaction_id": self.id,
+            "transaction_from_address": self.transaction_from_address,
+            "transaction_to_address": self.transaction_to_address,
+            "transaction_hash": self.transaction_hash,
+            "transaction_block": self.transaction_block,
+            "transaction_timestamp": str(self.transaction_timestamp),
+            "transaction_value": self.transaction_value,
+            "transaction_fee": self.transaction_fee,
+            "transaction_type": self.transaction_type,
+            "transaction_nonce": self.transaction_nonce,
+            "transaction_position_in_block": self.transaction_position_in_block,
+            "transaction_data": self.transaction_data,
+        }
+        return information
 
 
 class transactionStatusModel(models.Model):

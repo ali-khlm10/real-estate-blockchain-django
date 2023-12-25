@@ -9,6 +9,7 @@ def create_and_update_nodes():
         return "there are not any node in database"
     else:
         for node in nodes:
+            node: nodeModel
             with open(f"real_estate_blockchain/settings_{node.node_port}.py", "w") as file:
                 file.write(
                     f"""
