@@ -18,6 +18,8 @@ class blockModel(models.Model):
         verbose_name="شماره نانس بلوگ", default=0)
     block_proof_number = models.IntegerField(
         verbose_name="شماره اثبات کار بلوک", default=0)
+    block_merkel_tree_root_hash = models.CharField(
+        verbose_name="هش ریشه درخت مرکل بلوک", max_length=500, null=True, blank=True)
 
     class Meta:
         verbose_name = "بلاک"
@@ -36,6 +38,7 @@ class blockModel(models.Model):
             "previous_block_hash": self.previous_block_hash,
             "block_nonce": self.block_nonce,
             "block_proof_number": self.block_proof_number,
+            "block_merkel_tree_root_hash": self.block_merkel_tree_root_hash,
         }
         return information
 
