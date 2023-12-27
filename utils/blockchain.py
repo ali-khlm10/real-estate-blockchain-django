@@ -13,8 +13,33 @@ class Blockchain:
         self.real_estate_chain = self.get_real_estate_chain()
         self.real_estate_transactions = self.get_real_estate_transactions()
         if len(self.real_estate_chain) == 0:
-            self.create_block(proof=1, previous_block_hash="0x" + ('0' * 64))
-        self.real_estate_nodes = set()
+            self.create_genesis_block()
+
+    # //////////////////////////////////////////////////
+
+    def create_genesis_block(self):
+        genesis_block_proof = 1
+        previous_block_hash = "0x" + ('0' * 64)
+        miner_address = self.real_estate_blockchain_system()["address"]
+        genesis_block: blockModel = self.create_block(proof=genesis_block_proof,
+                                                      previous_block_hash=previous_block_hash,
+                                                      miner_address=miner_address)
+        genesis_block_info: dict = genesis_block.block_information()
+        genesis_block_info.pop("block_hash")
+        genesis_block_info["transactions"] = None
+        genesis_block_hash = genesis_block.block_hash = self.hash(
+            block=genesis_block_info)
+        genesis_block.block_hash = genesis_block_hash
+        genesis_block.save()
+        self.real_estate_chain.append(genesis_block.block_information())
+        self.real_estate_transactions = []
+
+    # //////////////////////////////////////////////////
+
+    def get_nodes(self) -> nodeModel:
+        nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
+        return nodes
+
     # //////////////////////////////////////////////////
 
     def get_real_estate_chain(self):
@@ -70,23 +95,25 @@ class Blockchain:
                      previous_block_hash,
                      miner_address=None,
                      block_reward=0.0,
+                     block_nonce=None
                      ):
         new_block: blockModel = blockModel.objects.create()
         new_block.block_number = len(self.real_estate_chain)+1
         new_block.mined_by = miner_address
         new_block.block_reward = block_reward
         new_block.previous_block_hash = previous_block_hash
-        new_block.block_nonce = 1
+        new_block.block_nonce = block_nonce
         new_block.block_proof_number = proof
         new_block.save()
-        self.real_estate_chain.append(new_block.block_information())
-        self.real_estate_transactions = []
+        # self.real_estate_chain.append(new_block.block_information())
+        # self.real_estate_transactions = []
         return new_block
 
     def get_last_block(self):
         return self.real_estate_chain[-1]
 
     def proof_of_work(self, previous_proof, new_proof=1):
+        print(f"new_proof_blockchain{new_proof}")
         check_proof = False
         while check_proof is False:
             hash_operation = hashlib.sha256(
@@ -96,7 +123,10 @@ class Blockchain:
                 check_proof = True
             else:
                 new_proof += 1
-        return new_proof
+        return {
+            "new_proof": new_proof,
+            "hash_operation": hash_operation[:10],
+        }
 
 # //////////////////////////////////////////////////////
 
@@ -126,16 +156,14 @@ class Blockchain:
         return winner_node
 # /////////////////////////////////////////////////////////////////
 
-    def hash(self, block):
+    def hash(self, block: dict):
         encoded_block = json.dumps(block, sort_keys=True).encode()
-        hashed_block = hashlib.sha256(encoded_block).hexdigest()
-        return hashed_block
+        hashed_block = hashlib.sha512(encoded_block).hexdigest()
+        print(hashed_block)
+        return "0x" + hashed_block[:64]
 
     def add_transaction(self, transaction_info: dict) -> dict:
-        if transaction_info.get("transaction_type") == "genesis_block":
-            pass
-
-        elif transaction_info.get("transaction_type") == "miner_reward":
+        if transaction_info.get("transaction_type") == "miner_reward":
             new_transaction: transactionsModel = transactionsModel.objects.create()
             new_transaction.transaction_from_address = transaction_info.get(
                 "new_trx").get("sender")
@@ -143,6 +171,9 @@ class Blockchain:
                 "new_trx").get("receiver")
             new_transaction.transaction_value = float(transaction_info.get(
                 "new_trx").get("value"))
+            new_transaction.transaction_type = transaction_info.get(
+                "transaction_type")
+
             new_transaction.save()
 
             new_transaction_status: transactionStatusModel = transactionStatusModel.objects.create()
@@ -157,6 +188,8 @@ class Blockchain:
                 "data").get("property_information").get("sender")
             new_transaction.transaction_to_address = transaction_info.get(
                 "data").get("property_information").get("receiver")
+            new_transaction.transaction_fee = transaction_info.get(
+                "data").get("transaction_fee")
             new_transaction.transaction_type = transaction_info.get(
                 "transaction_type")
             new_transaction.transaction_data = transaction_info.get(

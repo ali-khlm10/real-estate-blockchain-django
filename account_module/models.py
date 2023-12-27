@@ -28,7 +28,8 @@ class userModel(AbstractUser):
     password = models.CharField(max_length=250, verbose_name="رمز")
     is_gov_agent = models.BooleanField(
         default=False, verbose_name="نماینده دولت")
-
+    user_transactions_count = models.IntegerField(
+        verbose_name="تراکنش های انجام شده", default=0)
     wallet = models.ForeignKey(to=userWalletModel, verbose_name="کیف پول",
                                on_delete=models.CASCADE, related_name="user_wallet", null=True, blank=True)
 
@@ -48,10 +49,14 @@ class userModel(AbstractUser):
             "email": self.email,
             "avatar": self.avatar,
             "is_gov_agent": self.is_gov_agent,
+            "user_transactions_count": self.user_transactions_count,
             "wallet_address": self.wallet.wallet_address,
             "wallet_public_key": self.wallet.public_key,
             "wallet_private_key": self.wallet.private_key,
             "wallet_inventory": self.wallet.inventory,
         }
         return information
+
+    def user_transaction_counter(self):
+        self.user_transactions_count += 1
 # //////////////////////////////////////////////////////////

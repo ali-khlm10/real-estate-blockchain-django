@@ -15,7 +15,6 @@ import hashlib
 from utils.blockchain import real_estate_blockchain
 from blockchain_module.models import transactionsModel
 
-
 from node_module.models import nodeModel
 from django.middleware import csrf
 import requests
@@ -27,9 +26,9 @@ def create_token_id(token_information):
     token_information_str: str = json.dumps(token_information)
     hex_hash = hashlib.sha512(
         token_information_str.encode('utf-8')).hexdigest()
-    int_hash = int(hex_hash, 16) 
+    int_hash = int(hex_hash, 16)
 
-    return int_hash
+    return str(int_hash)[:80]
 
 
 def create_token(data: dict):
@@ -58,31 +57,32 @@ def create_token(data: dict):
             "transaction_type": "tokenization",
             "data": data,
             "token_id": new_token.token_id,
+            "transaction_fee": data.get("transaction_fee"),
         }
     )
 
-    real_estate_blockchain.replace_transactions(
+    replace_transactions_result: bool = real_estate_blockchain.replace_transactions(
         trx=create_new_transaction.get("transaction"))
 
-    if len(real_estate_blockchain.real_estate_transactions) != 0:
-        miner_node: nodeModel = real_estate_blockchain.proof_of_stake()
-        csrf_token = csrf.get_token(request=HttpRequest())
-        system_address = real_estate_blockchain.real_estate_blockchain_system()[
-            "address"]
-        new_trx = {
-            "sender": system_address,
-            "receiver": miner_node.node_address,
-            "value": 5000,
-        }
+    if replace_transactions_result:
+        if len(real_estate_blockchain.real_estate_transactions) != 0:
+            miner_node: nodeModel = real_estate_blockchain.proof_of_stake()
+            csrf_token = csrf.get_token(request=HttpRequest())
+            system_address = real_estate_blockchain.real_estate_blockchain_system()[
+                "address"]
+            new_trx = {
+                "sender": system_address,
+                "receiver": miner_node.node_address,
+                "value": 5000,
+            }
 
-        response = requests.post(
-            f"{miner_node.node_url}/mine_new_block_by_winner_node/",
-            data=json.dumps({"message": "tokenization",
-                            "mined_by": miner_node.node_name,
-                             "new_trx": new_trx, }),
-            headers={"Content-Type": "application/json",
-                     "X-CSRFToken": csrf_token})
-        # print(response)
+            response = requests.post(
+                f"{miner_node.node_url}/mine_new_block_by_winner_node/",
+                data=json.dumps({"mined_by": miner_node.node_name,
+                                 "new_trx": new_trx, }),
+                headers={"Content-Type": "application/json",
+                         "X-CSRFToken": csrf_token})
+            # print(response)
 
     return {
         "status": True,
@@ -112,7 +112,6 @@ def signature_verification(data: dict):
 
     verify_result: bool = verify_signature(
         public_key=sender_public_key, signature=bytes.fromhex(property_signature), message=message_str)
-
     if verify_result:
         current_sender: userModel = userModel.objects.filter(
             wallet__wallet_address__iexact=property_information.get("sender")).first()
@@ -127,6 +126,7 @@ def signature_verification(data: dict):
 def verify_tokenization_transaction(data: dict):
 
     result: bool = signature_verification(data=data)
+    # print(result)
     if result:
         verification_counter = 0
         nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
@@ -245,7 +245,6 @@ def mine_new_block_by_winner_node(request: HttpRequest):
         previous_block = real_estate_blockchain.get_last_block()
         previous_proof = previous_block["block_proof_number"]
         new_proof = real_estate_blockchain.proof_of_work(previous_proof)
-
         nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
         verification_counter = 0
 
@@ -256,23 +255,28 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 url=f"{node.node_url}/verify_proof_of_work_by_nodes/",
                 data=json.dumps({
                     "previous_proof": previous_proof,
-                    "new_proof": new_proof}),
+                    "new_proof": new_proof["new_proof"],
+                }),
                 headers={"Content-Type": "application/json",
                          "X-CSRFToken": csrf_token})
             if response.json()["status"]:
                 # print(response.json()["status"])
                 verification_counter += 1
-
         if verification_counter >= (nodes.count())*2 / 3:
             previous_hash = real_estate_blockchain.hash(previous_block)
-            new_block = real_estate_blockchain.create_block(
-                proof=new_proof, previous_block_hash=previous_hash, miner_address=data.get("mined_by"))
-
+            new_block = real_estate_blockchain.create_block(proof=new_proof["new_proof"], previous_block_hash=previous_hash, miner_address=data.get(
+                "mined_by"), block_nonce=new_proof["hash_operation"])
             new_transaction: transactionsModel = real_estate_blockchain.add_transaction(
                 transaction_info={
                     "transaction_type": "miner_reward",
                     "new_trx": data.get("new_trx"),
                 })
+            real_estate_blockchain.real_estate_transactions.append(
+                new_transaction.transaction_information()
+            )
+
+            for transaction in real_estate_blockchain.real_estate_transactions:
+                print(transaction.get("transaction_id"))
 
         else:
             pass
@@ -323,7 +327,7 @@ def verify_proof_of_work_by_nodes(request: HttpRequest):
         result = real_estate_blockchain.proof_of_work(new_proof=data.get(
             "new_proof"), previous_proof=data.get("previous_proof"))
         status = False
-        if result == data.get("new_proof"):
+        if result.get("new_proof") == data.get("new_proof"):
             status = True
     return JsonResponse({
         "status": status,

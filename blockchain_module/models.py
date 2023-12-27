@@ -14,10 +14,10 @@ class blockModel(models.Model):
         verbose_name="هش بلوک", max_length=500, null=True, blank=True)
     previous_block_hash = models.CharField(
         verbose_name="هش بلوک قبلی", max_length=500, null=True, blank=True)
-    block_nonce = models.IntegerField(
-        verbose_name="شماره نانس بلوگ", default=0)
+    block_nonce = models.CharField(
+        verbose_name="شماره نانس بلوک", max_length=500, null=True, blank=True)
     block_proof_number = models.IntegerField(
-        verbose_name="شماره اثبات کار بلوک", default=0)
+        verbose_name="شماره اثبات کار بلوک", default=1)
     block_merkel_tree_root_hash = models.CharField(
         verbose_name="هش ریشه درخت مرکل بلوک", max_length=500, null=True, blank=True)
 
