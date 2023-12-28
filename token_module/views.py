@@ -13,7 +13,8 @@ from utils.create_and_verify_signature import verify_signature
 from .models import propertyTokenModel
 import hashlib
 from utils.blockchain import real_estate_blockchain
-from blockchain_module.models import transactionsModel
+from blockchain_module.models import blockStatusModel, transactionsModel, blockchainModel, transactionStatusModel
+from token_module.models import propertyTokenModel
 
 from node_module.models import nodeModel
 from django.middleware import csrf
@@ -65,7 +66,7 @@ def create_token(data: dict):
         trx=create_new_transaction.get("transaction"))
 
     if replace_transactions_result:
-        if len(real_estate_blockchain.real_estate_transactions) != 0:
+        if len(real_estate_blockchain.real_estate_transactions) == 1:
             miner_node: nodeModel = real_estate_blockchain.proof_of_stake()
             csrf_token = csrf.get_token(request=HttpRequest())
             system_address = real_estate_blockchain.real_estate_blockchain_system()[
@@ -73,21 +74,30 @@ def create_token(data: dict):
             new_trx = {
                 "sender": system_address,
                 "receiver": miner_node.node_address,
-                "value": 5000,
+                "value": 0.0,
             }
 
             response = requests.post(
                 f"{miner_node.node_url}/mine_new_block_by_winner_node/",
-                data=json.dumps({"mined_by": miner_node.node_name,
+                data=json.dumps({"mined_by": miner_node.node_address,
                                  "new_trx": new_trx, }),
                 headers={"Content-Type": "application/json",
                          "X-CSRFToken": csrf_token})
-            # print(response)
+            print(response)
+            if response.json()["status"]:
+                print("hello")
+                real_estate_blockchain.real_estate_transactions = []
+                real_estate_blockchain.real_estate_chain = real_estate_blockchain.get_real_estate_chain()
 
-    return {
-        "status": True,
-        "message": f"ملک شما با موفقیت به توکن تبدیل شد وتراکنش مربوطه در بلوک شماره {create_new_transaction.get('block_index')} قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد توکن شما در بازار املاک منتشر خواهد شد.",
-    }
+        return {
+            "status": True,
+            "message": f"ملک شما با موفقیت به توکن تبدیل شد وتراکنش مربوطه در بلوک شماره {create_new_transaction.get('block_index')} قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد توکن شما در بازار املاک منتشر خواهد شد.",
+        }
+    else:
+        return {
+            "status": False,
+            "messge": "مشکلی در ایجاد بلوک به وجود آمده است."
+        }
 
 
 def signature_verification(data: dict):
@@ -221,8 +231,11 @@ def create_signature_to_tokenization(request: HttpRequest):
 def update_transactions(request: HttpRequest):
     if request.method == "POST":
         data: dict = json.loads(request.body)
-        real_estate_blockchain.real_estate_transactions.append(
-            data.get("transaction"))
+        if data.get("transactions"):
+            real_estate_blockchain.real_estate_transactions = []
+        else:
+            real_estate_blockchain.real_estate_transactions.append(
+                data.get("transaction"))
         # print(real_estate_blockchain.real_estate_transactions)
         return JsonResponse({"status": True})
 
@@ -234,7 +247,10 @@ def verification_transaction_by_nodes(request: HttpRequest):
         # print(data)
         result: bool = signature_verification(data=data)
         # print(result)
-        return JsonResponse({"status": True})
+        if result:
+            return JsonResponse({"status": True})
+        else:
+            return JsonResponse({"status": False})
 
 
 @csrf_exempt
@@ -242,7 +258,9 @@ def mine_new_block_by_winner_node(request: HttpRequest):
     if request.method == "POST":
         data: dict = json.loads(request.body)
 
-        previous_block = real_estate_blockchain.get_last_block()
+        previous_block: dict = real_estate_blockchain.get_last_block()
+        previous_block.pop("block_hash")
+        # print(previous_block)
         previous_proof = previous_block["block_proof_number"]
         new_proof = real_estate_blockchain.proof_of_work(previous_proof)
         nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
@@ -274,27 +292,123 @@ def mine_new_block_by_winner_node(request: HttpRequest):
             real_estate_blockchain.real_estate_transactions.append(
                 new_transaction.transaction_information()
             )
+            current_node_reward: float = 0.0
+            for index, transaction in enumerate(real_estate_blockchain.real_estate_transactions):
+                transaction: dict
+                # print(index)
+                if transaction.get("transaction_type") == "tokenization":
+                    current_trx: transactionsModel = transactionsModel.objects.filter(
+                        id=transaction.get("transaction_id")).first()
+                    current_user: userModel = userModel.objects.filter(
+                        wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
 
-            for transaction in real_estate_blockchain.real_estate_transactions:
-                print(transaction.get("transaction_id"))
+                    current_trx.transaction_nonce = current_user.user_transactions_count
+                    current_user.user_transaction_counter()
+                    current_user.wallet.inventory -= float(
+                        current_trx.transaction_fee)
+                    current_node_reward += float(
+                        current_trx.transaction_fee) * 0.3
+                    current_user.save()
+
+                    system: blockchainModel = blockchainModel.objects.filter(
+                        blockchain_address__iexact="0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)").first()
+                    system.blockchain_inventory += float(
+                        current_trx.transaction_fee) - current_node_reward
+                    system.save()
+
+                    current_trx.transaction_position_in_block = index + 1
+                    current_trx.transaction_block = new_block
+
+                    current_transaction_info: dict = current_trx.transaction_information()
+                    current_transaction_info.pop("transaction_hash")
+                    current_trx.transaction_hash = real_estate_blockchain.transaction_hash(
+                        transaction=current_transaction_info)
+
+                    current_trx.save()
+
+                    for field in current_trx.trx_status.all():
+                        field: transactionStatusModel
+                        field.published = True
+                        field.pending = False
+                        field.not_published = False
+                        field.save()
+
+                    token: propertyTokenModel = propertyTokenModel.objects.filter(
+                        token_id__iexact=current_trx.transaction_data).first()
+                    token.is_published = True
+                    token.save()
+
+                elif transaction.get("transaction_type") == "miner_reward":
+                    current_trx: transactionsModel = transactionsModel.objects.filter(
+                        id=transaction.get("transaction_id")).first()
+                    current_system: blockchainModel = blockchainModel.objects.filter(
+                        blockchain_address__iexact=current_trx.transaction_from_address).first()
+
+                    current_trx.transaction_nonce = current_system.blockchain_transaction_count
+                    current_system.blockchain_transaction_counter()
+                    current_trx.transaction_value = current_node_reward
+                    # current_node_reward += float(current_trx.transaction_value)
+                    # current_system.blockchain_inventory -= float(
+                    #     current_trx.transaction_value)
+                    current_system.save()
+
+                    current_trx.transaction_position_in_block = index + 1
+                    current_trx.transaction_block = new_block
+
+                    current_transaction_info: dict = current_trx.transaction_information()
+                    current_transaction_info.pop("transaction_hash")
+                    current_trx.transaction_hash = real_estate_blockchain.transaction_hash(
+                        transaction=current_transaction_info)
+
+                    current_trx.save()
+
+                    for field in current_trx.trx_status.all():
+                        field: transactionStatusModel
+                        field.published = True
+                        field.pending = False
+                        field.not_published = False
+                        field.save()
+
+            miner_node: nodeModel = nodeModel.objects.filter(
+                node_address__iexact=data.get("mined_by")).first()
+            miner_node.node_inventory += current_node_reward
+            miner_node.save()
+
+            new_block.block_reward = current_node_reward
+            new_block_info: dict = new_block.block_information()
+            new_block_info.pop("block_hash")
+            # new_block_info["transactions"] = None
+            new_block_hash = real_estate_blockchain.hash(
+                block=new_block_info)
+            new_block.block_hash = new_block_hash
+            new_block.save()
+
+            new_block_status: blockStatusModel = blockStatusModel.objects.create()
+            new_block_status.block = new_block
+            new_block_status.is_finalized = True
+            new_block_status.save()
+
+            # for field in new_block.block_status.all():
+            #     field: blockStatusModel
+            #     field.is_finalized = True
+            #     field.save()
+            real_estate_blockchain.real_estate_chain.append(
+                new_block.block_information())
+
+            real_estate_blockchain.real_estate_transactions = []
+
+            real_estate_blockchain.replace_transactions(
+                trx={}, transactions=True)
+            real_estate_blockchain.replace_chain()
+
+            return JsonResponse({
+                "status": True,
+            })
 
         else:
-            pass
-
-    real_estate_blockchain.replace_chain()
-    # print(real_estate_blockchain.real_estate_chain)
-
-    return JsonResponse({
-        "status": True,
-    })
-    # real_estate_blockchain.create_block(
-    #     proof=2, previous_block_hash="0x5trdfu6rgser4ger4g6hsb54s")
-    # for trx in real_estate_blockchain.real_estate_transactions:
-    #     for field in trx.trx_status.all():
-    #         field.published = True
-    #         field.save()
-
-    # print(real_estate_blockchain.real_estate_transactions.count())
+            return JsonResponse({
+                "status": False,
+            })
 
 
 # /////////////////////////////////////////////////////
@@ -305,7 +419,7 @@ class getChainView(View):
             "chain": real_estate_blockchain.real_estate_chain,
             "length": len(real_estate_blockchain.real_estate_chain),
         }
-        # print(real_estate_blockchain.real_estate_transactions)
+        print(len(real_estate_blockchain.real_estate_chain))
 
         return JsonResponse(response)
 
@@ -315,6 +429,8 @@ def updateChainView(request: HttpRequest):
     if request.method == "POST":
         data: dict = json.loads(request.body)
         real_estate_blockchain.real_estate_chain = data.get("chain")
+        print(real_estate_blockchain.real_estate_chain)
+
         return JsonResponse({"true": True})
 
 

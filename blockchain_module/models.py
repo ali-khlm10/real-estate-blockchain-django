@@ -91,13 +91,13 @@ class transactionsModel(models.Model):
     def __str__(self):
         return self.transaction_hash
 
-    def transaction_information(self):
+    def transaction_information(self) -> dict:
         information = {
             "transaction_id": self.id,
             "transaction_from_address": self.transaction_from_address,
             "transaction_to_address": self.transaction_to_address,
             "transaction_hash": self.transaction_hash,
-            "transaction_block": self.transaction_block,
+            "transaction_block": str(self.transaction_block),
             "transaction_timestamp": str(self.transaction_timestamp),
             "transaction_value": self.transaction_value,
             "transaction_fee": self.transaction_fee,
@@ -145,3 +145,15 @@ class blockchainModel(models.Model):
         verbose_name="آدرس سسیستم زنجیره بلوکی", max_length=500)
     blockchain_inventory = models.FloatField(
         verbose_name="موجودی سیستم زنجیره بلوکی", default=0.0)
+    blockchain_transaction_count = models.IntegerField(
+        verbose_name="تراکنش های انجام شده", default=0)
+
+    class Meta:
+        verbose_name = "زنجیره بلوکی"
+        verbose_name_plural = "زنجیره بلوکی"
+
+    def __str__(self):
+        return self.blockchain_name
+
+    def blockchain_transaction_counter(self):
+        self.blockchain_transaction_count += 1

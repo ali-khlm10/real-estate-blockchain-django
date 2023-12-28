@@ -1,5 +1,5 @@
 import requests
-from blockchain_module.models import blockModel, transactionsModel, blockchainModel, transactionStatusModel
+from blockchain_module.models import blockModel, transactionsModel, blockchainModel, transactionStatusModel, blockStatusModel
 import random
 import json
 import hashlib
@@ -26,11 +26,22 @@ class Blockchain:
                                                       miner_address=miner_address)
         genesis_block_info: dict = genesis_block.block_information()
         genesis_block_info.pop("block_hash")
-        genesis_block_info["transactions"] = None
-        genesis_block_hash = genesis_block.block_hash = self.hash(
+        # genesis_block_info["transactions"] = None
+        print(genesis_block_info)
+        genesis_block_hash = self.hash(
             block=genesis_block_info)
         genesis_block.block_hash = genesis_block_hash
         genesis_block.save()
+        genesis_block_status: blockStatusModel = blockStatusModel.objects.create()
+        genesis_block_status.block = genesis_block
+        genesis_block_status.is_finalized = True
+        genesis_block_status.save()
+
+        # for field in genesis_block.block_status.all():
+        #     field : blockStatusModel
+        #     field.is_finalized = True
+        #     field.save()
+
         self.real_estate_chain.append(genesis_block.block_information())
         self.real_estate_transactions = []
 
@@ -113,7 +124,7 @@ class Blockchain:
         return self.real_estate_chain[-1]
 
     def proof_of_work(self, previous_proof, new_proof=1):
-        print(f"new_proof_blockchain{new_proof}")
+        # print(f"new_proof_blockchain{new_proof}")
         check_proof = False
         while check_proof is False:
             hash_operation = hashlib.sha256(
@@ -159,8 +170,14 @@ class Blockchain:
     def hash(self, block: dict):
         encoded_block = json.dumps(block, sort_keys=True).encode()
         hashed_block = hashlib.sha512(encoded_block).hexdigest()
-        print(hashed_block)
+        # print(hashed_block)
         return "0x" + hashed_block[:64]
+
+    def transaction_hash(self, transaction: dict):
+        encoded_transaction = json.dumps(transaction, sort_keys=True).encode()
+        hashed_transaction = hashlib.sha512(encoded_transaction).hexdigest()
+        # print(hashed_transaction)
+        return "0x" + hashed_transaction[:64]
 
     def add_transaction(self, transaction_info: dict) -> dict:
         if transaction_info.get("transaction_type") == "miner_reward":
@@ -221,10 +238,10 @@ class Blockchain:
             if response.status_code == 200:
                 length = response.json()["length"]
                 chain = response.json()["chain"]
+                # print(chain)
                 if length > max_length:
                     max_length = length
                     longest_chain = chain
-
         if longest_chain:
             for node in nodes:
                 node: nodeModel
@@ -240,14 +257,15 @@ class Blockchain:
 
         return False
 
-    def replace_transactions(self, trx: dict):
+    def replace_transactions(self, trx: dict, transactions=None):
         nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
         for node in nodes:
             node: nodeModel
             csrf_token = csrf.get_token(request=HttpRequest())
             response = requests.post(
                 url=f"{node.node_url}/update_transactions/",
-                data=json.dumps({"transaction": trx}),
+                data=json.dumps({"transaction": trx,
+                                 "transactions": transactions, }),
                 headers={"Content-Type": "application/json",
                          "X-CSRFToken": csrf_token}
             )
