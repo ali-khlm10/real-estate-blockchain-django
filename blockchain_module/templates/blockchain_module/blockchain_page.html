@@ -5,14 +5,17 @@
 
 {% block content %}
 
-    {% comment %} {% for block in blocks %}
+    {% if blocks %}
+        {% for block in blocks %}
 
-        <p>{{block.block_hash}}</p>
+            <p>{{block.block_hash}}</p>
 
-    {% endfor %}
+        {% endfor %}        
+    {% endif %}
 
-    <hr> {% endcomment %}
-    {% for block in blocks_of_blockchain %}
+
+
+    {% comment %} {% for block in blocks_of_blockchain %}
     <p>{{block.block_hash}}</p>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
 {% endblock content %}

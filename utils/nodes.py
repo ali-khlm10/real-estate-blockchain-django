@@ -21,6 +21,11 @@ SESSION_COOKIE_NAME = 'real_estate_blockchain_session_port_{node.node_port}'
                 )
                 file.close()
 
+        # for node in nodes:
+        #     node: nodeModel
+        #     with open(f'utils/nodes_DB/{node.node_port}_DB.json', 'w') as json_file:
+        #         json_file.close()
+
 
 def create_node_address(info):
     info_str: str = json.dumps(info)

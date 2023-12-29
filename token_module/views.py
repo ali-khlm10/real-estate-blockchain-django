@@ -259,7 +259,9 @@ def mine_new_block_by_winner_node(request: HttpRequest):
         data: dict = json.loads(request.body)
 
         previous_block: dict = real_estate_blockchain.get_last_block()
-        previous_block.pop("block_hash")
+        previous_block_copy = previous_block.copy()
+        previous_block_copy.pop("block_hash")
+        #
         # print(previous_block)
         previous_proof = previous_block["block_proof_number"]
         new_proof = real_estate_blockchain.proof_of_work(previous_proof)
@@ -281,7 +283,7 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 # print(response.json()["status"])
                 verification_counter += 1
         if verification_counter >= (nodes.count())*2 / 3:
-            previous_hash = real_estate_blockchain.hash(previous_block)
+            previous_hash = real_estate_blockchain.hash(previous_block_copy)
             new_block = real_estate_blockchain.create_block(proof=new_proof["new_proof"], previous_block_hash=previous_hash, miner_address=data.get(
                 "mined_by"), block_nonce=new_proof["hash_operation"])
             new_transaction: transactionsModel = real_estate_blockchain.add_transaction(
@@ -429,7 +431,15 @@ def updateChainView(request: HttpRequest):
     if request.method == "POST":
         data: dict = json.loads(request.body)
         real_estate_blockchain.real_estate_chain = data.get("chain")
-        print(real_estate_blockchain.real_estate_chain)
+        # print(real_estate_blockchain.real_estate_chain)
+
+        dictionary = {
+            "chain": real_estate_blockchain.real_estate_chain,
+        }
+
+        with open(f'utils/nodes_DB/{data.get("node_port")}_DB.json', 'w') as json_file:
+            json.dump(dictionary, json_file)
+            json_file.close()
 
         return JsonResponse({"true": True})
 

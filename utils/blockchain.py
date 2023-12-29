@@ -27,7 +27,6 @@ class Blockchain:
         genesis_block_info: dict = genesis_block.block_information()
         genesis_block_info.pop("block_hash")
         # genesis_block_info["transactions"] = None
-        print(genesis_block_info)
         genesis_block_hash = self.hash(
             block=genesis_block_info)
         genesis_block.block_hash = genesis_block_hash
@@ -248,7 +247,8 @@ class Blockchain:
                 csrf_token = csrf.get_token(request=HttpRequest())
                 response = requests.post(
                     f"{node.node_url}/update_chain/",
-                    data=json.dumps({"chain": longest_chain}),
+                    data=json.dumps({"chain": longest_chain,
+                                     "node_port": node.node_port}),
                     headers={"Content-Type": "application/json",
                              "X-CSRFToken": csrf_token})
                 # print(response)
