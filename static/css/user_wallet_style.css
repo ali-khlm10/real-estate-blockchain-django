@@ -1,0 +1,60 @@
+.dashboard_user_wallet {
+    display: flex;
+    width: 96%;
+    /* background-color: red; */
+    flex-flow: wrap column;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 20px;
+    padding-bottom: 80px;
+    margin: 50px 0;
+    border: solid 1px #78999f;
+    border-radius: 5px;
+}
+
+.dashboard_user_wallet div {
+    /* background-color: red; */
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    padding: 15px;
+    direction: rtl;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.dashboard_user_wallet div span {
+    margin: 0 10px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.dashboard_user_wallet div form {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.dashboard_user_wallet div form #user_invetory_input_number {
+    border: none;
+    border-radius: 5px;
+    /* height: 25px; */
+    padding: 8px;
+    width: 50%;
+    background-color: rgb(20, 151, 151);
+}
+
+
+.dashboard_user_wallet div form #increase_inventory_button {
+    border: none;
+    border-radius: 5px;
+    /* height: 25px; */
+    padding: 10px;
+    width: 20%;
+    background-color: #9ac5cc;
+    font-weight: bold;
+}

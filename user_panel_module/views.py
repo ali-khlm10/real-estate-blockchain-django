@@ -10,6 +10,8 @@ from account_module.models import userModel
 from property_module.models import propertyModel, propertyStatusModel
 
 from token_module.models import propertyTokenModel
+
+from .forms import increaseUserInventoryForm
 # Create your views here.
 
 
@@ -115,7 +117,29 @@ class sendedRequestsView(View):
 
 class userWalletView(View):
     def get(self, request: HttpRequest):
-        context = {}
+        inventory_form: increaseUserInventoryForm = increaseUserInventoryForm()
+        current_user: userModel = userModel.objects.filter(
+            id=request.user.id).first()
+        context = {
+            "current_user": current_user,
+            "inventory_form": inventory_form,
+        }
+        return render(request, "user_panel_module/user_wallet.html", context)
+
+    def post(self, request: HttpRequest):
+        inventory_form: increaseUserInventoryForm = increaseUserInventoryForm(
+            request.POST)
+        if inventory_form.is_valid():
+            current_user: userModel = userModel.objects.filter(
+                id=request.user.id).first()
+            current_user.wallet.inventory = float(
+                current_user.wallet.inventory) + float(request.POST.get("user_inventory"))
+            current_user.wallet.save()
+            return redirect(reverse("user-wallet"))
+        context = {
+            "current_user": current_user,
+            "inventory_form": inventory_form
+        }
         return render(request, "user_panel_module/user_wallet.html", context)
 
 

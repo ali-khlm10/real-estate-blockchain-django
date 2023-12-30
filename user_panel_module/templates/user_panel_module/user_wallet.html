@@ -23,7 +23,23 @@
                         <h3>صفحه کیف پول من</h3>
                     </header>
                     <main class="dashboard_user_wallet">                     
-                          
+                          <div>
+                            <label for="">آدرس کیف پول : </label>
+                            <span>{{current_user.wallet.wallet_address}}</span>
+                          </div>
+                          <div>
+                            <label for="">موجودی کیف پول : </label>
+                            <span>{{current_user.wallet.inventory}}</span>
+                          </div>
+                          <div>
+                            <form action="{% url "user-wallet" %}" method="post">
+                                {% csrf_token %}
+                                {% comment %} <label for="">افزایش موجودی حساب : </label> {% endcomment %}
+                                {% comment %} <input type="number" name="user_invetory" id="user_invetory_input_number"> {% endcomment %}
+                                {{inventory_form}}
+                                <button id="increase_inventory_button">انجام</button>
+                            </form>
+                          </div>
                     </main>
                 </div>
                 {% render_partial 'user_panel_module.views.user_panel_menu_component' %}
