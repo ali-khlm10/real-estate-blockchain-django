@@ -308,6 +308,8 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     current_user.user_transaction_counter()
                     current_user.wallet.inventory -= float(
                         current_trx.transaction_fee)
+                    current_user.wallet.save()
+                    
                     current_node_reward += float(
                         current_trx.transaction_fee) * 0.3
                     current_user.save()

@@ -274,4 +274,4 @@ class Blockchain:
         return True
 
 
-real_estate_blockchain: Blockchain = Blockchain()
+real_estate_blockchain: str = str()
