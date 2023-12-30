@@ -17,18 +17,19 @@
         
         <section class="home_body">
 
-                <section>
-                        <header>
-                            <h3> زمین بایاز </h3>
-                        </header>
-                        <img src="{% static "images/nbinpkjxbxviegwjnorspdmnrwhdhigl.png" %}" alt="">
-                        <footer>
-                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است</p>
-                        </footer>
+            {% for property in properties %}
+            
+            <section>
+                <img src="{{property.property_detailes.property_image.url}}" alt="">
+                <h3>{{property.property_detailes.property_title}}</h3>
+                <p>{{property.property_detailes.property_short_description}}</p>
+                <button>جزئیات</button>
+            </section>
+       
+            {% endfor %}
 
-                </section>
-        
-                <section>
+
+                {% comment %} <section>
                         <header>
                             <h3> زمین بایاز </h3>
                         </header>
@@ -100,7 +101,7 @@
                             <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است</p>
                         </footer>
 
-                </section>
+                </section> {% endcomment %}
         
 
         </section>

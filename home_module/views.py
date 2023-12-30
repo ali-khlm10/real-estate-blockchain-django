@@ -1,12 +1,21 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
+from django.views import View
+from django.http import HttpRequest
+from property_module.models import propertyModel
 
 
 # Create your views here.
 
 
-class homeView(TemplateView):
-    template_name = "home_module/home_page.html"
+class homeView(View):
+    def get(self, request: HttpRequest):
+        properties: propertyModel = propertyModel.objects.filter(
+            token_generated=True)
+        context = {
+            "properties": properties
+        }
+        return render(request, "home_module/home_page.html", context)
 
 
 def site_header_partial(request):

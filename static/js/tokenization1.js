@@ -57,6 +57,9 @@ $(document).ready(function () {
       property_title;
     tokenization_modal_element.querySelector("#property_price").innerHTML =
       property_price;
+    tokenization_modal_element.querySelector(
+      "#property_transaction_fee"
+    ).innerHTML = parseFloat(property_price) * 0.0005;
 
     $("#tokenization_modal #dont_tokenization,.internal_modal button").click(
       function (e) {
