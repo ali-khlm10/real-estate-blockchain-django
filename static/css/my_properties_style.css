@@ -133,7 +133,7 @@ label {
     margin: 10px;
 }
 
-.created_properties #created_properties_body_of_footer section button {
+.created_properties #created_properties_body_of_footer section a {
     width: 30%;
     display: flex;
     flex-flow: wrap row;
@@ -144,6 +144,8 @@ label {
     border: none;
     border-radius: 5px;
     background-color: rgb(20, 151, 151);
+    text-decoration: none;
+    color: white;
 }
 
 /* /////////////////////////////////////////// */

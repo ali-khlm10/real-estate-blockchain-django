@@ -1,0 +1,114 @@
+.property_detailes_body {
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    min-height: 500px;
+    /* background-color: rebeccapurple; */
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.property_detailes_body div {
+    width: 100%;
+    /* background-color: red; */
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-between;
+    align-items: stretch;
+    border: solid 1px white;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+
+.property_detailes_body div .property_img_and_button{
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.property_detailes_body div .property_img_and_button img {
+    height: 400px;
+    width: 400px;
+    border-radius: 5px;
+}
+
+.property_detailes_body div .property_img_and_button a {
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: rgb(50, 158, 158);
+}
+
+
+.property_detailes_body div .property_detailes_section {
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.property_detailes_body div .property_detailes_section h3 {
+    padding-bottom: 30px;
+}
+
+.property_detailes_body div .property_detailes_section span {
+    display: flex;
+    flex-flow: wrap row-reverse;
+    justify-content: stretch;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.property_detailes_body div .property_detailes_section span h4 {
+    padding-left: 40px;
+}
+
+#property_detailes_property_price {
+    color: green;
+    font-weight: bold;
+}
+
+
+.property_detailes_body div .property_detailes_section section {
+    /* width: 100%; */
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: center;
+    align-items: flex-end;
+    /* max-width: 400px; */
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+    padding-bottom: 20px;
+}
+
+.property_detailes_body div .property_detailes_section section label{
+    /* width: 100%; */
+    padding-left: 0;
+    margin-left: 0;
+    padding-right: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+
+.property_detailes_body div .property_detailes_section p{
+    display: flex;
+    flex-flow: wrap row-reverse;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.property_detailes_body div .property_detailes_section section span{
+    direction: rtl;
+}
+

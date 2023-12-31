@@ -60,3 +60,19 @@ class createPropertyView(View):
             "property_form": property_form,
         }
         return render(request, 'user_panel_module/create_property.html', context)
+
+
+# //////////////////////////////////////////////////////////////
+
+
+class propertyDetailesPageView(View):
+    def get(self, request: HttpRequest, property_id: int):
+        property: propertyModel = propertyModel.objects.filter(
+            id=property_id).first()
+        context = {
+            "property": property,
+        }
+        return render(request, "property_module/property_detailes_page.html", context)
+
+    def post(self, request: HttpRequest):
+        pass

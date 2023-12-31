@@ -23,7 +23,8 @@
                 <img src="{{property.property_detailes.property_image.url}}" alt="">
                 <h3>{{property.property_detailes.property_title}}</h3>
                 <p>{{property.property_detailes.property_short_description}}</p>
-                <button>جزئیات</button>
+                <a href="{% url "property-detailes" property_id=property.id %}">جزئیات</a>
+                {% comment %} <button>جزئیات</button> {% endcomment %}
             </section>
        
             {% endfor %}

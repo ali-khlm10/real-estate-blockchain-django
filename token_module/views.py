@@ -50,8 +50,8 @@ def create_token(data: dict):
         token_information=json.dumps(token_info),
     )
     new_token.save()
-    # current_property.token_generated = True
-    # current_property.save()
+    current_property.token_generated = True
+    current_property.save()
 
     create_new_transaction: dict = real_estate_blockchain.add_transaction(
         transaction_info={

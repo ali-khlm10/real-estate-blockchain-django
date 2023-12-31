@@ -1,0 +1,74 @@
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}جزيیات ملک {{property.property_detailes.property_title}}{% endblock title %}
+
+
+{% block content %}
+
+<main class="home_body_main">
+
+    <section class="home_body_header">
+        <header>
+            <h4>جزئیات ملک با عنوان {{property.property_detailes.property_title}}</h4>
+        </header>
+    </section>
+    
+    <section class="property_detailes_body">
+        <div>
+            <section class = "property_img_and_button">
+                <img src="{{property.property_detailes.property_image.url}}" alt="تصویر ملک">
+                {% if request.user.wallet.wallet_address == property.property_owner_address %}
+                <span style="color:green; font-weight:bold; padding:10px 20px; border:solid 1px white; border-radius:5px;">
+                    شما مالک این ملک هستید
+                </span>
+                {% else %}
+                <a href="#">خرید</a>
+                
+                {% endif %}
+            </section>
+            <section class = "property_detailes_section">
+                <h3>عنوان ملک : {{property.property_detailes.property_title}}</h3>
+                <span>
+                    <h4>شماره ملک : {{property.id}}</h4>
+                    <h4>نوع ملک : {{property.property_detailes.property_type}}</h4>
+                    <h4>متراژ ملک : {{property.property_detailes.property_length}}</h4>
+                    <h4 id= "property_detailes_property_price">قیمت ملک : {{property.property_detailes.property_price}}</h4>
+                </span>
+                {% for token in property.property_of_token.all %}
+                <section>
+                    <label for="">شماره توکن ملک : </label>
+                    <h5> {{token.token_id}}</h5>
+                </section>
+                {% endfor %}
+                <section>
+                    <label for=""> ایجاد کننده ملک : </label>
+                    <p>{{property.property_creator.wallet.wallet_address}}</p>
+                </section>
+                <section>
+                    <label for=""> مالک : </label>
+                    <p>{{property.property_owner_address}}</p>
+                </section>
+                <section>
+                    <label for=""> زمان ایجاد ملک : </label>
+                    <span>{{property.property_created_date}}</span>
+                </section>
+
+                <section>
+                    <label for="">آدرس نشانی ملک : </label>
+                    <span>{{property.property_detailes.property_address}}</span>
+                </section>
+
+                <section>
+                    <label for="">توضیحات: </label>
+                    <span>{{property.property_detailes.property_description}}</span>
+                </section>
+
+            </section>
+        </div>
+
+    </section>
+
+</main>
+
+{% endblock content %}
