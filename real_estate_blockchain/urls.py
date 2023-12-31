@@ -21,6 +21,7 @@ from django.conf import settings
 
 
 urlpatterns = [
+    path("", include("buy_and_sell_module.urls")),
     path("", include("blockchain_module.urls")),
     path("", include("token_module.urls")),
     path("", include("property_module.urls")),

@@ -6,6 +6,43 @@
 
 {% block content %}
 
+<div id="buy_request_token_modal" class="buy_request_modal">
+    <div class="internal_buy_request_modal">
+        <button>x</button>
+        <p>آیا مایل به ارسال درخواست خرید ملک با مشخصات زیر و با هزینه انجام تراکنش مورد نظر هستید؟</p>
+        <div>
+            <label>عنوان ملک : </label>
+            <span id="buy_request_property_title">آپارتمان</span>
+        </div>
+        <div>
+            <label>شماره توکن ملک : </label>
+            <span id="token_number" >23546468461654968416351845684684168541656416514635165316541635165146531351361631</span>
+        </div>
+        <div>
+            <label>قیمت ملک : </label>
+            <span id="buy_request_property_price">2000000000000</span>
+        </div>
+        <div>
+            <label>هزینه انجام تراکنش : </label>
+            <span id="buy_request_transaction_fee">10000</span>
+        </div>
+        <section>
+            <a id="do_buy_request" href="#">انجام</a>
+            <a id="dont_buy_request" href="#">لغو</a>
+        </section>             
+    </div>
+</div>
+<div id="buying_request_result_modal" class="buy_request_result_modal">
+    <div class="internal_buy_request_result_modal">
+        <button>x</button>
+        <p>عمل درخواست خرید ملک شما با موفقیت انجام شد.</p>
+        <section>
+            <a id="ok_buy_requestـresult" href="#">فهمیدم</a>
+        </section>             
+    </div>
+</div>
+
+
 <main class="home_body_main">
 
     <section class="home_body_header">
@@ -15,6 +52,7 @@
     </section>
     
     <section class="property_detailes_body">
+        {% csrf_token %}
         <div>
             <section class = "property_img_and_button">
                 <img src="{{property.property_detailes.property_image.url}}" alt="تصویر ملک">
@@ -23,8 +61,9 @@
                     شما مالک این ملک هستید
                 </span>
                 {% else %}
-                <a href="#">خرید</a>
-                
+                    {% for token in property.property_of_token.all %}
+                        <a href="#" id= "start_buy_request" data-token_id="{{token.token_id}}"   data-property_title="{{property.property_detailes.property_title}}" data-property_price="{{property.property_detailes.property_price}}">خرید</a>
+                    {%endfor%}
                 {% endif %}
             </section>
             <section class = "property_detailes_section">

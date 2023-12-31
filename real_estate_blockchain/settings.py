@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "token_module",
     "node_module",
     "blockchain_module",
+    "buy_and_sell_module",
 
     # external modules
     "django_render_partial",

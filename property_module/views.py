@@ -73,6 +73,5 @@ class propertyDetailesPageView(View):
             "property": property,
         }
         return render(request, "property_module/property_detailes_page.html", context)
+# /////////////////////////////////////////////////////////////////
 
-    def post(self, request: HttpRequest):
-        pass
