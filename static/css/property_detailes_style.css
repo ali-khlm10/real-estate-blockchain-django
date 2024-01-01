@@ -23,7 +23,7 @@
 }
 
 
-.property_detailes_body div .property_img_and_button{
+.property_detailes_body div .property_img_and_button {
     display: flex;
     flex-flow: wrap column;
     justify-content: space-between;
@@ -89,7 +89,7 @@
     padding-bottom: 20px;
 }
 
-.property_detailes_body div .property_detailes_section section label{
+.property_detailes_body div .property_detailes_section section label {
     /* width: 100%; */
     padding-left: 0;
     margin-left: 0;
@@ -99,7 +99,7 @@
 }
 
 
-.property_detailes_body div .property_detailes_section p{
+.property_detailes_body div .property_detailes_section p {
     display: flex;
     flex-flow: wrap row-reverse;
     justify-content: flex-start;
@@ -108,7 +108,7 @@
 }
 
 
-.property_detailes_body div .property_detailes_section section span{
+.property_detailes_body div .property_detailes_section section span {
     direction: rtl;
 }
 
@@ -189,6 +189,11 @@
     direction: rtl;
     font-weight: bold;
 
+}
+
+.internal_buy_request_modal #token_number {
+    overflow-wrap: break-word;
+    overflow: hidden;
 }
 
 

@@ -43,7 +43,7 @@ $(document).ready(function () {
     var csrftoken = $('[name="csrfmiddlewaretoken"]').val();
     var jsonData = JSON.stringify({
       signature: response.signature,
-      property_information: response.property_information,
+      buy_request_information: response.buy_request_information,
       transaction_fee: parseFloat(property_price) * 0.000005,
     });
     // var jsonData = JSON.stringify(response);

@@ -6,8 +6,16 @@ import json
 from token_module.models import propertyTokenModel
 from utils.generate_pair_key import pem_to_private_key, pem_to_public_key
 from utils.create_and_verify_signature import create_signature, verify_signature
+from account_module.models import userModel
+from node_module.models import nodeModel
+from utils.blockchain import real_estate_blockchain
 
-# Create your views here.
+from django.middleware import csrf
+import requests
+
+from .models import buyRequestModel, buyRequestStatusModel
+# Create your views
+# here.
 
 
 @csrf_exempt
@@ -25,6 +33,7 @@ def create_signature_to_buy_request(request: HttpRequest):
                     "sender": sender,
                     "receiver":  receiver,
                     "token_id": token_id,
+                    "transaction_type": "buy_request"
                 }
                 message_str: str = json.dumps(buy_request_information)
                 sender_private_key_str: str = request.user.wallet.private_key[2:-1]
@@ -66,11 +75,147 @@ def create_signature_to_buy_request(request: HttpRequest):
 def buying_request(request: HttpRequest):
     if request.method == "POST":
         data: dict = json.loads(request.body)
+        if verify_buying_request_transaction(data=data):
+            response_data = add_buy_request_trx_and_mine_block(data=data)
 
-        return JsonResponse({
+        else:
+            response_data = {
+                "status": False,
+                "message": "خطا در تایید امضای مالک!!"
+            }
+        return JsonResponse(response_data)
+
+
+def verify_buying_request_transaction(data: dict):
+
+    result: bool = buy_request_signature_verification(data=data)
+    # print(result)
+    if result:
+        verification_counter = 0
+        nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
+        for node in nodes:
+            node: nodeModel
+            csrf_token = csrf.get_token(request=HttpRequest())
+            response = requests.post(
+                f"{node.node_url}/verification_buy_request_transaction_by_nodes/",
+                data=json.dumps(data),
+                headers={"Content-Type": "application/json",
+                         "X-CSRFToken": csrf_token})
+            if response.json()["status"]:
+                verification_counter += 1
+        if verification_counter >= (nodes.count())*2 / 3:
+            return True
+        else:
+            return False
+
+    else:
+        return False
+
+
+def buy_request_signature_verification(data: dict):
+    buy_request_signature = data.get("signature")
+    buy_request_information: dict = data.get("buy_request_information")
+    message_str: str = json.dumps(buy_request_information)
+
+    current_sender: userModel = userModel.objects.filter(
+        wallet__wallet_address__iexact=buy_request_information.get("sender")).first()
+
+    sender_public_key_str: str = current_sender.wallet.public_key[2:-1]
+    sender_public_key_str = str(
+        sender_public_key_str).split("\\n")
+
+    sender_public_key_PEM = """"""
+    for item in sender_public_key_str:
+        sender_public_key_PEM += item + "\n"
+
+    sender_public_key = pem_to_public_key(
+        public_key_pem=sender_public_key_PEM.encode())
+
+    verify_result: bool = verify_signature(
+        public_key=sender_public_key, signature=bytes.fromhex(buy_request_signature), message=message_str)
+
+    if verify_result:
+        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")):
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+def add_buy_request_trx_and_mine_block(data: dict):
+    buy_request_information: dict = data.get("buy_request_information")
+    sender = buy_request_information.get("sender")
+    receiver = buy_request_information.get("receiver")
+    token_id = buy_request_information.get("token_id")
+    token: propertyTokenModel = propertyTokenModel.objects.filter(
+        token_id__iexact=token_id).first()
+    buy_request: buyRequestModel = buyRequestModel.objects.create()
+    buy_request.buy_request_from = sender
+    buy_request.buy_request_to = receiver
+    buy_request.token = token
+    buy_request.save()
+    buy_request_status: buyRequestStatusModel = buyRequestStatusModel.objects.create()
+    buy_request_status.request = buy_request
+    buy_request_status.save()
+
+    create_new_transaction: dict = real_estate_blockchain.add_transaction(
+        transaction_info={
+            "transaction_type": "buy_request",
+            "data": data,
+            "transaction_fee": data.get("transaction_fee"),
+        }
+    )
+    replace_transactions_result: bool = real_estate_blockchain.replace_transactions(
+        trx=create_new_transaction.get("transaction"))
+
+    if replace_transactions_result:
+        print(len(real_estate_blockchain.real_estate_transactions))
+        if len(real_estate_blockchain.real_estate_transactions) == 1:
+            miner_node: nodeModel = real_estate_blockchain.proof_of_stake()
+            csrf_token = csrf.get_token(request=HttpRequest())
+            system_address = real_estate_blockchain.real_estate_blockchain_system()[
+                "address"]
+            new_trx = {
+                "sender": system_address,
+                "receiver": miner_node.node_address,
+                "value": 0.0,
+            }
+
+            response = requests.post(
+                f"{miner_node.node_url}/mine_new_block_by_winner_node/",
+                data=json.dumps({"mined_by": miner_node.node_address,
+                                 "new_trx": new_trx, }),
+                headers={"Content-Type": "application/json",
+                         "X-CSRFToken": csrf_token})
+            print(response)
+            if response.json()["status"]:
+                print("hello")
+                real_estate_blockchain.real_estate_transactions = []
+                real_estate_blockchain.real_estate_chain = real_estate_blockchain.get_real_estate_chain()
+
+        return {
             "status": True,
-            "message": "تراکنش مربوطه در بلاک شماره ... قرار گرفت",
-        })
+            "message": f"درخواست خرید ملک شما با موفقیت انجام شد وتراکنش مربوطه در بلوک شماره {create_new_transaction.get('block_index')} قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد درخواست خرید ملک شما در اختیار مالک قرار خواهد گرفت.",
+        }
+    else:
+        return {
+            "status": False,
+            "messge": "مشکلی در ایجاد بلوک به وجود آمده است."
+        }
+
+
+@csrf_exempt
+def verification_buy_request_transaction_by_nodes(request: HttpRequest):
+    if request.method == "POST":
+        data: dict = json.loads(request.body)
+        # print(data)
+        result: bool = buy_request_signature_verification(data=data)
+        print(result)
+        if result:
+            return JsonResponse({"status": True})
+        else:
+            return JsonResponse({"status": False})
 
 
 # //////////////////////////////////////////////////////////////////////////
