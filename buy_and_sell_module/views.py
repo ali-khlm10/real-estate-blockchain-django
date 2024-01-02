@@ -33,7 +33,7 @@ def create_signature_to_buy_request(request: HttpRequest):
                     "sender": sender,
                     "receiver":  receiver,
                     "token_id": token_id,
-                    "transaction_type": "buy_request"
+                    "transaction_type": "buy_request",
                 }
                 message_str: str = json.dumps(buy_request_information)
                 sender_private_key_str: str = request.user.wallet.private_key[2:-1]
@@ -114,6 +114,7 @@ def verify_buying_request_transaction(data: dict):
 
 def buy_request_signature_verification(data: dict):
     buy_request_signature = data.get("signature")
+    buy_request_prepayment = data.get("prepayment")
     buy_request_information: dict = data.get("buy_request_information")
     message_str: str = json.dumps(buy_request_information)
 
@@ -135,7 +136,7 @@ def buy_request_signature_verification(data: dict):
         public_key=sender_public_key, signature=bytes.fromhex(buy_request_signature), message=message_str)
 
     if verify_result:
-        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")):
+        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")) + float(buy_request_prepayment):
             return True
         else:
             return False
@@ -164,13 +165,14 @@ def add_buy_request_trx_and_mine_block(data: dict):
             "transaction_type": "buy_request",
             "data": data,
             "transaction_fee": data.get("transaction_fee"),
+            "transaction_prepayment": data.get("prepayment"),
         }
     )
     replace_transactions_result: bool = real_estate_blockchain.replace_transactions(
         trx=create_new_transaction.get("transaction"))
 
     if replace_transactions_result:
-        print(len(real_estate_blockchain.real_estate_transactions))
+        # print(len(real_estate_blockchain.real_estate_transactions))
         if len(real_estate_blockchain.real_estate_transactions) == 1:
             miner_node: nodeModel = real_estate_blockchain.proof_of_stake()
             csrf_token = csrf.get_token(request=HttpRequest())

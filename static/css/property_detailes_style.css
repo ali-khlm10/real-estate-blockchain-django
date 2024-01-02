@@ -311,3 +311,117 @@
     border-radius: 5px;
     background-color: #169bb3;
 }
+
+
+
+/* ///////////////////////////////////////////////// */
+
+.buy_request_prepayment {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 100%;
+    width: 100%;
+    padding: 25% 30%;
+    transform: translate(-50%, -50%);
+    /* background-color: #396972; */
+    z-index: 2;
+}
+
+
+.internal_buy_request_prepayment_modal {
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-height: 10%;
+    width: 30%;
+    transform: translate(-50%, -50%);
+    background-color: #396972;
+    border: solid 1px;
+    border-radius: 5px;
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.internal_buy_request_prepayment_modal button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 2px;
+    padding: 3px 5px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
+    align-items: center;
+    font-weight: bold;
+}
+
+
+.internal_buy_request_prepayment_modal p {
+    width: 100%;
+    /* background-color: red; */
+    color: white;
+    border: none;
+    padding: 20px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+    font-weight: bold;
+    direction: rtl;
+}
+
+.internal_buy_request_prepayment_modal span{
+    width: 100%;
+    padding: 20px;
+}
+
+
+.internal_buy_request_prepayment_modal #prepayment{
+    border: none;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 5px;
+}
+
+
+.internal_buy_request_prepayment_modal section {
+    width: 100%;
+    padding: 0 25px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+    font-weight: bold;
+
+}
+
+
+.internal_buy_request_prepayment_modal section a {
+    padding: 5px 20px;
+    margin: 20px 5px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #169bb3;
+}
+
+
+.internal_buy_request_prepayment_modal section #do_prepayment {
+    background-color: green;
+}
+
+.internal_buy_request_prepayment_modal section #dont_prepayment {
+    background-color: red;
+}

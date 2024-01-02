@@ -1,6 +1,7 @@
 $(document).ready(function () {
   $("#start_buy_request").click(function (e) {
     e.preventDefault();
+
     var token_id = $(this).data("token_id");
     var property_title = $(this).data("property_title");
     var property_price = $(this).data("property_price");
@@ -13,31 +14,87 @@ $(document).ready(function () {
     };
     var jsonData = JSON.stringify(data);
 
-    $.ajax({
-      type: "post",
-      url: createSignatureURL,
-      data: jsonData,
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken,
-      },
-      dataType: "json",
-      success: function (response) {
-        if (response.status) {
-          buying_request(response, token_id, property_title, property_price);
-          console.log(response.signature);
-
-        } else {
-          console.log(response.message);
-        }
-      },
-      error: function () {
-        console.log("مشکل در ارتباط با سرور");
-      },
+    prepayment_amount().then(function (result) {
+      if (result.status) {
+        $.ajax({
+          type: "post",
+          url: createSignatureURL,
+          data: jsonData,
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          dataType: "json",
+          success: function (response) {
+            if (response.status) {
+              buying_request(
+                response,
+                token_id,
+                property_title,
+                property_price,
+                result.prepayment
+              );
+              console.log(response.signature);
+            } else {
+              console.log(response.message);
+            }
+          },
+          error: function () {
+            console.log("مشکل در ارتباط با سرور");
+          },
+        });
+      }
     });
   });
 
-  function buying_request(response, token_id, property_title, property_price) {
+  function prepayment_amount() {
+    return new Promise(function (resolve) {
+      $("#prepayment").val("");
+      var prepayment_modal_element = document.getElementById(
+        "buy_request_prepayment_modal"
+      );
+      var body_element = document.body;
+      prepayment_modal_element.style.display = "block";
+      body_element.style.overflow = "hidden";
+
+      $(
+        "#buy_request_prepayment_modal #dont_prepayment,.internal_buy_request_prepayment_modal button"
+      ).click(function (e) {
+        e.preventDefault();
+        prepayment_modal_element.style.display = "none";
+        body_element.style.overflow = "auto";
+        var result = {
+          status: false,
+        };
+
+        resolve(result);
+      });
+
+      $("#buy_request_prepayment_modal #do_prepayment").click(function (e) {
+        e.preventDefault();
+        prepayment_element_input = $("#prepayment").val();
+        if (prepayment_element_input !== "") {
+          prepayment = prepayment_element_input;
+          prepayment_modal_element.style.display = "none";
+          body_element.style.overflow = "auto";
+          var result = {
+            status: true,
+            prepayment: prepayment,
+          };
+
+          resolve(result);
+        }
+      });
+    });
+  }
+
+  function buying_request(
+    response,
+    token_id,
+    property_title,
+    property_price,
+    prepayment
+  ) {
     var currentPort = window.location.port;
     var buying_request_URL = `http://127.0.0.1:${currentPort}/buying_request/`;
     var csrftoken = $('[name="csrfmiddlewaretoken"]').val();
@@ -45,6 +102,7 @@ $(document).ready(function () {
       signature: response.signature,
       buy_request_information: response.buy_request_information,
       transaction_fee: parseFloat(property_price) * 0.000005,
+      prepayment: prepayment,
     });
     // var jsonData = JSON.stringify(response);
 
@@ -65,6 +123,10 @@ $(document).ready(function () {
     buying_request_modal_element.querySelector(
       "#buy_request_transaction_fee"
     ).innerHTML = parseFloat(property_price) * 0.000005;
+
+    buying_request_modal_element.querySelector(
+      "#buy_request_transaction_prepayment"
+    ).innerHTML = parseFloat(prepayment);
 
     $(
       "#buy_request_token_modal #dont_buy_request,.internal_buy_request_modal button"

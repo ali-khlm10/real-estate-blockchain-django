@@ -6,6 +6,20 @@
 
 {% block content %}
 
+<div id="buy_request_prepayment_modal" class="buy_request_prepayment">
+    <div class="internal_buy_request_prepayment_modal">
+        <button>x</button>
+        <p>لطفا پیش پرداخت مورد نظر را برای درخواست خرید برای این ملک را وارد کنید : </p>
+        <span>
+            <input type="number" name="prepaymentinput" id="prepayment">
+        </span>
+        <section>
+            <a id="do_prepayment" href="#">انجام</a>
+            <a id="dont_prepayment" href="#">لغو</a>
+        </section>             
+    </div>
+</div>
+
 <div id="buy_request_token_modal" class="buy_request_modal">
     <div class="internal_buy_request_modal">
         <button>x</button>
@@ -25,6 +39,10 @@
         <div>
             <label>هزینه انجام تراکنش : </label>
             <span id="buy_request_transaction_fee">10000</span>
+        </div>
+        <div>
+            <label>مقدار بیعانه پرداختی : </label>
+            <span id="buy_request_transaction_prepayment">10000</span>
         </div>
         <section>
             <a id="do_buy_request" href="#">انجام</a>

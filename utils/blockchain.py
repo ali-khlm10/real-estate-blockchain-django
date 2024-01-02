@@ -225,7 +225,7 @@ class Blockchain:
                 "block_index": int(previous_block["block_number"]) + 1,
                 "transaction": new_transaction.transaction_information(),
             }
-            
+
         elif transaction_info.get("transaction_type") == "buy_request":
             new_transaction: transactionsModel = transactionsModel.objects.create()
             new_transaction.transaction_from_address = transaction_info.get(
@@ -238,7 +238,9 @@ class Blockchain:
                 "transaction_type")
             new_transaction.transaction_data = transaction_info.get(
                 "data").get("buy_request_information").get("token_id")
-            
+            new_transaction.transaction_value = float(transaction_info.get(
+                "transaction_prepayment"))
+
             new_transaction.save()
 
             new_transaction_status: transactionStatusModel = transactionStatusModel.objects.create()
@@ -247,16 +249,17 @@ class Blockchain:
 
             self.real_estate_transactions.append(
                 new_transaction.transaction_information())
-            
+
             previous_block = self.get_last_block()
-            
+
             return {
                 "block_index": int(previous_block["block_number"]) + 1,
                 "transaction": new_transaction.transaction_information(),
             }
-            
+
 
 # /////////////////////////////////////////////////////////////////
+
     def replace_chain(self):
         nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
         longest_chain = None
@@ -295,7 +298,8 @@ class Blockchain:
             response = requests.post(
                 url=f"{node.node_url}/update_transactions/",
                 data=json.dumps({"transaction": trx,
-                                 "transactions": transactions, }),
+                                 "transactions": transactions,
+                                 "node_port": node.node_port, }),
                 headers={"Content-Type": "application/json",
                          "X-CSRFToken": csrf_token}
             )

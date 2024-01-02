@@ -11,18 +11,25 @@ class buyRequestModel(models.Model):
     buy_request_to = models.CharField(
         verbose_name="درخواست به", max_length=500, null=True, blank=True)
     token = models.ForeignKey(to=propertyTokenModel, verbose_name="شماره توکن",
-                                 on_delete=models.CASCADE, related_name="token", null=True, blank=True)
+                              on_delete=models.CASCADE, related_name="token", null=True, blank=True)
     buy_request_created_date = models.DateTimeField(
         auto_now_add=True, editable=False, verbose_name="زمان ایجاد درخواست خرید ملک", null=True, blank=True)
 
+    class Meta:
+        verbose_name = "درخواست خرید"
+        verbose_name_plural = "درخواست های خرید"
 
+    def __str__(self):
+        return self.token.token_id
 
 
 class buyRequestStatusModel(models.Model):
     request = models.ForeignKey(to=buyRequestModel, verbose_name="درخواست",
-                                    on_delete=models.CASCADE, related_name="request", null=True, blank=True)
-    pending = models.BooleanField(verbose_name="در انتظار پذیرش",  default=True)
-    is_accepted = models.BooleanField(verbose_name="پذیرفته شده",  default=False)
+                                on_delete=models.CASCADE, related_name="request", null=True, blank=True)
+    pending = models.BooleanField(
+        verbose_name="در انتظار پذیرش",  default=True)
+    is_accepted = models.BooleanField(
+        verbose_name="پذیرفته شده",  default=False)
     is_rejected = models.BooleanField(verbose_name="رد شده",  default=False)
 
     class Meta:
@@ -30,7 +37,7 @@ class buyRequestStatusModel(models.Model):
         verbose_name_plural = "وضعیت درخواست های خرید"
 
     def __str__(self):
-        return self.request.token
+        return self.request.token.token_id
 
     def status(self):
         if self.is_accepted:
@@ -41,6 +48,6 @@ class buyRequestStatusModel(models.Model):
 
         else:
             return "pending"
-        
+
 
 # //////////////////////////////////////////////////////////////
