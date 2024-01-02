@@ -223,6 +223,34 @@
       "transaction_nonce": 20,
       "transaction_position_in_block": 2,
       "transaction_data": null
+    },
+    {
+      "transaction_id": 58,
+      "transaction_from_address": "0x20719ac82cbb2d71d44883c477f0474053a4132d",
+      "transaction_to_address": "0x9eb849444bbfaf1af349ab522d490bcc288293a4",
+      "transaction_hash": "0xa9e3aca46e91c8a08987488dacb92dcd7158fbc10dc4a8d1f531daacde08a688",
+      "transaction_block": "23",
+      "transaction_timestamp": "2024-01-02 21:42:55.728300+00:00",
+      "transaction_value": 10000000.0,
+      "transaction_fee": 10000.0,
+      "transaction_type": "buy_request",
+      "transaction_nonce": 1,
+      "transaction_position_in_block": 1,
+      "transaction_data": "74425392360552476646031049042875687270052324666373341534334269702630245783685220"
+    },
+    {
+      "transaction_id": 59,
+      "transaction_from_address": "0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)",
+      "transaction_to_address": "0x69b3910b503eda6bae7375c7775384a576f5af9c",
+      "transaction_hash": "0x20b8eac2e999f4bf15203863d22d52bb395b3eaf3104eda2bf47398946486305",
+      "transaction_block": "23",
+      "transaction_timestamp": "2024-01-02 21:42:57.810646+00:00",
+      "transaction_value": 3000.0,
+      "transaction_fee": 0.0,
+      "transaction_type": "miner_reward",
+      "transaction_nonce": 21,
+      "transaction_position_in_block": 2,
+      "transaction_data": null
     }
   ]
 }

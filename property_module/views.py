@@ -5,6 +5,8 @@ from django.http import HttpRequest
 from .forms import propertyForm
 from account_module.models import userModel
 from .models import propertyModel, propertyDetailesModel, propertyStatusModel
+from buy_and_sell_module.models import buyRequestModel
+from token_module.models import propertyTokenModel
 # Create your views here.
 
 
@@ -67,11 +69,25 @@ class createPropertyView(View):
 
 class propertyDetailesPageView(View):
     def get(self, request: HttpRequest, property_id: int):
+        status = False
         property: propertyModel = propertyModel.objects.filter(
             id=property_id).first()
+        current_user: userModel = userModel.objects.filter(
+            id=request.user.id).first()
+        sended_buy_requests: buyRequestModel = buyRequestModel.objects.filter(
+            buy_request_from=current_user.wallet.wallet_address,request__pending = True)
+        # print(sended_buy_requests)
+        for buy_request in sended_buy_requests:
+            buy_request: buyRequestModel
+            for field in property.property_of_token.all():
+                field: propertyTokenModel
+                if buy_request.token.token_id == field.token_id:
+                    status = True
+                    break
+
         context = {
             "property": property,
+            "status": status,
         }
         return render(request, "property_module/property_detailes_page.html", context)
 # /////////////////////////////////////////////////////////////////
-

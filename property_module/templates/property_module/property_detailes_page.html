@@ -78,9 +78,13 @@
                 <span style="color:green; font-weight:bold; padding:10px 20px; border:solid 1px white; border-radius:5px;">
                     شما مالک این ملک هستید
                 </span>
+                {%elif status%}
+                <span style="color:skyblue; font-weight:bold; padding:10px 20px; border:solid 1px white; border-radius:5px;">
+                    شما قبلا درخواست خرید را به این ملک ارسال کرده اید
+                </span> 
                 {% else %}
                     {% for token in property.property_of_token.all %}
-                        <a href="#" id= "start_buy_request" data-token_id="{{token.token_id}}"   data-property_title="{{property.property_detailes.property_title}}" data-property_price="{{property.property_detailes.property_price}}">خرید</a>
+                        <a href="#" id= "start_buy_request" data-token_id="{{token.token_id}}"   data-property_title="{{property.property_detailes.property_title}}" data-property_price="{{property.property_detailes.property_price}}">درخواست خرید</a>
                     {%endfor%}
                 {% endif %}
             </section>
