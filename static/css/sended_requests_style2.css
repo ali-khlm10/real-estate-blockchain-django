@@ -1,0 +1,120 @@
+.dashboard_sended_requests {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.dashboard_sended_requests section {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 20px;
+    border-radius: 5px;
+    border: solid 1px #78999f;
+    margin: 10px 0;
+
+
+}
+
+.dashboard_sended_requests section div {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    direction: rtl;
+}
+
+.dashboard_sended_requests section div label {
+    width: 40%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.dashboard_sended_requests section div span {
+    /* width: 70%; */
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.dashboard_sended_requests section #token_id_span {
+    width: 100%;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+
+.dashboard_sended_requests section div a {
+    /* width: 20%; */
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 30px;
+    border-radius: 5px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+
+.dashboard_sended_requests section div #accept_buy_request {
+    background-color: green;
+}
+
+.dashboard_sended_requests section div #reject_buy_request {
+    background-color: red;
+}
+
+
+
+
+.dashboard_sended_requests section .accept_reject_buy_request {
+    justify-content: flex-end;
+}
+
+
+/* //////////////////////////////////////////////////////// */
+
+.dashboard_sended_requests section #buy_property_div {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard_sended_requests section #buy_property_div hr,span {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard_sended_requests section #buy_property_div a{
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 30px;
+    margin: 5px 0;
+    border-radius: 5px;
+    background-color: skyblue;
+    font-family: "BYekan";
+    text-align: center;
+}

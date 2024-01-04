@@ -155,6 +155,7 @@ def add_buy_request_trx_and_mine_block(data: dict):
     buy_request.buy_request_from = sender
     buy_request.buy_request_to = receiver
     buy_request.token = token
+    buy_request.buy_request_prepayment = float(data.get("prepayment"))
     buy_request.save()
     buy_request_status: buyRequestStatusModel = buyRequestStatusModel.objects.create()
     buy_request_status.request = buy_request
