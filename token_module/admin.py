@@ -9,4 +9,11 @@ class propertyTokenAdmin(admin.ModelAdmin):
     ]
 
 
+class smartContractAdmin(admin.ModelAdmin):
+    list_display = [
+        "contract_name",
+    ]
+
+
 admin.site.register(models.propertyTokenModel, propertyTokenAdmin)
+admin.site.register(models.smartContractModel, smartContractAdmin)

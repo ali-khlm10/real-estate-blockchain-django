@@ -1,6 +1,15 @@
 from django.contrib import admin
-from .models import blockModel, blockStatusModel, transactionsModel, transactionStatusModel
+from .models import blockModel, blockStatusModel, transactionsModel, transactionStatusModel, blockchainModel
 # Register your models here.
+
+
+class blockchainAdmin(admin.ModelAdmin):
+    list_display = [
+        'blockchain_name',
+        'blockchain_address',
+        'blockchain_inventory',
+        'blockchain_transaction_count',
+    ]
 
 
 class blockAdmin(admin.ModelAdmin):
@@ -37,6 +46,7 @@ class transactionStatusAdmin(admin.ModelAdmin):
     ]
 
 
+admin.site.register(blockchainModel, blockchainAdmin)
 admin.site.register(blockModel, blockAdmin)
 admin.site.register(blockStatusModel, blockStatusAdmin)
 admin.site.register(transactionsModel, transactionsAdmin)
