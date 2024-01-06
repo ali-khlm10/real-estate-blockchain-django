@@ -12,6 +12,8 @@ from property_module.models import propertyModel, propertyStatusModel
 from token_module.models import propertyTokenModel
 
 from .forms import increaseUserInventoryForm
+
+from buy_and_sell_module.models import buyRequestModel
 # Create your views here.
 
 
@@ -105,13 +107,26 @@ class agentRejectRequestView(View):
 
 class receivedRequestsView(View):
     def get(self, request: HttpRequest):
-        context = {}
+        current_user: userModel = userModel.objects.filter(
+            id=request.user.id).first()
+        buy_requests: buyRequestModel = buyRequestModel.objects.filter(
+            buy_request_to__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date").order_by("token")
+
+        context = {
+            "buy_requests": buy_requests,
+        }
         return render(request, "user_panel_module/received_requests.html", context)
 
 
 class sendedRequestsView(View):
     def get(self, request: HttpRequest):
-        context = {}
+        current_user: userModel = userModel.objects.filter(
+            id=request.user.id).first()
+        buy_requests: buyRequestModel = buyRequestModel.objects.filter(
+            buy_request_from__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date")
+        context = {
+            "buy_requests": buy_requests,
+        }
         return render(request, "user_panel_module/sended_requests.html", context)
 
 

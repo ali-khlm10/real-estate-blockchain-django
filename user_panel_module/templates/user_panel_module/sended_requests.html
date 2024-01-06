@@ -24,6 +24,66 @@
                     </header>
                     <main class="dashboard_sended_requests">                     
                           
+                        {% for buy_req in buy_requests %}
+                        <section>
+
+                            <div>
+                                <label for="">درخواست به کاربر : </label>
+                                <span>
+                                    {{buy_req.buy_request_to}}
+                                </span>
+                            </div>
+
+                            <div>
+                                <label for="">  درخواست به شماره توکن : </label>
+                                <span id="token_id_span">
+                                    {{buy_req.token.token_id}}
+                                </span>
+                            </div>
+
+                            <div>
+                                <label for="">  مبلغ پیش پرداختی شما : </label>
+                                <span>
+                                    {{buy_req.buy_request_prepayment}}
+                                    
+                                </span>
+                            </div>
+
+
+                            <div>
+                                <label for="">  زمان ارسال درخواست : </label>
+                                <span>
+                                    {{buy_req.buy_request_created_date}}
+                                </span>
+                            </div>
+
+                            <div>
+                                <label for=""> وضعیت درخواست : </label>
+                                    {% for item in buy_req.request.all %}
+                                        {% if item.pending %}
+                                        <span style="color:yellow; font-weight:bold;font-family:'BYekan';"> در حال بررسی </span>
+                                        {% elif item.is_accepted %}
+                                        <span style="color:green; font-weight:bold;font-family:'BYekan';"> پذیرفته شده</span>
+                                        {% else %}
+                                        <span style="color:red; font-weight:bold;font-family:'BYekan';"> رد شده</span>
+
+                                        {% endif %}
+                                    {% endfor %}
+                            </div>
+                            {% for item in buy_req.request.all %}
+                                {% if item.is_accepted %}
+                                    <div id="buy_property_div">
+                                        <hr>
+                                        <span>
+                                            <a href="#"> خرید ملک </a>
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                        </section>
+                        {% endfor %} 
+
                     </main>
                 </div>
                 {% render_partial 'user_panel_module.views.user_panel_menu_component' %}

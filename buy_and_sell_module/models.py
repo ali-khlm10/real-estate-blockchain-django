@@ -14,6 +14,8 @@ class buyRequestModel(models.Model):
                               on_delete=models.CASCADE, related_name="token", null=True, blank=True)
     buy_request_created_date = models.DateTimeField(
         auto_now_add=True, editable=False, verbose_name="زمان ایجاد درخواست خرید ملک", null=True, blank=True)
+    buy_request_prepayment = models.FloatField(
+        verbose_name="مقدار بیعانه پیشنهادی", default=0)
 
     class Meta:
         verbose_name = "درخواست خرید"
