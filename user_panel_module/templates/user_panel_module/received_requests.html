@@ -8,39 +8,42 @@
 {% block title %}صفحه درخواست های دریافتی{% endblock title %}
 
 {% block content %}
-{% csrf_token %}
-<div id="accepting_buy_request_modal" class="accept_buy_request_modal">
-    <div class="internal_accept_buy_request_modal">
-        <button>x</button>
-        <p>آیامایل به پذیرش درخواست خرید ملک توسط خریدار زیر با هزینه تراکنش مربوطه هستید؟</p>
-        <div>
-            <label> خریدار : </label>
-            <span id="buy_request_buyer">0xjewf3wegf35w4e4f34wes3f4we3</span>
-        </div>
-        <div>
-            <label>مقدار بیعانه پرداختی : </label>
-            <span id="buy_request_buyer_prepayment">10000</span>
-        </div>
-        <div>
-            <label>هزینه انجام تراکنش : </label>
-            <span id="buy_request_buyer_transaction_fee">10000</span>
-        </div>
-        <section>
-            <a id="do_accept_buy_request" href="#">انجام</a>
-            <a id="do_reject_buy_request" href="#">لغو</a>
-        </section>             
-    </div>
-</div>
 
-<div id="accepting_buy_reqiest_result_modal" class="accept_buy_request_result_modal">
-    <div class="internal_accept_buy_request_result_modal">
-        <button>x</button>
-        <p>عمل درخواست خرید ملک شما با موفقیت انجام شد.</p>
-        <section>
-            <a id="ok_accept_buy_request_result" href="#">فهمیدم</a>
-        </section>             
+{% csrf_token %}
+
+
+    <div id="accepting_buy_request_modal" class="accept_buy_request_modal">
+        <div class="internal_accept_buy_request_modal">
+            <button>x</button>
+            <p>آیامایل به پذیرش درخواست خرید ملک توسط خریدار زیر با هزینه تراکنش مربوطه هستید؟</p>
+            <div>
+                <label> خریدار : </label>
+                <span id="buy_request_buyer">0xjewf3wegf35w4e4f34wes3f4we3</span>
+            </div>
+            <div>
+                <label>مقدار بیعانه پرداختی : </label>
+                <span id="buy_request_buyer_prepayment">10000</span>
+            </div>
+            <div>
+                <label>هزینه انجام تراکنش : </label>
+                <span id="buy_request_buyer_transaction_fee">10000</span>
+            </div>
+            <section>
+                <a id="do_accept_buy_request" href="#">انجام</a>
+                <a id="do_reject_buy_request" href="#">لغو</a>
+            </section>             
+        </div>
     </div>
-</div>
+
+    <div id="accepting_buy_reqiest_result_modal" class="accept_buy_request_result_modal">
+        <div class="internal_accept_buy_request_result_modal">
+            <button>x</button>
+            <p>عمل درخواست خرید ملک شما با موفقیت انجام شد.</p>
+            <section>
+                <a id="ok_accept_buy_request_result" href="#">فهمیدم</a>
+            </section>             
+        </div>
+    </div>
 
 
 
@@ -103,7 +106,7 @@
                                         <div>
                                             <label for=""> وضعیت : </label>
                                             <span style="color:green; font-family:'Byekan';">
-                                                پذیرفته شده
+                                                شما این درخواست را پذیرفته اید
                                             </span>
                                         </div>
                                     {% endif %}                               

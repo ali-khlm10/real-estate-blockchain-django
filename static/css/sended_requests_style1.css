@@ -17,9 +17,8 @@
     border-radius: 5px;
     border: solid 1px #78999f;
     margin: 10px 0;
-
-
 }
+
 
 .dashboard_sended_requests section div {
     width: 100%;
@@ -30,6 +29,7 @@
     padding: 10px 0;
     direction: rtl;
 }
+
 
 .dashboard_sended_requests section div label {
     width: 40%;
@@ -56,6 +56,8 @@
 }
 
 
+/* //////////////////////////////////////////////////////// */
+
 .dashboard_sended_requests section div a {
     /* width: 20%; */
     display: flex;
@@ -70,25 +72,6 @@
     color: white;
 }
 
-
-.dashboard_sended_requests section div #accept_buy_request {
-    background-color: green;
-}
-
-.dashboard_sended_requests section div #reject_buy_request {
-    background-color: red;
-}
-
-
-
-
-.dashboard_sended_requests section .accept_reject_buy_request {
-    justify-content: flex-end;
-}
-
-
-/* //////////////////////////////////////////////////////// */
-
 .dashboard_sended_requests section #buy_property_div {
     width: 100%;
     display: flex;
@@ -97,7 +80,8 @@
     align-items: center;
 }
 
-.dashboard_sended_requests section #buy_property_div hr,span {
+.dashboard_sended_requests section #buy_property_div hr,
+.dashboard_sended_requests section #buy_property_div span {
     width: 100%;
     display: flex;
     flex-flow: wrap row;
@@ -105,7 +89,7 @@
     align-items: center;
 }
 
-.dashboard_sended_requests section #buy_property_div a{
+.dashboard_sended_requests section #buy_property_div a {
     display: flex;
     flex-flow: wrap row;
     justify-content: center;
