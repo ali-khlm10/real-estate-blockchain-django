@@ -34,7 +34,7 @@ $(document).ready(function () {
                 property_price,
                 result.prepayment
               );
-              console.log(response.signature);
+              // console.log(response.signature);
             } else {
               console.log(response.message);
             }
@@ -63,6 +63,7 @@ $(document).ready(function () {
         .off("click")
         .on("click", function (e) {
           e.preventDefault();
+          console.log("dont_payment");
           prepayment_modal_element.style.display = "none";
           body_element.style.overflow = "auto";
           var result = {
@@ -76,6 +77,8 @@ $(document).ready(function () {
         .off("click")
         .one("click", function (e) {
           e.preventDefault();
+          console.log("do_payment");
+
           prepayment_element_input = $("#prepayment").val();
           if (prepayment_element_input !== "") {
             prepayment = prepayment_element_input;
