@@ -379,7 +379,6 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
 
-
                 elif transaction.get("transaction_type") == "miner_reward":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
