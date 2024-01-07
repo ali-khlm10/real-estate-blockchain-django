@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import buyRequestModel, buyRequestStatusModel
+from .models import buyRequestModel, buyRequestStatusModel, accept_rejectBuyRequestModel
 # Register your models here.
 
 
@@ -18,5 +18,14 @@ class buyRequestStatusAdmin(admin.ModelAdmin):
     ]
 
 
+class accept_rejectBuyRequestAdmin(admin.ModelAdmin):
+    list_display = [
+        "accept_reject_status",
+        "accept_reject_buy_request_by",
+        "accept_reject_buy_request_to",
+    ]
+
+
 admin.site.register(buyRequestModel, buyRequestAdmin)
 admin.site.register(buyRequestStatusModel, buyRequestStatusAdmin)
+admin.site.register(accept_rejectBuyRequestModel, accept_rejectBuyRequestAdmin)

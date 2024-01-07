@@ -7,12 +7,13 @@ $(document).ready(function () {
     var property_price = $(this).data("property_price");
 
     var currentPort = window.location.port;
-    var createSignatureURL = `http://127.0.0.1:${currentPort}/create_signature_to_accept_buy_request/`;
+    var createSignatureURL = `http://127.0.0.1:${currentPort}/create_signature_to_accept_reject_buy_request/`;
     var csrftoken = $('[name="csrfmiddlewaretoken"]').val();
 
     var data = {
       token_id: token_id,
       buyer_address: buyer_address,
+      operation: "accepting",
     };
     var jsonData = JSON.stringify(data);
 
@@ -71,7 +72,7 @@ $(document).ready(function () {
     ).innerHTML = prepayment;
 
     $(
-      "#accepting_buy_request_modal #do_reject_buy_request, .internal_accept_buy_request_modal button"
+      "#accepting_buy_request_modal #dont_accept_buy_request, .internal_accept_buy_request_modal button"
     )
       .off("click")
       .on("click", function (e) {
@@ -98,8 +99,8 @@ $(document).ready(function () {
         var csrftoken = $('[name="csrfmiddlewaretoken"]').val();
         var jsonData = JSON.stringify({
           signature: response.signature,
-          accept_buy_request_information:
-            response.accept_buy_request_information,
+          accept_reject_buy_request_information:
+            response.accept_reject_buy_request_information,
           transaction_fee: parseFloat(property_price) * 0.0005,
         });
 
@@ -122,10 +123,13 @@ $(document).ready(function () {
               console.log(response.status);
               accept_buy_request_modal_element.style.display = "none";
               body_element.style.overflow = "auto";
+
               var accept_buy_request_result_modal_element =
                 document.getElementById("accepting_buy_reqiest_result_modal");
+
               accept_buy_request_result_modal_element.style.display = "block";
               body_element.style.overflow = "hidden";
+
               accept_buy_request_result_modal_element.querySelector(
                 "p"
               ).innerHTML = response.message;

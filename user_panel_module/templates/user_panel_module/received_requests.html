@@ -30,7 +30,7 @@
             </div>
             <section>
                 <a id="do_accept_buy_request" href="#">انجام</a>
-                <a id="do_reject_buy_request" href="#">لغو</a>
+                <a id="dont_accept_buy_request" href="#">لغو</a>
             </section>             
         </div>
     </div>
@@ -44,8 +44,43 @@
             </section>             
         </div>
     </div>
+{% comment %} ////////////////////////////////////////////////////////////// {% endcomment %}
+
+<div id="rejecting_buy_request_modal" class="reject_buy_request_modal">
+    <div class="internal_reject_buy_request_modal">
+        <button>x</button>
+        <p>آیامایل به رد درخواست خرید ملک توسط خریدار زیر با هزینه تراکنش مربوطه هستید؟</p>
+        <div>
+            <label> خریدار : </label>
+            <span id="buy_request_buyer">0xjewf3wegf35w4e4f34wes3f4we3</span>
+        </div>
+        <div>
+            <label>مقدار بیعانه پرداختی : </label>
+            <span id="buy_request_buyer_prepayment">10000</span>
+        </div>
+        <div>
+            <label>هزینه انجام تراکنش : </label>
+            <span id="buy_request_buyer_transaction_fee">10000</span>
+        </div>
+        <section>
+            <a id="do_reject_buy_request" href="#">انجام</a>
+            <a id="dont_reject_buy_request" href="#">لغو</a>
+        </section>             
+    </div>
+</div>
+
+<div id="rejecting_buy_reqiest_result_modal" class="reject_buy_request_result_modal">
+    <div class="internal_reject_buy_request_result_modal">
+        <button>x</button>
+        <p>عمل درخواست خرید ملک شما با موفقیت انجام شد.</p>
+        <section>
+            <a id="ok_reject_buy_request_result" href="#">فهمیدم</a>
+        </section>             
+    </div>
+</div>
 
 
+{% comment %} //////////////////////////////////////////////////////////////// {% endcomment %}
 
     <section class="dashboard_container">
 
@@ -100,8 +135,14 @@
                                     {% if item.pending %}
                                         
                                     <a href="#" id="accept_buy_request" data-buyer_address="{{buy_req.buy_request_from}}" data-token_id="{{buy_req.token.token_id}}"  data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-prepayment="{{buy_req.buy_request_prepayment}}"> قبول درخواست</a>
-                                    <a href="#" id="reject_buy_request">رد درخواست</a>
-
+                                    <a href="#" id="reject_buy_request" data-buyer_address="{{buy_req.buy_request_from}}" data-token_id="{{buy_req.token.token_id}}"  data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-prepayment="{{buy_req.buy_request_prepayment}}">رد درخواست</a>
+                                    {% elif item.is_rejected %}
+                                    <div>
+                                        <label for=""> وضعیت : </label>
+                                        <span style="color:red; font-family:'Byekan';">
+                                            شما این درخواست را رد کرده اید
+                                        </span>
+                                    </div>
                                     {% else %}
                                         <div>
                                             <label for=""> وضعیت : </label>
