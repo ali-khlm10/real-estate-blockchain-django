@@ -129,6 +129,7 @@ class sendedRequestsView(View):
         }
         return render(request, "user_panel_module/sended_requests.html", context)
 
+# ///////////////////////////////////////////////////////////////
 
 class userWalletView(View):
     def get(self, request: HttpRequest):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import buyRequestModel, buyRequestStatusModel, accept_rejectBuyRequestModel
+from .models import buyRequestModel, buyRequestStatusModel, accept_rejectBuyRequestModel, buyModel, buyStatusModel
 # Register your models here.
 
 
@@ -26,6 +26,22 @@ class accept_rejectBuyRequestAdmin(admin.ModelAdmin):
     ]
 
 
+class buyAdmin(admin.ModelAdmin):
+    list_display = [
+        "finalizing_buy_by",
+        "finalizing_buy_to",
+    ]
+
+
+class buyStatusAdmin(admin.ModelAdmin):
+    list_display = [
+        "pending",
+        "is_finalized",
+    ]
+
+
 admin.site.register(buyRequestModel, buyRequestAdmin)
 admin.site.register(buyRequestStatusModel, buyRequestStatusAdmin)
 admin.site.register(accept_rejectBuyRequestModel, accept_rejectBuyRequestAdmin)
+admin.site.register(buyModel, buyAdmin)
+admin.site.register(buyStatusModel, buyStatusAdmin)
