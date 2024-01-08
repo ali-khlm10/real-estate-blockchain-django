@@ -325,6 +325,42 @@ class Blockchain:
                 "transaction": new_transaction.transaction_information(),
             }
 
+        elif transaction_info.get("transaction_type") == "buy_operation":
+            new_transaction: transactionsModel = transactionsModel.objects.create()
+            new_transaction.transaction_from_address = transaction_info.get(
+                "data").get("buy_operation_information").get("sender")
+            new_transaction.transaction_to_address = transaction_info.get(
+                "data").get("buy_operation_information").get("receiver")
+            new_transaction.transaction_fee = transaction_info.get(
+                "data").get("transaction_fee")
+            new_transaction.transaction_type = transaction_info.get(
+                "transaction_type")
+            new_transaction.transaction_value = float(transaction_info.get(
+                "data").get("remaining_cost"))
+            new_transaction.transaction_data = json.dumps(
+                {
+                    "token_id": transaction_info.get("data").get("buy_operation_information").get("token_id"),
+                    "operation": "buy_operation",
+                }
+            )
+
+            new_transaction.save()
+
+            new_transaction_status: transactionStatusModel = transactionStatusModel.objects.create()
+            new_transaction_status.transaction = new_transaction
+            new_transaction_status.save()
+
+            self.real_estate_transactions.append(
+                new_transaction.transaction_information())
+
+            previous_block = self.get_last_block()
+
+            return {
+                "block_index": int(previous_block["block_number"]) + 1,
+                "transaction": new_transaction.transaction_information(),
+            }
+
+
 # /////////////////////////////////////////////////////////////////
 
     def replace_chain(self):

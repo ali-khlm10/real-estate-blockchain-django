@@ -463,6 +463,54 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
 
+                elif transaction.get("transaction_type") == "buy_operation":
+                    current_trx: transactionsModel = transactionsModel.objects.filter(
+                        id=transaction.get("transaction_id")).first()
+                    current_user: userModel = userModel.objects.filter(
+                        wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
+
+                    current_trx.transaction_nonce = current_user.user_transactions_count
+                    current_user.user_transaction_counter()
+                    
+                    current_user.wallet.inventory -= float(
+                        current_trx.transaction_fee)
+                    
+                    current_user.wallet.inventory -= float(
+                        current_trx.transaction_value)
+                    current_user.wallet.save()
+
+                    current_node_reward += float(
+                        current_trx.transaction_fee) * 0.3
+                    current_user.save()
+
+                    system: blockchainModel = blockchainModel.objects.filter(
+                        blockchain_address__iexact="0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)").first()
+                    system.blockchain_inventory += float(
+                        current_trx.transaction_fee) - current_node_reward
+                    system.blockchain_inventory += current_trx.transaction_value
+                    system.save()
+
+                    current_trx.transaction_position_in_block = index + 1
+                    current_trx.transaction_block = new_block
+
+                    current_transaction_info: dict = current_trx.transaction_information()
+                    current_transaction_info.pop("transaction_hash")
+                    current_trx.transaction_hash = real_estate_blockchain.transaction_hash(
+                        transaction=current_transaction_info)
+
+                    current_trx.save()
+
+                    for field in current_trx.trx_status.all():
+                        field: transactionStatusModel
+                        field.published = True
+                        field.pending = False
+                        field.not_published = False
+                        field.save()
+
+                    real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
+                    )
+
+
                 elif transaction.get("transaction_type") == "miner_reward":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()

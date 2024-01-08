@@ -20,4 +20,12 @@ urlpatterns = [
     path("verification_accept_reject_buy_request_transaction_by_nodes/", views.verification_accept_reject_buy_request_transaction_by_nodes,
          name="verification-accept-reject-buy-request-transaction-by-nodes"),
 
+
+    path("create_signature_to_buy_operation/", views.create_signature_to_buy_operation,
+         name="create-signature-to-buy-operation"),
+    path("buying_operation/", views.buying_operation,
+         name="buying-operation"),
+    path("verification_buy_operation_transaction_by_nodes/", views.verification_buy_operation_transaction_by_nodes,
+         name="verification-buy-operation-transaction-by-nodes"),
+
 ]
