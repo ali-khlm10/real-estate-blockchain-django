@@ -113,6 +113,7 @@ class receivedRequestsView(View):
             buy_request_to__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date").order_by("token")
 
         buy_finalazed_status_list = []
+        buy_ids = []
 
         for buy_request in buy_requests:
             buy_request : buyRequestModel
@@ -124,18 +125,24 @@ class receivedRequestsView(View):
                 ).first()
                 if buy:
                     buy_finalazed_status_list.append(buy.finalized_buy.all().first().status())
+                    buy_ids.append(buy.id)
                 else:
                     buy_finalazed_status_list.append(False)
+                    buy_ids.append(False)
+                    
                     
                 
             else:
                 buy_finalazed_status_list.append("rejected")
+                buy_ids.append(False)
+                
 
 
         context = {
             "buy_requests": buy_requests,
             "buy_finalazed_status_list" : buy_finalazed_status_list,
-            "zipped_list" : zip(buy_requests,buy_finalazed_status_list),
+            "buy_ids" : buy_ids,
+            "zipped_list" : zip(buy_requests,buy_finalazed_status_list,buy_ids),
         }
         return render(request, "user_panel_module/received_requests.html", context)
 

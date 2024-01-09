@@ -28,4 +28,12 @@ urlpatterns = [
     path("verification_buy_operation_transaction_by_nodes/", views.verification_buy_operation_transaction_by_nodes,
          name="verification-buy-operation-transaction-by-nodes"),
 
+
+
+    path("create_signature_to_sell_operation/", views.create_signature_to_sell_operation,
+         name="create-signature-to-sell-operation"),
+    path("selling_operation/", views.selling_operation,
+         name="selling-operation"),
+    path("verification_sell_operation_transaction_by_nodes/", views.verification_sell_operation_transaction_by_nodes,
+         name="verification-sell-operation-transaction-by-nodes"),
 ]

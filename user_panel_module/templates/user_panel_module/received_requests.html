@@ -11,6 +11,41 @@
 
 {% csrf_token %}
 
+<div id="sell_operation_modal" class="sell_modal">
+    <div class="internal_sell_operation_modal">
+        <button>x</button>
+        <p>آیامایل به فروش ملک، به خریدار مورد نظر با هزینه تراکنش مربوطه هستید؟</p>
+
+        <div>
+            <label> خریدار : </label>
+            <span id="sell_operation_buyer_address">534tgert4b4rfd354br3545rd4fdf353d5</span>
+        </div>
+        <div>
+            <label>شماره توکن ملک : </label>
+            <span id="sell_operation_token_id">100000543541341354135000</span>
+        </div>
+        <div>
+            <label>هزینه انجام تراکنش : </label>
+            <span id="sell_operation_transaction_fee">10000</span>
+        </div>
+        <section>
+            <a id="do_sell_operation" href="#">انجام</a>
+            <a id="dont_sell_operation" href="#">لغو</a>
+        </section>             
+    </div>
+</div>
+
+<div id="sell_operation_result_modal" class="sell_result_modal">
+    <div class="internal_sell_operation_result_modal">
+        <button>x</button>
+        <p>عمل درخواست خرید ملک شما با موفقیت انجام شد.</p>
+        <section>
+            <a id="ok_sell_operation_result" href="#">فهمیدم</a>
+        </section>             
+    </div>
+</div>
+
+{% comment %} /////////////////////////////////////////////////////// {% endcomment %}
 
     <div id="accepting_buy_request_modal" class="accept_buy_request_modal">
         <div class="internal_accept_buy_request_modal">
@@ -97,7 +132,7 @@
                     </header>
                     <main class="dashboard_received_requests">                     
                           
-                        {% for buy_req, status in zipped_list %}
+                        {% for buy_req, status,buy_id in zipped_list %}
                         <section>
 
                             <div>
@@ -163,7 +198,7 @@
                                         <div id="sell_property_div">
                                             <hr>
                                             <span>
-                                                <a href="#"> فروش ملک </a>
+                                                <a href="#" id="sell_operation" data-token_id="{{buy_req.token.token_id}}"  data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-buyer_address="{{buy_req.buy_request_from}}" data-prepayment="{{buy_req.buy_request_prepayment}}" data-buy_operation_id="{{buy_id}}"> فروش ملک </a>
                                             </span>
                                         </div>
                                     
