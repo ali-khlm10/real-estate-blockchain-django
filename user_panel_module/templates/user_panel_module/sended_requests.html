@@ -62,7 +62,7 @@
                     </header>
                     <main class="dashboard_sended_requests">                     
                           
-                        {% for buy_req in buy_requests %}
+                        {% for buy_req, status in zipped_list %}
                         <section>
 
                             <div>
@@ -108,8 +108,48 @@
                                         {% endif %}
                                     {% endfor %}
                             </div>
+
                             {% for item in buy_req.request.all %}
+
                                 {% if item.is_accepted %}
+
+                                    {% if status == 'pending' %}
+                                        <div id="buy_property_div">
+                                            <hr>
+                                            <span style="color:yellow; font-weight: bold; font-family:'Byekan'; padding:10px 0;">
+                                            شما خرید ملک مورد نظر را نهایی کرده اید.
+                                            </span>
+                                        </div>
+                                    {%elif status == 'is_finalized' %}
+                                        <div id="buy_property_div">
+                                            <hr>
+                                            <span style="color:bluesky; font-weight: bold; font-family:'Byekan'; padding:10px 0;">
+                                                <a href="#">خرید ملک انجام شد، برای مشاهده نتیجه کلیک کنید.</a>
+                                            </span>
+                                        </div>
+                                    {%else%}
+                                        <div id="buy_property_div">
+                                            <hr>
+                                            <span>
+                                                {% for item in buy_req.buy_request.all %}
+                                                <a id="buy_operation" href="#" data-buy_request_prepayment="{{buy_req.buy_request_prepayment}}" data-token_id="{{buy_req.token.token_id}}" data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-accepted_buy_request="{{item.id}}"> خرید ملک </a>
+                                                
+                                                {% endfor %}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+
+
+                                {%endif%}
+
+                            {%endfor%}
+
+
+                            {% comment %} {% for item in buy_req.request.all %}
+
+                                {% if item.is_accepted %}
+
+
                                     <div id="buy_property_div">
                                         <hr>
                                         <span>
@@ -119,8 +159,35 @@
                                             {% endfor %}
                                         </span>
                                     </div>
+
+                                    {% for buy_request in buy_req.buy_request.all %}
+                                        {% for accept_buy_request in buy_request.accept_reject_buy_request.all %}
+                                            {% for buy_status in accept_buy_request.finalized_buy.all %}
+
+                                                {% if buy_status.pending %}
+                                                    <div id="buy_property_div">
+                                                        <hr>
+                                                        <span style="color:yellow; font-weight: bold; font-family:'Byekan'; padding:10px 0;">
+                                                        شما خرید ملک مورد نظر را نهایی کرده اید.
+                                                        </span>
+                                                    </div>
+                                                {% elif buy_status.is_finalized %}
+                                                    <div id="buy_property_div">
+                                                        <hr>
+                                                        <span style="color:bluesky; font-weight: bold; font-family:'Byekan'; padding:10px 0;">
+                                                            <a href="#">خرید ملک انجام شد، برای مشاهده نتیجه کلیک کنید.</a>
+                                                        </span>
+                                                    </div>
+                                                {% endif %}
+                                                        
+                                            {% endfor %}
+                                        {% endfor %}
+                                
+                                    {% endfor %}
+
+
                                 {% endif %}
-                            {% endfor %}
+                            {% endfor %} {% endcomment %}
 
                         </section>
                         {% endfor %} 

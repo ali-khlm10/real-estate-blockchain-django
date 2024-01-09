@@ -97,7 +97,7 @@
                     </header>
                     <main class="dashboard_received_requests">                     
                           
-                        {% for buy_req in buy_requests %}
+                        {% for buy_req, status in zipped_list %}
                         <section>
 
                             <div>
@@ -156,13 +156,21 @@
                             </div>
 
                             {% for item in buy_req.request.all %}
+
                                 {% if item.is_accepted %}
-                                    <div id="sell_property_div">
-                                        <hr>
-                                        <span>
-                                            <a href="#"> فروش ملک </a>
-                                        </span>
-                                    </div>
+                                    {% if status != False %}
+                                    
+                                        <div id="sell_property_div">
+                                            <hr>
+                                            <span>
+                                                <a href="#"> فروش ملک </a>
+                                            </span>
+                                        </div>
+                                    
+                                    {% endif %}
+                                
+
+
                                 {% endif %}
                             {% endfor %}
 

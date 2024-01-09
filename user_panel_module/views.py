@@ -13,7 +13,7 @@ from token_module.models import propertyTokenModel
 
 from .forms import increaseUserInventoryForm
 
-from buy_and_sell_module.models import buyRequestModel
+from buy_and_sell_module.models import buyRequestModel,buyModel
 # Create your views here.
 
 
@@ -112,8 +112,30 @@ class receivedRequestsView(View):
         buy_requests: buyRequestModel = buyRequestModel.objects.filter(
             buy_request_to__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date").order_by("token")
 
+        buy_finalazed_status_list = []
+
+        for buy_request in buy_requests:
+            buy_request : buyRequestModel
+            if buy_request.request.all().first().status() == "is_accepted":
+                buy : buyModel = buyModel.objects.filter(
+                    finalizing_buy_by = buy_request.buy_request_from,
+                    finalizing_buy_to = buy_request.buy_request_to,
+                    buyed_token = buy_request.token,
+                ).first()
+                if buy:
+                    buy_finalazed_status_list.append(buy.finalized_buy.all().first().status())
+                else:
+                    buy_finalazed_status_list.append(False)
+                    
+                
+            else:
+                buy_finalazed_status_list.append("rejected")
+
+
         context = {
             "buy_requests": buy_requests,
+            "buy_finalazed_status_list" : buy_finalazed_status_list,
+            "zipped_list" : zip(buy_requests,buy_finalazed_status_list),
         }
         return render(request, "user_panel_module/received_requests.html", context)
 
@@ -124,8 +146,42 @@ class sendedRequestsView(View):
             id=request.user.id).first()
         buy_requests: buyRequestModel = buyRequestModel.objects.filter(
             buy_request_from__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date")
+        buy_finalazed_status_list = []
+    
+        
+        for buy_request in buy_requests:
+            buy_request : buyRequestModel
+            if buy_request.request.all().first().status() == "is_accepted":
+                buy : buyModel = buyModel.objects.filter(
+                    finalizing_buy_by = buy_request.buy_request_from,
+                    finalizing_buy_to = buy_request.buy_request_to,
+                    buyed_token = buy_request.token,
+                ).first()
+                if buy:
+                    buy_finalazed_status_list.append(buy.finalized_buy.all().first().status())
+                else:
+                    buy_finalazed_status_list.append(False)
+                    
+                
+            else:
+                buy_finalazed_status_list.append("rejected")
+                
+        # print(buy_finalazed_status_list)
+                
+        
+        # for buy_req in buy_requests:
+        #     for buy_request in buy_req.buy_request.all():
+        #         for accept_reject_buy_request in buy_request.accept_reject_buy_request.all():
+        #             for finalized_buy in accept_reject_buy_request.finalized_buy.all():
+        #                 print(finalized_buy.status())
+        #                 break
+        #             break
+        #         break
+            
         context = {
             "buy_requests": buy_requests,
+            "buy_finalazed_status_list" : buy_finalazed_status_list,
+            "zipped_list" : zip(buy_requests,buy_finalazed_status_list)
         }
         return render(request, "user_panel_module/sended_requests.html", context)
 
