@@ -94,6 +94,9 @@ $(document).ready(function () {
       .one("click", function (e) {
         e.preventDefault();
         console.log("rejected_buy_request");
+
+        $(this).addClass("loading");
+
         var currentPort = window.location.port;
         var reject_buy_requestURL = `http://127.0.0.1:${currentPort}/rejecting_buy_request/`;
         var csrftoken = $('[name="csrfmiddlewaretoken"]').val();
@@ -142,9 +145,12 @@ $(document).ready(function () {
             } else {
               console.log(response.message);
             }
+            $("#do_reject_buy_request").removeClass("loading");
           },
           error: function () {
             console.log("مشکل در ارتباط با سرور");
+
+            $("#do_reject_buy_request").removeClass("loading");
           },
         });
       });

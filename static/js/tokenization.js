@@ -59,6 +59,8 @@ $(document).ready(function () {
         e.preventDefault();
         console.log("java script");
 
+        $(this).addClass("loading");
+
         var tokenization_modal_element =
           document.getElementById("tokenization_modal");
         var body_element = document.body;
@@ -105,9 +107,13 @@ $(document).ready(function () {
             } else {
               console.log(response.message);
             }
+
+            $("#do_tokenization").removeClass("loading");
           },
           error: function () {
             console.log("مشکل در ارتباط با سرور");
+
+            $("#do_tokenization").removeClass("loading");
           },
         });
       });

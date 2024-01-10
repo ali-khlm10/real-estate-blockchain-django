@@ -756,3 +756,52 @@
 }
 
 /* ////////////////////////////////////////////////////////// */
+
+
+
+
+#do_reject_buy_request.loading::after {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 3px solid #ccc;
+    border-top-color: #777;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+
+#do_accept_buy_request.loading::after {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 3px solid #ccc;
+    border-top-color: #777;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+
+#do_sell_operation.loading::after {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 3px solid #ccc;
+    border-top-color: #777;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

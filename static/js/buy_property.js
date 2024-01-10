@@ -77,6 +77,9 @@ $(document).ready(function () {
         e.preventDefault();
         console.log("java script");
 
+        $(this).addClass("loading");
+
+
         var buy_operation_modal_element = document.getElementById(
           "buy_operation_modal"
         );
@@ -126,9 +129,16 @@ $(document).ready(function () {
             } else {
               console.log(response.message);
             }
+
+            $("#do_buy_operation").removeClass("loading");
+
+
           },
           error: function () {
             console.log("مشکل در ارتباط با سرور");
+
+            $("#do_buy_operation").removeClass("loading");
+
           },
         });
       });

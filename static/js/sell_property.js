@@ -33,7 +33,7 @@ $(document).ready(function () {
             prepayment,
             property_price,
             buyer_address,
-            buy_id,
+            buy_id
           );
           console.log(response);
         } else {
@@ -79,6 +79,8 @@ $(document).ready(function () {
       .one("click", function (e) {
         e.preventDefault();
         console.log("java script");
+
+        $(this).addClass("loading");
 
         var sell_operation_modal_element = document.getElementById(
           "sell_operation_modal"
@@ -128,9 +130,13 @@ $(document).ready(function () {
             } else {
               console.log(response.message);
             }
+
+            $("#do_sell_operation").removeClass("loading");
           },
           error: function () {
             console.log("مشکل در ارتباط با سرور");
+
+            $("#do_sell_operation").removeClass("loading");
           },
         });
       });

@@ -1,113 +1,157 @@
-.dashboard_sended_requests {
-    width: 100%;
+.dashboard_user_properties {
+    /* background-color: blue; */
     display: flex;
     flex-flow: wrap row;
     justify-content: center;
-    align-items: center;
-    padding: 20px;
+    align-items: flex-start;
+    width: 100%;
+    /* min-height: 500px; */
+    padding: 30px;
 }
 
-.dashboard_sended_requests section {
+.dashboard_user_properties table {
     width: 100%;
+    border: solid 1px #78999f;
+    border-radius: 5px;
     display: flex;
-    flex-flow: wrap column;
+    flex-flow: wrap row;
     justify-content: center;
     align-items: flex-end;
-    padding: 20px;
-    border-radius: 5px;
-    border: solid 1px #78999f;
-    margin: 10px 0;
+    table-layout: fixed;
 }
 
-
-.dashboard_sended_requests section div {
+.dashboard_user_properties table thead,
+tbody {
     width: 100%;
+    padding: 20px;
     display: flex;
-    flex-flow: wrap row;
-    justify-content: space-between;
+    flex-flow: wrap column;
+    justify-content: flex-start;
     align-items: center;
-    padding: 10px 0;
     direction: rtl;
 }
 
+.dashboard_user_properties table thead {
+    border-radius: 5px 5px 0 0;
+    background-color: #67a4af;
+}
 
-.dashboard_sended_requests section div label {
-    width: 40%;
+.dashboard_user_properties table tbody .row_of_table {
+    background-color: #396972;
+}
+
+.dashboard_user_properties .row_of_table {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-around;
+    align-items: center;
+    /* flex: 1; */
+    /* border: solid 1px red; */
+    margin: 2px;
+    padding: 20px 0;
+    border-radius: 5px;
+}
+
+.dashboard_user_properties table thead .row_of_table {
+    padding: 0;
+}
+
+/* ////////////////////////////////////// */
+
+.created_properties_body_and_header {
+    /* background-color: red; */
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 30px;
+}
+
+
+.created_properties {
+    width: 100%;
     display: flex;
     flex-flow: wrap row;
     justify-content: flex-start;
     align-items: center;
+    border: solid 1px #78999f;
+    padding: 20px 0;
+    border-radius: 5px;
 }
 
-.dashboard_sended_requests section div span {
-    /* width: 70%; */
+.created_properties_title_of_footer {
+    width: 100%;
+}
+
+.created_properties .created_properties_title_of_footer h4 {
+    width: 100%;
     display: flex;
     flex-flow: wrap row;
-    justify-content: flex-end;
-    align-items: center;
-    font-family: 'Courier New', Courier, monospace;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-bottom: solid 1px #78999f;
+    padding-bottom: 20px;
+    padding-right: 25px;
+    direction: rtl;
+    margin: 10px 0;
 }
 
-
-.dashboard_sended_requests section #token_id_span {
+#created_properties_body_of_footer {
     width: 100%;
-    word-wrap: break-word;
-    overflow: hidden;
+    padding: 25px;
 }
 
+.created_properties #created_properties_body_of_footer section {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #396972;
+    margin: 10px 0 20px 0;
+}
 
-/* //////////////////////////////////////////////////////// */
+.created_properties #created_properties_body_of_footer section div {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: baseline;
+    direction: rtl;
+}
 
-.dashboard_sended_requests section div a {
-    /* width: 20%; */
+.created_properties #created_properties_body_of_footer section div p,
+label {
+    max-width: 600px;
+    overflow-wrap: break-word;
+    /* word-wrap: break-word; */
+    overflow: hidden;
+    margin: 10px;
+}
+
+.created_properties #created_properties_body_of_footer section a {
+    width: 30%;
     display: flex;
     flex-flow: wrap row;
     justify-content: center;
     align-items: center;
-    padding: 10px 30px;
+    padding: 10px;
+    margin: 10px;
+    border: none;
     border-radius: 5px;
-    margin: 5px;
-    text-align: center;
+    background-color: rgb(20, 151, 151);
     text-decoration: none;
     color: white;
 }
 
-.dashboard_sended_requests section #buy_property_div {
-    width: 100%;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.dashboard_sended_requests section #buy_property_div hr,
-.dashboard_sended_requests section #buy_property_div span {
-    width: 100%;
-    display: flex;
-    flex-flow: wrap row;
-    justify-content: center;
-    align-items: center;
-}
-
-.dashboard_sended_requests section #buy_property_div a {
-    display: flex;
-    flex-flow: wrap row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 10px 30px;
-    margin: 5px 0;
-    border-radius: 5px;
-    background-color: skyblue;
-    font-family: "BYekan";
-    text-align: center;
-}
+/* /////////////////////////////////////////// */
 
 
-/* ////////////////////////////////////////////////////////// */
-
-
-.buy_modal {
+.modal {
     display: none;
     position: fixed;
     top: 50%;
@@ -121,7 +165,7 @@
 }
 
 
-.internal_buy_operation_modal {
+.internal_modal {
     display: flex;
     flex-flow: wrap column;
     justify-content: flex-start;
@@ -140,7 +184,7 @@
 }
 
 
-.internal_buy_operation_modal button {
+.internal_modal button {
     background-color: red;
     color: white;
     border: none;
@@ -155,7 +199,7 @@
 }
 
 
-.internal_buy_operation_modal p {
+.internal_modal p {
     width: 100%;
     /* background-color: red; */
     color: white;
@@ -169,7 +213,7 @@
     direction: rtl;
 }
 
-.internal_buy_operation_modal div {
+.internal_modal div {
     width: 100%;
     padding: 0 25px;
     color: white;
@@ -182,14 +226,8 @@
 
 }
 
-.internal_buy_operation_modal #buy_operation_token_id {
-    padding: 0 10px;
-    overflow-wrap: break-word;
-    overflow: hidden;
-}
 
-
-.internal_buy_operation_modal section {
+.internal_modal section {
     width: 100%;
     padding: 0 25px;
     display: flex;
@@ -201,7 +239,7 @@
 }
 
 
-.internal_buy_operation_modal section a {
+.internal_modal section a {
     padding: 5px 20px;
     margin: 20px 5px;
     text-decoration: none;
@@ -210,17 +248,17 @@
     border-radius: 5px;
 }
 
-.internal_buy_operation_modal section #do_buy_operation {
+.internal_modal section #do_tokenization {
     background-color: green;
 }
 
-.internal_buy_operation_modal section #dont_buy_operation {
+.internal_modal section #dont_tokenization {
     background-color: red;
 }
 
 /* /////////////////////////////////////// */
 
-.buy_result_modal {
+.result_modal {
     display: none;
     position: fixed;
     top: 50%;
@@ -234,7 +272,7 @@
 }
 
 
-.internal_buy_operation_result_modal {
+.internal_result_modal {
     display: flex;
     flex-flow: wrap column;
     justify-content: flex-start;
@@ -252,7 +290,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.internal_buy_operation_result_modal button {
+.internal_result_modal button {
     background-color: red;
     color: white;
     border: none;
@@ -267,7 +305,7 @@
 }
 
 
-.internal_buy_operation_result_modal p {
+.internal_result_modal p {
     width: 100%;
     /* background-color: red; */
     color: white;
@@ -282,7 +320,7 @@
 }
 
 
-.internal_buy_operation_result_modal section {
+.internal_result_modal section {
     width: 100%;
     padding: 0 25px;
     display: flex;
@@ -294,7 +332,7 @@
 }
 
 
-.internal_buy_operation_result_modal section #ok_buy_operation_result {
+.internal_result_modal section a {
     padding: 5px 20px;
     margin: 20px 5px;
     text-decoration: none;
@@ -304,4 +342,23 @@
     background-color: #169bb3;
 }
 
-/* ////////////////////////////////////////////////////////// */
+/* ///////////////////////////////////////////////////////////// */
+
+
+
+#do_tokenization.loading::after {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 3px solid #ccc;
+    border-top-color: #777;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

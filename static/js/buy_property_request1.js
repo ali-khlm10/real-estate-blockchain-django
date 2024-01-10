@@ -134,6 +134,9 @@ $(document).ready(function () {
         e.preventDefault();
         console.log("java script");
 
+        $(this).addClass("loading");
+
+
         var buying_request_modal_element = document.getElementById(
           "buy_request_token_modal"
         );
@@ -182,9 +185,13 @@ $(document).ready(function () {
             } else {
               console.log(response.message);
             }
+            $("#do_buy_request").removeClass("loading");
+
           },
           error: function () {
             console.log("مشکل در ارتباط با سرور");
+            $("#do_buy_request").removeClass("loading");
+
           },
         });
       });
