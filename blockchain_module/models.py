@@ -167,3 +167,10 @@ class merkelTreeHashesModel(models.Model):
         verbose_name="هش فعلی", max_length=500, null=True, blank=True)
     combined_hash = models.CharField(
         verbose_name="هش ترکیب شده", max_length=500, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "هش درخت مرکل"
+        verbose_name_plural = "هش های درخت مرکل"
+
+    def __str__(self):
+        return self.current_hash

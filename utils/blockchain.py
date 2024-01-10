@@ -126,7 +126,7 @@ class Blockchain:
         # print(f"new_proof_blockchain{new_proof}")
         check_proof = False
         while check_proof is False:
-            hash_operation = hashlib.sha256(
+            hash_operation = hashlib.sha512(
                 str(new_proof**3 - previous_proof**3).encode()).hexdigest()
 
             if hash_operation[:5] == '00000':
@@ -205,7 +205,7 @@ class Blockchain:
             new_transaction.transaction_to_address = transaction_info.get(
                 "data").get("property_information").get("receiver")
             new_transaction.transaction_fee = transaction_info.get(
-                "data").get("transaction_fee")
+                "transaction_fee")
             new_transaction.transaction_type = transaction_info.get(
                 "transaction_type")
             new_transaction.transaction_data = transaction_info.get(
@@ -412,7 +412,8 @@ class Blockchain:
                 length = response.json()["length"]
                 chain = response.json()["chain"]
                 # print(chain)
-                if length > max_length:
+                if length > max_length and self.is_chain_valid(chain=chain):
+                    print(f"blockchain: {self.is_chain_valid(chain=chain)}")
                     max_length = length
                     longest_chain = chain
         if longest_chain:
@@ -451,26 +452,29 @@ class Blockchain:
     # ///////////////////////////////////////////////////////////
 
     def is_chain_valid(self, chain):
-        previous_block = chain[0]
+        previous_block: dict = chain[0]
+        previous_block_copy = previous_block.copy()
+        previous_block_copy.pop("block_hash")
         block_index = 1
         while block_index < len(chain):
-            current_block = chain[block_index]
-            if current_block["previous_hash"] != self.hash(previous_block):
+            current_block: dict = chain[block_index]
+            current_block_copy = current_block.copy()
+            current_block_copy.pop("block_hash")
+            if current_block_copy["previous_block_hash"] != self.hash(previous_block_copy):
                 return False
-            previous_proof = previous_block["proof"]
-            current_proof = current_block["proof"]
-            hash_operation = hashlib.sha256(
+            previous_proof = previous_block_copy["block_proof_number"]
+            current_proof = current_block_copy["block_proof_number"]
+            hash_operation = hashlib.sha512(
                 str(current_proof**3 - previous_proof**3).encode()).hexdigest()
             if hash_operation[:5] != '00000':
                 return False
-            previous_block = current_block
+            previous_block_copy = current_block_copy
             block_index += 1
         return True
 
     # /////////////////////////////////////////////////////////////////
 
     def merkel_tree_root_hash(self, hashes):
-        print(hashes)
         if len(hashes) == 1:
             merkel_hash: merkelTreeHashesModel = merkelTreeHashesModel.objects.create()
             merkel_hash.current_hash = hashes[0]
@@ -482,25 +486,25 @@ class Blockchain:
             combined_hash: str = hashes[i] + hashes[i+1]
             new_hash = hashlib.sha512(
                 combined_hash.encode('utf-8')).hexdigest()
-            
+
             merkel_hash: merkelTreeHashesModel = merkelTreeHashesModel.objects.create()
             merkel_hash.current_hash = hashes[i]
             merkel_hash.combined_hash = hashes[i+1]
             merkel_hash.save()
-            
-            new_hashes.append(new_hash)
+
+            new_hashes.append(new_hash[:64])
 
         if len(hashes) % 2 == 1:
             combined_hash = hashes[-1] + hashes[-1]
             new_hash = hashlib.sha512(
                 combined_hash.encode('utf-8')).hexdigest()
-            
+
             merkel_hash: merkelTreeHashesModel = merkelTreeHashesModel.objects.create()
             merkel_hash.current_hash = hashes[-1]
             merkel_hash.combined_hash = hashes[-1]
             merkel_hash.save()
-            
-            new_hashes.append(new_hash)
+
+            new_hashes.append(new_hash[:64])
 
         return self.merkel_tree_root_hash(new_hashes)
 

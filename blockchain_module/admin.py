@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import blockModel, blockStatusModel, transactionsModel, transactionStatusModel, blockchainModel
+from .models import blockModel, blockStatusModel, transactionsModel, transactionStatusModel, blockchainModel, merkelTreeHashesModel
 # Register your models here.
 
 
@@ -46,8 +46,16 @@ class transactionStatusAdmin(admin.ModelAdmin):
     ]
 
 
+class merkelTreeHashesAdmin(admin.ModelAdmin):
+    list_display = [
+        'current_hash',
+        'combined_hash',
+    ]
+
+
 admin.site.register(blockchainModel, blockchainAdmin)
 admin.site.register(blockModel, blockAdmin)
 admin.site.register(blockStatusModel, blockStatusAdmin)
 admin.site.register(transactionsModel, transactionsAdmin)
 admin.site.register(transactionStatusModel, transactionStatusAdmin)
+admin.site.register(merkelTreeHashesModel, merkelTreeHashesAdmin)

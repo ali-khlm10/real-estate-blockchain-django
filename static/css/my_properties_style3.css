@@ -127,7 +127,7 @@ tbody {
 }
 
 .created_properties #created_properties_body_of_footer section div p,
-.created_properties #created_properties_body_of_footer section div label {
+.created_properties #created_properties_body_of_footer section div label,label {
     max-width: 600px;
     overflow-wrap: break-word;
     /* word-wrap: break-word; */

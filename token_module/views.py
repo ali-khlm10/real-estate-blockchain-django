@@ -52,6 +52,7 @@ def create_token(data: dict):
         token_information=json.dumps(token_info),
     )
     new_token.save()
+
     current_property.token_generated = True
     current_property.save()
 
@@ -68,7 +69,7 @@ def create_token(data: dict):
         trx=create_new_transaction.get("transaction"))
 
     if replace_transactions_result:
-        if len(real_estate_blockchain.real_estate_transactions) == 1:
+        if len(real_estate_blockchain.real_estate_transactions) != 0:
             miner_node: nodeModel = real_estate_blockchain.proof_of_stake()
             csrf_token = csrf.get_token(request=HttpRequest())
             system_address = real_estate_blockchain.real_estate_blockchain_system()[
@@ -102,6 +103,61 @@ def create_token(data: dict):
         }
 
 
+@csrf_exempt
+def create_signature_to_tokenization(request: HttpRequest):
+    if request.method == "POST":
+        try:
+            data: dict = json.loads(request.body)
+            property_id = data.get("property_id")
+            current_property: propertyModel = propertyModel.objects.filter(
+                id__exact=property_id).first()
+            if current_property:
+                sender: str = current_property.property_creator.wallet.wallet_address
+                receiver: str = smart_contract_address(
+                    contract_name="propertyـtokenization_function")
+                property_information: dict = {
+                    "sender": sender,
+                    "receiver": receiver,
+                    "property_id": property_id,
+                }
+
+                message_str: str = json.dumps(property_information)
+                sender_private_key_str: str = current_property.property_creator.wallet.private_key[
+                    2:-1]
+
+                sender_private_key_str = str(
+                    sender_private_key_str).split("\\n")
+
+                sender_private_key_PEM = """"""
+                for item in sender_private_key_str:
+                    sender_private_key_PEM += item + "\n"
+
+                sender_private_key = pem_to_private_key(
+                    private_key_pem=sender_private_key_PEM.encode())
+                signature = create_signature(private_key=sender_private_key,
+                                             message=message_str)["signature_hex"]
+                # print(signature)
+                # print(bytes.fromhex(signature))
+                # print(message_str)
+                return JsonResponse({
+                    "status": True,
+                    "property_information": property_information,
+                    "signature": signature,
+                    "message": "signature successful."
+                })
+            else:
+                return JsonResponse({
+                    "status": False,
+                    "message": "signature unsuccessful !!"
+                })
+        except Exception as error:
+            print(error)
+            return JsonResponse({
+                "status": False,
+                "error": error,
+            })
+
+
 def signature_verification(data: dict):
     property_signature = data.get("signature")
     property_information: dict = data.get("property_information")
@@ -124,10 +180,16 @@ def signature_verification(data: dict):
 
     verify_result: bool = verify_signature(
         public_key=sender_public_key, signature=bytes.fromhex(property_signature), message=message_str)
+
     if verify_result:
         current_sender: userModel = userModel.objects.filter(
             wallet__wallet_address__iexact=property_information.get("sender")).first()
-        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")) and current_sender.wallet.wallet_address == current_property.property_owner_address:
+
+        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")) and current_sender.wallet.wallet_address == current_property.property_owner_address and real_estate_blockchain.is_chain_valid(chain=real_estate_blockchain.real_estate_chain) == True:
+
+            print(
+                f"sign_verify : {real_estate_blockchain.is_chain_valid(chain=real_estate_blockchain.real_estate_chain)}")
+
             return True
         else:
             return False
@@ -176,61 +238,6 @@ class tokenizationView(View):
 
 
 @csrf_exempt
-def create_signature_to_tokenization(request: HttpRequest):
-    if request.method == "POST":
-        try:
-            data: dict = json.loads(request.body)
-            property_id = data.get("property_id")
-            current_property: propertyModel = propertyModel.objects.filter(
-                id__exact=property_id).first()
-            if current_property:
-                sender: str = current_property.property_creator.wallet.wallet_address
-                receiver: str = smart_contract_address(
-                    contract_name="propertyـtokenization_function")
-                property_information: dict = {
-                    "sender": sender,
-                    "receiver": receiver,
-                    "property_id": property_id,
-                }
-                message_str: str = json.dumps(property_information)
-                sender_private_key_str: str = current_property.property_creator.wallet.private_key[
-                    2:-1]
-                sender_private_key_str = str(
-                    sender_private_key_str).split("\\n")
-                sender_private_key_PEM = """"""
-                for item in sender_private_key_str:
-                    sender_private_key_PEM += item + "\n"
-
-                sender_private_key = pem_to_private_key(
-                    private_key_pem=sender_private_key_PEM.encode())
-                signature = create_signature(private_key=sender_private_key,
-                                             message=message_str)["signature_hex"]
-                # print(signature)
-                # print(bytes.fromhex(signature))
-                # print(message_str)
-                return JsonResponse({
-                    "status": True,
-                    "property_information": property_information,
-                    "signature": signature,
-                    "message": "signature successful."
-                })
-            else:
-                return JsonResponse({
-                    "status": False,
-                    "message": "signature unsuccessful !!"
-                })
-        except Exception as error:
-            print(error)
-            return JsonResponse({
-                "status": False,
-                "error": error,
-            })
-
-
-# ///////////////////////////////////////////////////////////////
-
-
-@csrf_exempt
 def verification_transaction_by_nodes(request: HttpRequest):
     if request.method == "POST":
         data: dict = json.loads(request.body)
@@ -241,6 +248,9 @@ def verification_transaction_by_nodes(request: HttpRequest):
             return JsonResponse({"status": True})
         else:
             return JsonResponse({"status": False})
+
+
+# ///////////////////////////////////////////////////////////////
 
 
 @csrf_exempt
@@ -277,11 +287,13 @@ def mine_new_block_by_winner_node(request: HttpRequest):
             previous_hash = real_estate_blockchain.hash(previous_block_copy)
             new_block = real_estate_blockchain.create_block(proof=new_proof["new_proof"], previous_block_hash=previous_hash, miner_address=data.get(
                 "mined_by"), block_nonce=new_proof["hash_operation"])
+
             new_transaction: transactionsModel = real_estate_blockchain.add_transaction(
                 transaction_info={
                     "transaction_type": "miner_reward",
                     "new_trx": data.get("new_trx"),
                 })
+
             real_estate_blockchain.real_estate_transactions.append(
                 new_transaction.transaction_information()
             )
@@ -295,11 +307,13 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 if transaction.get("transaction_type") == "tokenization":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
+
                     current_user: userModel = userModel.objects.filter(
                         wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
 
                     current_trx.transaction_nonce = current_user.user_transactions_count
                     current_user.user_transaction_counter()
+
                     current_user.wallet.inventory -= float(
                         current_trx.transaction_fee)
                     current_user.wallet.save()
@@ -311,7 +325,9 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system: blockchainModel = blockchainModel.objects.filter(
                         blockchain_address__iexact="0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)").first()
                     system.blockchain_inventory += float(
-                        current_trx.transaction_fee) - current_node_reward
+                        current_trx.transaction_fee) - float(
+                        current_trx.transaction_fee) * 0.3
+
                     system.save()
 
                     current_trx.transaction_position_in_block = index + 1
@@ -339,7 +355,6 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
                     transactions_hashes.append(current_trx.transaction_hash)
-                    
 
                 elif transaction.get("transaction_type") == "buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -386,7 +401,6 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
                     transactions_hashes.append(current_trx.transaction_hash)
-                    
 
                 elif transaction.get("transaction_type") == "accept_buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -430,7 +444,6 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
                     transactions_hashes.append(current_trx.transaction_hash)
-                    
 
                 elif transaction.get("transaction_type") == "reject_buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -474,7 +487,6 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
                     transactions_hashes.append(current_trx.transaction_hash)
-                    
 
                 elif transaction.get("transaction_type") == "buy_operation":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -523,7 +535,6 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
                     transactions_hashes.append(current_trx.transaction_hash)
-                    
 
                 elif transaction.get("transaction_type") == "sell_operation":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -593,16 +604,17 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
                     transactions_hashes.append(current_trx.transaction_hash)
-                    
-                    
+
                 elif transaction.get("transaction_type") == "miner_reward":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
+
                     current_system: blockchainModel = blockchainModel.objects.filter(
                         blockchain_address__iexact=current_trx.transaction_from_address).first()
 
                     current_trx.transaction_nonce = current_system.blockchain_transaction_count
                     current_system.blockchain_transaction_counter()
+
                     current_trx.transaction_value = current_node_reward
                     # current_node_reward += float(current_trx.transaction_value)
                     # current_system.blockchain_inventory -= float(
@@ -629,28 +641,21 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
                     transactions_hashes.append(current_trx.transaction_hash)
-                    
-                    
 
-
-
-
-                
-            merkel_root_hash = real_estate_blockchain.merkel_tree_root_hash(transactions_hashes)
-
+            merkel_root_hash = real_estate_blockchain.merkel_tree_root_hash(
+                transactions_hashes)
 
             miner_node: nodeModel = nodeModel.objects.filter(
                 node_address__iexact=data.get("mined_by")).first()
             miner_node.node_inventory += current_node_reward
             miner_node.save()
 
-
             new_block.block_merkel_tree_root_hash = merkel_root_hash
-            
+
             new_block.block_reward = current_node_reward
             new_block_info: dict = new_block.block_information()
             new_block_info.pop("block_hash")
-            # new_block_info["transactions"] = None
+
             new_block_hash = real_estate_blockchain.hash(
                 block=new_block_info)
             new_block.block_hash = new_block_hash
