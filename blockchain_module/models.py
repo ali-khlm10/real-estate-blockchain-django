@@ -157,3 +157,13 @@ class blockchainModel(models.Model):
 
     def blockchain_transaction_counter(self):
         self.blockchain_transaction_count += 1
+
+
+# //////////////////////////////////////////////
+
+
+class merkelTreeHashesModel(models.Model):
+    current_hash = models.CharField(
+        verbose_name="هش فعلی", max_length=500, null=True, blank=True)
+    combined_hash = models.CharField(
+        verbose_name="هش ترکیب شده", max_length=500, null=True, blank=True)

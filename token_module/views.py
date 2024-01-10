@@ -272,6 +272,7 @@ def mine_new_block_by_winner_node(request: HttpRequest):
             if response.json()["status"]:
                 # print(response.json()["status"])
                 verification_counter += 1
+
         if verification_counter >= (nodes.count())*2 / 3:
             previous_hash = real_estate_blockchain.hash(previous_block_copy)
             new_block = real_estate_blockchain.create_block(proof=new_proof["new_proof"], previous_block_hash=previous_hash, miner_address=data.get(
@@ -285,6 +286,8 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 new_transaction.transaction_information()
             )
             current_node_reward: float = 0.0
+
+            transactions_hashes = []
 
             for index, transaction in enumerate(real_estate_blockchain.real_estate_transactions):
                 transaction: dict
@@ -335,6 +338,8 @@ def mine_new_block_by_winner_node(request: HttpRequest):
 
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
+                    transactions_hashes.append(current_trx.transaction_hash)
+                    
 
                 elif transaction.get("transaction_type") == "buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -380,6 +385,8 @@ def mine_new_block_by_winner_node(request: HttpRequest):
 
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
+                    transactions_hashes.append(current_trx.transaction_hash)
+                    
 
                 elif transaction.get("transaction_type") == "accept_buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -422,6 +429,8 @@ def mine_new_block_by_winner_node(request: HttpRequest):
 
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
+                    transactions_hashes.append(current_trx.transaction_hash)
+                    
 
                 elif transaction.get("transaction_type") == "reject_buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -464,6 +473,8 @@ def mine_new_block_by_winner_node(request: HttpRequest):
 
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
+                    transactions_hashes.append(current_trx.transaction_hash)
+                    
 
                 elif transaction.get("transaction_type") == "buy_operation":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -511,15 +522,15 @@ def mine_new_block_by_winner_node(request: HttpRequest):
 
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
+                    transactions_hashes.append(current_trx.transaction_hash)
+                    
 
                 elif transaction.get("transaction_type") == "sell_operation":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
-
                     trx_data: dict = json.loads(current_trx.transaction_data)
-                    remaining_cost = trx_data.get("remainig_cost")
+                    remaining_cost = trx_data.get("remaining_cost")
                     buy_id = trx_data.get("buy_id")
-                    print(trx_data)
 
                     current_user: userModel = userModel.objects.filter(
                         wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
@@ -543,6 +554,25 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system.blockchain_inventory -= float(remaining_cost)
                     system.save()
 
+                    buy: buyModel = buyModel.objects.filter(id=buy_id).first()
+                    for item in buy.finalized_buy.all():
+                        item: buyStatusModel
+                        item.pending = False
+                        item.is_finalized = True
+                        item.save()
+
+                    for item in buy.buy.all():
+                        item: sellModel
+                        item.sell_status = True
+                        item.save()
+
+                    token_id: propertyTokenModel = propertyTokenModel.objects.filter(
+                        token_id=trx_data.get("token_id")).first()
+                    token_id.property_owner_address = current_trx.transaction_to_address
+                    token_id.property_of_token.property_owner_address = current_trx.transaction_to_address
+                    token_id.save()
+                    token_id.property_of_token.save()
+
                     current_trx.transaction_position_in_block = index + 1
                     current_trx.transaction_block = new_block
 
@@ -560,21 +590,11 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                         field.not_published = False
                         field.save()
 
-                    buy: buyModel = buyModel.objects.filter(id=buy_id).first()
-                    for item in buy.finalized_buy.all():
-                        item: buyStatusModel
-                        item.pending = False
-                        item.is_finalized = True
-                        item.save()
-
-                    for item in buy.buy.all():
-                        item: sellModel
-                        item.sell_status = True
-                        item.save()
-
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
-
+                    transactions_hashes.append(current_trx.transaction_hash)
+                    
+                    
                 elif transaction.get("transaction_type") == "miner_reward":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
@@ -608,12 +628,25 @@ def mine_new_block_by_winner_node(request: HttpRequest):
 
                     real_estate_blockchain.real_estate_transactions[index] = current_trx.transaction_information(
                     )
+                    transactions_hashes.append(current_trx.transaction_hash)
+                    
+                    
+
+
+
+
+                
+            merkel_root_hash = real_estate_blockchain.merkel_tree_root_hash(transactions_hashes)
+
 
             miner_node: nodeModel = nodeModel.objects.filter(
                 node_address__iexact=data.get("mined_by")).first()
             miner_node.node_inventory += current_node_reward
             miner_node.save()
 
+
+            new_block.block_merkel_tree_root_hash = merkel_root_hash
+            
             new_block.block_reward = current_node_reward
             new_block_info: dict = new_block.block_information()
             new_block_info.pop("block_hash")

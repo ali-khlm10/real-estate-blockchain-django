@@ -930,14 +930,18 @@ def add_sell_operation_trx_and_mine_block(data: dict):
             "transaction_type": "sell_operation",
             "data": data,
             "transaction_fee": data.get("transaction_fee"),
-            "remaining_cost": remaining_cost,
+            "remaining_cost": str(remaining_cost),
             "buy_id": buy_id,
 
         }
     )
     
+    
     replace_transactions_result: bool = real_estate_blockchain.replace_transactions(
         trx=create_new_transaction.get("transaction"))
+
+    print(real_estate_blockchain.real_estate_transactions[-1])
+
 
     if replace_transactions_result:
         # print(len(real_estate_blockchain.real_estate_transactions))

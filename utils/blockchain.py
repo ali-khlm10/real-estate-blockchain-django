@@ -1,5 +1,5 @@
 import requests
-from blockchain_module.models import blockModel, transactionsModel, blockchainModel, transactionStatusModel, blockStatusModel
+from blockchain_module.models import blockModel, transactionsModel, blockchainModel, transactionStatusModel, blockStatusModel, merkelTreeHashesModel
 import random
 import json
 import hashlib
@@ -381,7 +381,6 @@ class Blockchain:
                 }
             )
 
-
             new_transaction.save()
 
             new_transaction_status: transactionStatusModel = transactionStatusModel.objects.create()
@@ -448,6 +447,74 @@ class Blockchain:
             if not response.json()["status"]:
                 return False
         return True
+
+    # ///////////////////////////////////////////////////////////
+
+    def is_chain_valid(self, chain):
+        previous_block = chain[0]
+        block_index = 1
+        while block_index < len(chain):
+            current_block = chain[block_index]
+            if current_block["previous_hash"] != self.hash(previous_block):
+                return False
+            previous_proof = previous_block["proof"]
+            current_proof = current_block["proof"]
+            hash_operation = hashlib.sha256(
+                str(current_proof**3 - previous_proof**3).encode()).hexdigest()
+            if hash_operation[:5] != '00000':
+                return False
+            previous_block = current_block
+            block_index += 1
+        return True
+
+    # /////////////////////////////////////////////////////////////////
+
+    def merkel_tree_root_hash(self, hashes):
+        print(hashes)
+        if len(hashes) == 1:
+            merkel_hash: merkelTreeHashesModel = merkelTreeHashesModel.objects.create()
+            merkel_hash.current_hash = hashes[0]
+            merkel_hash.save()
+            return hashes[0]
+
+        new_hashes = []
+        for i in range(0, len(hashes)-1, 2):
+            combined_hash: str = hashes[i] + hashes[i+1]
+            new_hash = hashlib.sha512(
+                combined_hash.encode('utf-8')).hexdigest()
+            
+            merkel_hash: merkelTreeHashesModel = merkelTreeHashesModel.objects.create()
+            merkel_hash.current_hash = hashes[i]
+            merkel_hash.combined_hash = hashes[i+1]
+            merkel_hash.save()
+            
+            new_hashes.append(new_hash)
+
+        if len(hashes) % 2 == 1:
+            combined_hash = hashes[-1] + hashes[-1]
+            new_hash = hashlib.sha512(
+                combined_hash.encode('utf-8')).hexdigest()
+            
+            merkel_hash: merkelTreeHashesModel = merkelTreeHashesModel.objects.create()
+            merkel_hash.current_hash = hashes[-1]
+            merkel_hash.combined_hash = hashes[-1]
+            merkel_hash.save()
+            
+            new_hashes.append(new_hash)
+
+        return self.merkel_tree_root_hash(new_hashes)
+
+    # def verify_transaction(transaction_hash, merkle_root, transaction_hashes):
+    #     if transaction_hash in transaction_hashes and merkle_root == build_merkle_tree(transaction_hashes):
+    #         return True
+    #     return False
+
+    # # Example usage
+    # block_transaction_hashes = ["hash1", "hash2", "hash3", "hash4"]
+    # merkle_root = build_merkle_tree(block_transaction_hashes)
+    # transaction_hash_to_verify = "hash2"
+    # is_valid = verify_transaction(transaction_hash_to_verify, merkle_root, block_transaction_hashes)
+    # print(is_valid)
 
 
 real_estate_blockchain: Blockchain = Blockchain()

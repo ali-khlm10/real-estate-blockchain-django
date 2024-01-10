@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import buyRequestModel, buyRequestStatusModel, accept_rejectBuyRequestModel, buyModel, buyStatusModel
+from .models import buyRequestModel, buyRequestStatusModel, accept_rejectBuyRequestModel, buyModel, buyStatusModel, sellModel
 # Register your models here.
 
 
@@ -40,8 +40,16 @@ class buyStatusAdmin(admin.ModelAdmin):
     ]
 
 
+class sellAdmin(admin.ModelAdmin):
+    list_display = [
+        "finalizing_sell_by",
+        "finalizing_sell_to",
+    ]
+
+
 admin.site.register(buyRequestModel, buyRequestAdmin)
 admin.site.register(buyRequestStatusModel, buyRequestStatusAdmin)
 admin.site.register(accept_rejectBuyRequestModel, accept_rejectBuyRequestAdmin)
 admin.site.register(buyModel, buyAdmin)
 admin.site.register(buyStatusModel, buyStatusAdmin)
+admin.site.register(sellModel, sellAdmin)
