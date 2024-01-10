@@ -21,9 +21,18 @@
 
 }
 
+.home_body_no_item {
+    min-height: 450px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .home_body {
     /* background-color: blue; */
+    min-height: 500px;
     display: flex;
     flex-flow: wrap row;
     justify-content: flex-end;

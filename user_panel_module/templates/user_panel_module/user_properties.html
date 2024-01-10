@@ -44,6 +44,11 @@
             </section>             
         </div>
     </div>
+
+
+{% comment %} ////////////////////////////////////////////////// {% endcomment %}
+
+
     <section class="dashboard_container">
 
             <section class="home_body_header">
@@ -108,6 +113,7 @@
                             </table>       
                         </table>
                     </main>
+
                     <div class="created_properties_body_and_header">
                         <footer class="created_properties">
                                 <span class="created_properties_title_of_footer">
@@ -147,6 +153,91 @@
 
                         </footer>
                     </div>
+
+                    
+                    <div class="bought_properties_body_and_header">
+                        <footer class="bought_properties">
+                                <span class="bought_properties_title_of_footer">
+                                    <h4>ملک های خریداری شده</h4>
+                                </span>
+                                <span id="bought_properties_body_of_footer">
+
+                                    {% for bought_token in user_bought_tokens %}
+                                        <section>
+                                            <div>
+                                                <label for="">عنوان ملک خریداری شده : </label>
+                                                {{bought_token.buyed_token.property_of_token.property_detailes.property_title}}
+                                            </div>
+                                            <div>
+                                                <label for="">شماره توکن ملک : </label>
+                                                <p>
+                                                    {{bought_token.buyed_token.token_id}}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <label for="">وضعیت توکن ملک : </label>
+                                                {% if bought_token.buyed_token.is_published %}
+                                                <p style="color:green;">
+                                                    منتشر شده در بازار املاک.
+                                                </p>
+                                                {% else %}
+                                                <p style="color:yellow;">
+                                                    در صف انتشار
+                                                </p>
+                                                {% endif %}
+                                            </div>
+                                            <a href="{% url "property-detailes" property_id=bought_token.buyed_token.property_of_token.id %}">نمایش جزئیات</a>                            
+                                        </section> 
+                                    {% endfor %}
+                                    
+                                </span>
+                           
+
+                        </footer>
+                    </div>
+
+                    <div class="sold_properties_body_and_header">
+                        <footer class="sold_properties">
+                                <span class="sold_properties_title_of_footer">
+                                    <h4>ملک های فروخته شده</h4>
+                                </span>
+                                <span id="sold_properties_body_of_footer">
+
+                                    {% for sold_token in user_sold_tokens %}
+                                        <section>
+                                            <div>
+                                                <label for="">عنوان ملک فروخته شده : </label>
+                                                {{sold_token.selled_token.property_of_token.property_detailes.property_title}}
+                                            </div>
+                                            <div>
+                                                <label for="">شماره توکن ملک : </label>
+                                                <p>
+                                                    {{sold_token.selled_token.token_id}}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <label for="">وضعیت توکن ملک : </label>
+                                                {% if sold_token.selled_token.is_published %}
+                                                <p style="color:green;">
+                                                    منتشر شده در بازار املاک.
+                                                </p>
+                                                {% else %}
+                                                <p style="color:yellow;">
+                                                    در صف انتشار
+                                                </p>
+                                                {% endif %}
+                                            </div>
+                                            <a href="{% url "property-detailes" property_id=sold_token.selled_token.property_of_token.id %}">نمایش جزئیات</a>                            
+                                        </section> 
+                                    {% endfor %}
+                                    
+                                </span>
+                           
+
+                        </footer>
+                    </div>
+
+
                 </div>
                 {% render_partial 'user_panel_module.views.user_panel_menu_component' %}
                 

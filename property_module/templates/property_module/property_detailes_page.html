@@ -75,13 +75,15 @@
             <section class = "property_img_and_button">
                 <img src="{{property.property_detailes.property_image.url}}" alt="تصویر ملک">
                 {% if request.user.wallet.wallet_address == property.property_owner_address %}
-                <span style="color:green; font-weight:bold; padding:10px 20px; border:solid 1px white; border-radius:5px;">
-                    شما مالک این ملک هستید
-                </span>
+                    <span style="color:green; font-weight:bold; padding:10px 20px; border:solid 1px white; border-radius:5px;">
+                        شما مالک این ملک هستید
+                    </span>
                 {%elif status%}
-                <span style="color:skyblue; font-weight:bold; padding:10px 20px; border:solid 1px white; border-radius:5px;">
-                    شما قبلا درخواست خرید را به این ملک ارسال کرده اید
-                </span> 
+                    <span style="color:skyblue; font-weight:bold; padding:10px 20px; border:solid 1px white; border-radius:5px;">
+                        شما قبلا درخواست خرید را به این ملک ارسال کرده اید
+                    </span> 
+                {%elif status=='super_user'%}
+                    <span></span>   
                 {% else %}
                     {% for token in property.property_of_token.all %}
                         <a href="#" id= "start_buy_request" data-token_id="{{token.token_id}}"   data-property_title="{{property.property_detailes.property_title}}" data-property_price="{{property.property_detailes.property_price}}">درخواست خرید</a>

@@ -15,22 +15,31 @@
             </header>
         </section>
         
-        <section class="home_body">
 
-            {% for property in properties %}
+            {% if not properties %}
             
-            <section>
-                <img src="{{property.property_detailes.property_image.url}}" alt="">
-                <h3>{{property.property_detailes.property_title}}</h3>
-                <p>{{property.property_detailes.property_short_description}}</p>
-                <a href="{% url "property-detailes" property_id=property.id %}">جزئیات</a>
-                {% comment %} <button>جزئیات</button> {% endcomment %}
-            </section>
-       
-            {% endfor %}
-        
+                <section class="home_body_no_item">
+                    آیتمی برای نمایش وجود ندارد 
+                </section>
+            {%else%}
 
-        </section>
+            <section class="home_body">
+
+                {% for property in properties %}
+                
+                    <section>
+                        <img src="{{property.property_detailes.property_image.url}}" alt="">
+                        <h3>{{property.property_detailes.property_title}}</h3>
+                        <p>{{property.property_detailes.property_short_description}}</p>
+                        <a href="{% url "property-detailes" property_id=property.id %}">جزئیات</a>
+                        {% comment %} <button>جزئیات</button> {% endcomment %}
+                    </section>
+        
+                {% endfor %}
+            </section>
+
+            {% endif %}
+        
 
     </main>
 
