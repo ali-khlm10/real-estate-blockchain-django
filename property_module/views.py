@@ -74,7 +74,19 @@ class propertyDetailesPageView(View):
             id=property_id).first()
         current_user: userModel = userModel.objects.filter(
             id=request.user.id).first()
-        if not current_user.is_superuser:
+
+        if current_user.is_gov_agent:
+            context = {
+                "property": property,
+                "status": "gov_agent",
+            }
+
+        elif current_user.is_superuser:
+            context = {
+                "property": property,
+                "status": "super_user",
+            }
+        else:
             sended_buy_requests: buyRequestModel = buyRequestModel.objects.filter(
                 buy_request_from=current_user.wallet.wallet_address, request__pending=True)
             # print(sended_buy_requests)
@@ -89,10 +101,6 @@ class propertyDetailesPageView(View):
                 "property": property,
                 "status": status,
             }
-        else:
-            context = {
-                "property": property,
-                "status": "super_user",
-            }
+            
         return render(request, "property_module/property_detailes_page.html", context)
 # /////////////////////////////////////////////////////////////////
