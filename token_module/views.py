@@ -14,7 +14,7 @@ from .models import propertyTokenModel
 import hashlib
 from utils.blockchain import real_estate_blockchain
 from blockchain_module.models import blockStatusModel, transactionsModel, blockchainModel, transactionStatusModel
-from token_module.models import propertyTokenModel
+from token_module.models import propertyTokenModel, smartContractModel
 from buy_and_sell_module.models import buyModel, buyStatusModel, sellModel
 
 
@@ -88,7 +88,7 @@ def create_token(data: dict):
                          "X-CSRFToken": csrf_token})
             print(response)
             if response.json()["status"]:
-                print("hello")
+                print("block added")
                 real_estate_blockchain.real_estate_transactions = []
                 real_estate_blockchain.real_estate_chain = real_estate_blockchain.get_real_estate_chain()
 
@@ -327,8 +327,16 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system.blockchain_inventory += float(
                         current_trx.transaction_fee) - float(
                         current_trx.transaction_fee) * 0.3
-
                     system.save()
+
+                    smart_contract: smartContractModel = smartContractModel.objects.filter(
+                        contract_name="propertyـtokenization_function").first()
+
+                    smart_contract.contract_inventory += float(
+                        current_trx.transaction_fee) - float(
+                        current_trx.transaction_fee) * 0.3
+                    smart_contract.nonce += 1
+                    smart_contract.save()
 
                     current_trx.transaction_position_in_block = index + 1
                     current_trx.transaction_block = new_block
@@ -359,11 +367,13 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 elif transaction.get("transaction_type") == "buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
+                    
                     current_user: userModel = userModel.objects.filter(
                         wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
 
                     current_trx.transaction_nonce = current_user.user_transactions_count
                     current_user.user_transaction_counter()
+                    
                     current_user.wallet.inventory -= float(
                         current_trx.transaction_fee)
                     current_user.wallet.inventory -= float(
@@ -377,8 +387,10 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system: blockchainModel = blockchainModel.objects.filter(
                         blockchain_address__iexact="0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)").first()
                     system.blockchain_inventory += float(
-                        current_trx.transaction_fee) - current_node_reward
-                    system.blockchain_inventory += current_trx.transaction_value
+                        current_trx.transaction_fee) - float(
+                        current_trx.transaction_fee) * 0.3
+                    system.blockchain_inventory += float(
+                        current_trx.transaction_value)
                     system.save()
 
                     current_trx.transaction_position_in_block = index + 1

@@ -34,7 +34,7 @@ $(document).ready(function () {
                 property_price,
                 result.prepayment
               );
-              // console.log(response.signature);
+              console.log(response.signature);
             } else {
               console.log(response.message);
             }
@@ -90,6 +90,12 @@ $(document).ready(function () {
             };
 
             resolve(result);
+          } 
+          else {
+            var result = {
+              status: false,
+            };
+            resolve(result);
           }
         });
     });
@@ -132,10 +138,9 @@ $(document).ready(function () {
       .off("click")
       .one("click", function (e) {
         e.preventDefault();
-        console.log("java script");
+        console.log("starte send buy request ...");
 
         $(this).addClass("loading");
-
 
         var buying_request_modal_element = document.getElementById(
           "buy_request_token_modal"
@@ -186,12 +191,10 @@ $(document).ready(function () {
               console.log(response.message);
             }
             $("#do_buy_request").removeClass("loading");
-
           },
           error: function () {
             console.log("مشکل در ارتباط با سرور");
             $("#do_buy_request").removeClass("loading");
-
           },
         });
       });

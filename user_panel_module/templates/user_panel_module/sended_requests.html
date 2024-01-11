@@ -131,8 +131,8 @@
                                         <div id="buy_property_div">
                                             <hr>
                                             <span>
-                                                {% for item in buy_req.buy_request.all %}
-                                                <a id="buy_operation" href="#" data-buy_request_prepayment="{{buy_req.buy_request_prepayment}}" data-token_id="{{buy_req.token.token_id}}" data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-accepted_buy_request="{{item.id}}"> خرید ملک </a>
+                                                {% for accept_reject_item in buy_req.buy_request.all %}
+                                                <a id="buy_operation" href="#" data-buy_request_prepayment="{{buy_req.buy_request_prepayment}}" data-token_id="{{buy_req.token.token_id}}" data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-accepted_buy_request="{{accept_reject_item.id}}"> خرید ملک </a>
                                                 
                                                 {% endfor %}
                                             </span>

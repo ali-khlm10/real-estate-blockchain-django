@@ -161,6 +161,7 @@ class sendedRequestsView(View):
             id=request.user.id).first()
         buy_requests: buyRequestModel = buyRequestModel.objects.filter(
             buy_request_from__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date")
+        
         buy_finalazed_status_list = []
 
         for buy_request in buy_requests:

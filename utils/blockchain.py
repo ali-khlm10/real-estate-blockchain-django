@@ -504,9 +504,9 @@ class Blockchain:
             merkel_hash.combined_hash = hashes[-1]
             merkel_hash.save()
 
-            new_hashes.append(new_hash[:64])
+            new_hashes.append('0x' + new_hash[:64])
 
-        return self.merkel_tree_root_hash('0x' + new_hashes)
+        return self.merkel_tree_root_hash(new_hashes)
 
     # def verify_transaction(transaction_hash, merkle_root, transaction_hashes):
     #     if transaction_hash in transaction_hashes and merkle_root == build_merkle_tree(transaction_hashes):
