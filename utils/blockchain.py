@@ -272,6 +272,7 @@ class Blockchain:
                     "token_id": transaction_info.get(
                         "data").get("accept_reject_buy_request_information").get("token_id"),
                     "status": "accepted",
+                    "previous_prepayment" : transaction_info.get("previous_prepayment"),
                 }
             )
 
@@ -306,6 +307,7 @@ class Blockchain:
                     "token_id": transaction_info.get(
                         "data").get("accept_reject_buy_request_information").get("token_id"),
                     "status": "rejected",
+                    "previous_prepayment" : transaction_info.get("previous_prepayment"),
                 }
             )
 

@@ -163,17 +163,17 @@ def add_buy_request_trx_and_mine_block(data: dict):
     sender = buy_request_information.get("sender")
     receiver = buy_request_information.get("receiver")
     token_id = buy_request_information.get("token_id")
-    
+
     token: propertyTokenModel = propertyTokenModel.objects.filter(
         token_id__iexact=token_id).first()
-    
+
     buy_request: buyRequestModel = buyRequestModel.objects.create()
     buy_request.buy_request_from = sender
     buy_request.buy_request_to = receiver
     buy_request.token = token
     buy_request.buy_request_prepayment = float(data.get("prepayment"))
     buy_request.save()
-    
+
     buy_request_status: buyRequestStatusModel = buyRequestStatusModel.objects.create()
     buy_request_status.request = buy_request
     buy_request_status.save()
@@ -248,8 +248,10 @@ def create_signature_to_accept_reject_buy_request(request: HttpRequest):
             token_id: str = data.get("token_id")
             buyer_address: str = data.get("buyer_address")
             operation: str = data.get("operation")
+
             current_token: propertyTokenModel = propertyTokenModel.objects.filter(
                 token_id__iexact=token_id).first()
+
             if current_token:
                 if operation == "accepting":
                     sender: str = request.user.wallet.wallet_address
@@ -321,6 +323,7 @@ def accepting_buy_request(request: HttpRequest):
                 "status": False,
                 "message": "خطا در تایید امضای مالک!!"
             }
+
         return JsonResponse(response_data)
 
 
@@ -337,6 +340,7 @@ def rejecting_buy_request(request: HttpRequest):
                 "status": False,
                 "message": "خطا در تایید امضای مالک!!"
             }
+
         return JsonResponse(response_data)
 
 
@@ -375,6 +379,9 @@ def accept_reject_buy_request_signature_verification(data: dict):
     current_sender: userModel = userModel.objects.filter(
         wallet__wallet_address__iexact=accept_reject_buy_request_information.get("sender")).first()
 
+    current_token: propertyTokenModel = propertyTokenModel.objects.filter(
+        token_id=accept_reject_buy_request_information.get("token_id")).first()
+
     sender_public_key_str: str = current_sender.wallet.public_key[2:-1]
     sender_public_key_str = str(
         sender_public_key_str).split("\\n")
@@ -390,7 +397,14 @@ def accept_reject_buy_request_signature_verification(data: dict):
         public_key=sender_public_key, signature=bytes.fromhex(accept_reject_buy_request_signature), message=message_str)
 
     if verify_result:
-        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")):
+        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")) and real_estate_blockchain.is_chain_valid(
+                real_estate_blockchain.real_estate_chain) and current_sender.wallet.wallet_address == current_token.property_owner_address:
+
+            # print(current_sender.wallet.wallet_address ==
+            #       current_token.property_owner_address)
+            # print(real_estate_blockchain.is_chain_valid(
+            #     real_estate_blockchain.real_estate_chain))
+
             return True
         else:
             return False
@@ -418,10 +432,12 @@ def add_accept_buy_request_trx_and_mine_block(data: dict):
     sender = accept_buy_request_information.get("sender")
     buyer = accept_buy_request_information.get("receiver")
     token_id = accept_buy_request_information.get("token_id")
+    
     token: propertyTokenModel = propertyTokenModel.objects.filter(
         token_id__iexact=token_id).first()
+    
     buy_request: buyRequestModel = buyRequestModel.objects.filter(
-        token=token, buy_request_from=buyer, buy_request_to=sender).first()
+        token=token, buy_request_from=buyer, buy_request_to=sender).last()
 
     for item in buy_request.request.all():
         item: buyRequestStatusModel
@@ -443,6 +459,7 @@ def add_accept_buy_request_trx_and_mine_block(data: dict):
             "transaction_type": "accept_buy_request",
             "data": data,
             "transaction_fee": data.get("transaction_fee"),
+            "previous_prepayment" : data.get("prepayment"),
         }
     )
 
@@ -461,7 +478,7 @@ def add_accept_buy_request_trx_and_mine_block(data: dict):
                 "receiver": miner_node.node_address,
                 "value": 0.0,
             }
-            print()
+            
             response = requests.post(
                 f"{miner_node.node_url}/mine_new_block_by_winner_node/",
                 data=json.dumps({"mined_by": miner_node.node_address,
@@ -470,13 +487,13 @@ def add_accept_buy_request_trx_and_mine_block(data: dict):
                          "X-CSRFToken": csrf_token})
             print(response)
             if response.json()["status"]:
-                print("hello")
+                print("added block")
                 real_estate_blockchain.real_estate_transactions = []
                 real_estate_blockchain.real_estate_chain = real_estate_blockchain.get_real_estate_chain()
 
         return {
             "status": True,
-            "message": f"درخواست خریدار مورد نظر پذیرفته شد و تراکنش مربوطه در بلوک شماره {create_new_transaction.get('block_index')} قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد نتیجه به خریدار اعلام خواهد شد.",
+            "message": f"درخواست خریدار مورد نظر توسط شما پذیرفته شد و تراکنش مربوطه در بلوک شماره {create_new_transaction.get('block_index')} قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد نتیجه به خریدار اعلام خواهد شد.",
         }
     else:
         return {
@@ -492,10 +509,12 @@ def add_reject_buy_request_trx_and_mine_block(data: dict):
     sender = reject_buy_request_information.get("sender")
     buyer = reject_buy_request_information.get("receiver")
     token_id = reject_buy_request_information.get("token_id")
+    
     token: propertyTokenModel = propertyTokenModel.objects.filter(
         token_id__iexact=token_id).first()
+    
     buy_request: buyRequestModel = buyRequestModel.objects.filter(
-        token=token, buy_request_from=buyer, buy_request_to=sender).first()
+        token=token, buy_request_from=buyer, buy_request_to=sender).last()
 
     for item in buy_request.request.all():
         item: buyRequestStatusModel
@@ -516,6 +535,7 @@ def add_reject_buy_request_trx_and_mine_block(data: dict):
             "transaction_type": "reject_buy_request",
             "data": data,
             "transaction_fee": data.get("transaction_fee"),
+            "previous_prepayment" : data.get("prepayment"),
         }
     )
 
@@ -543,7 +563,7 @@ def add_reject_buy_request_trx_and_mine_block(data: dict):
                          "X-CSRFToken": csrf_token})
             print(response)
             if response.json()["status"]:
-                print("hello")
+                print("added block")
                 real_estate_blockchain.real_estate_transactions = []
                 real_estate_blockchain.real_estate_chain = real_estate_blockchain.get_real_estate_chain()
 

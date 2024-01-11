@@ -66,7 +66,7 @@ $(document).ready(function () {
     ).innerHTML = buyer_address;
     reject_buy_request_modal_element.querySelector(
       "#buy_request_buyer_transaction_fee"
-    ).innerHTML = parseFloat(property_price) * 0.0005;
+    ).innerHTML = parseFloat(property_price) * 0.000005;
     reject_buy_request_modal_element.querySelector(
       "#buy_request_buyer_prepayment"
     ).innerHTML = prepayment;
@@ -104,7 +104,8 @@ $(document).ready(function () {
           signature: response.signature,
           accept_reject_buy_request_information:
             response.accept_reject_buy_request_information,
-          transaction_fee: parseFloat(property_price) * 0.0005,
+          transaction_fee: parseFloat(property_price) * 0.000005,
+          prepayment: prepayment,
         });
 
         var reject_buy_request_modal_element = document.getElementById(

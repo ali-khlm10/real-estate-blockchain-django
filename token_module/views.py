@@ -367,13 +367,13 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 elif transaction.get("transaction_type") == "buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
-                    
+
                     current_user: userModel = userModel.objects.filter(
                         wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
 
                     current_trx.transaction_nonce = current_user.user_transactions_count
                     current_user.user_transaction_counter()
-                    
+
                     current_user.wallet.inventory -= float(
                         current_trx.transaction_fee)
                     current_user.wallet.inventory -= float(
@@ -417,11 +417,13 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 elif transaction.get("transaction_type") == "accept_buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
+
                     current_user: userModel = userModel.objects.filter(
                         wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
 
                     current_trx.transaction_nonce = current_user.user_transactions_count
                     current_user.user_transaction_counter()
+
                     current_user.wallet.inventory -= float(
                         current_trx.transaction_fee)
                     current_user.wallet.save()
@@ -433,7 +435,8 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system: blockchainModel = blockchainModel.objects.filter(
                         blockchain_address__iexact="0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)").first()
                     system.blockchain_inventory += float(
-                        current_trx.transaction_fee) - current_node_reward
+                        current_trx.transaction_fee) - float(
+                        current_trx.transaction_fee) * 0.3
                     system.save()
 
                     current_trx.transaction_position_in_block = index + 1
@@ -460,11 +463,13 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 elif transaction.get("transaction_type") == "reject_buy_request":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
+
                     current_user: userModel = userModel.objects.filter(
                         wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
 
                     current_trx.transaction_nonce = current_user.user_transactions_count
                     current_user.user_transaction_counter()
+
                     current_user.wallet.inventory -= float(
                         current_trx.transaction_fee)
                     current_user.wallet.save()
@@ -476,8 +481,19 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system: blockchainModel = blockchainModel.objects.filter(
                         blockchain_address__iexact="0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)").first()
                     system.blockchain_inventory += float(
-                        current_trx.transaction_fee) - current_node_reward
+                        current_trx.transaction_fee) - float(
+                        current_trx.transaction_fee) * 0.3
+
+                    trx_data: dict = json.loads(current_trx.transaction_data)
+                    previous_prepayment = trx_data.get("previous_prepayment")
+                    buyer: userModel = userModel.objects.filter(
+                        wallet__wallet_address__iexact=current_trx.transaction_to_address).first()
+                    buyer.wallet.inventory += float(previous_prepayment)
+                    buyer.wallet.save()
+
+                    system.blockchain_inventory -= float(previous_prepayment)
                     system.save()
+
 
                     current_trx.transaction_position_in_block = index + 1
                     current_trx.transaction_block = new_block
