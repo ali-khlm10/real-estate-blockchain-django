@@ -1,0 +1,134 @@
+.trxs_body_main {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 450px;
+}
+
+.trxs_body_header {
+    /* background-color: yellow; */
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    /* flex-grow: 1; */
+    /* width: 100%; */
+    border-bottom: solid 1px white;
+
+
+}
+
+.mined_trxs {
+    /* background-color: blue; */
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    /* min-height: 500px; */
+    padding: 30px;
+}
+
+.mined_trxs table {
+    width: 100%;
+    border: solid 1px #78999f;
+    border-radius: 5px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    table-layout: fixed;
+}
+
+.mined_trxs table thead,
+.mined_trxs table tbody {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-between;
+    align-items: center;
+    direction: rtl;
+}
+
+.mined_trxs table thead {
+    border-radius: 5px 5px 0 0;
+    background-color: #67a4af;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+
+
+
+.mined_trxs table tbody .row_of_table{
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #396972;
+}
+
+
+.mined_trxs .row_of_table {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 2px 0;
+    padding: 20px 0;
+    border-radius: 5px;
+}
+
+.mined_trxs table thead .row_of_table {
+    padding: 0;
+}
+
+
+.mined_trxs .row_of_table #trx_operation {
+    flex-grow: 1;
+}
+
+
+.mined_trxs .row_of_table #trx_hash{
+    flex-grow: 4;
+    text-align: center;
+}
+
+.mined_trxs .row_of_table #trx_status {
+    flex-grow: 1;
+}
+
+
+/* ///////////////////////////////////// */
+
+.mined_trxs .row_of_table #trx_hash_number{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.mined_trxs .row_of_table #trx_hash_number a{
+    text-decoration: none;
+    color: skyblue;
+}
+
+/* //////////////////////////////// */
+
+.mined_trxs .row_of_table #trx_operation_style{
+    color: burlywood;
+    font-weight: bold;
+}
+
+.mined_trxs .row_of_table #trx_status_result{
+    color: green;
+    font-weight: bold;
+}

@@ -4,46 +4,50 @@
 
         <header class="menu">
 
-            <div class="login_register_container">
-
-                {% if request.user.is_authenticated %}
+            {% if current_port >= 5000 and current_port < 8000 %}
                 
-                    <div class="user_logo">
-                        {% if request.user.avatar %}
-                        <img src="{{request.user.avatar.url}}" alt="تصویر کاربر">
-                        {% else %}
-                        <img src="" alt="تصویر کاربر">
-                        {% endif %}
-                    </div>
+            {% else %}
+                <div class="login_register_container">
 
-                    <div class="user_detailes">
-                        <a id="user" href="#"> {{request.user.email}}</a>
-                        <div class="dropdown-content" id="myDropdown">
-                            <div class="flex_dropdown">
-                                <a href="{% url "user-dashboard" %}">حساب کاربری</a>
-                                <a href="{% url "logout-page" %}">خروج</a>
-                            </div>
-                        </div>           
-                    </div>                    
-                {% else %}
-                
-                    <div class="login_register">
-                        <a href="{% url "login-page" %}">ورود</a>/
-                        <a href="{% url "register-page" %}">ثبت نام</a>
-                    </div>
-                
-                {% endif %}
+                    {% if request.user.is_authenticated %}
+                    
+                        <div class="user_logo">
+                            {% if request.user.avatar %}
+                            <img src="{{request.user.avatar.url}}" alt="تصویر کاربر">
+                            {% else %}
+                            <img src="" alt="تصویر کاربر">
+                            {% endif %}
+                        </div>
+
+                        <div class="user_detailes">
+                            <a id="user" href="#"> {{request.user.email}}</a>
+                            <div class="dropdown-content" id="myDropdown">
+                                <div class="flex_dropdown">
+                                    <a href="{% url "user-dashboard" %}">حساب کاربری</a>
+                                    <a href="{% url "logout-page" %}">خروج</a>
+                                </div>
+                            </div>           
+                        </div>                    
+                    {% else %}
+                    
+                        <div class="login_register">
+                            <a href="{% url "login-page" %}">ورود</a>/
+                            <a href="{% url "register-page" %}">ثبت نام</a>
+                        </div>
+                    
+                    {% endif %}
 
 
-            </div>
+                </div>
+            {% endif %}
 
             <div class="menu_links">
                 <div>
-                    <a href="#">تراکنش ها</a>
+                    <a href="{% url "trxs-page" %}">تراکنش ها</a>
                 </div>
 
                 <div>
-                    <a href="{% url "blockchain-page" %}">بلاک ها</a>
+                    <a href="{% url "blocks-page" %}">بلاک ها</a>
                 </div>
 
                 <div>

@@ -18,8 +18,11 @@ class homeView(View):
         return render(request, "home_module/home_page.html", context)
 
 
-def site_header_partial(request):
-    context = {}
+def site_header_partial(request: HttpRequest):
+    current_port = request.META['SERVER_PORT']
+    context = {
+        "current_port": int(current_port),
+    }
     return render(request, "shared/site_header_partial.html", context=context)
 
 
