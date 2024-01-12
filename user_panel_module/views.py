@@ -121,7 +121,7 @@ class receivedRequestsView(View):
         current_user: userModel = userModel.objects.filter(
             id=request.user.id).first()
         buy_requests: buyRequestModel = buyRequestModel.objects.filter(
-            buy_request_to__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date").order_by("token")
+            buy_request_to__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date")
 
         buy_finalazed_status_list = []
         buy_ids = []

@@ -519,6 +519,7 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 elif transaction.get("transaction_type") == "buy_operation":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
+                    
                     current_user: userModel = userModel.objects.filter(
                         wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
 
@@ -539,8 +540,10 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system: blockchainModel = blockchainModel.objects.filter(
                         blockchain_address__iexact="0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)").first()
                     system.blockchain_inventory += float(
-                        current_trx.transaction_fee) - current_node_reward
-                    system.blockchain_inventory += current_trx.transaction_value
+                        current_trx.transaction_fee) - float(
+                        current_trx.transaction_fee) * 0.3
+                    system.blockchain_inventory += float(
+                        current_trx.transaction_value)
                     system.save()
 
                     current_trx.transaction_position_in_block = index + 1

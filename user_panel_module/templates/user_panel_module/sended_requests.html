@@ -66,7 +66,7 @@
                         <section>
 
                             <div>
-                                <label for="">درخواست به کاربر : </label>
+                                <label for="">درخواست خرید به کاربر : </label>
                                 <span>
                                     {{buy_req.buy_request_to}}
                                 </span>
@@ -117,7 +117,7 @@
                                         <div id="buy_property_div">
                                             <hr>
                                             <span style="color:yellow; font-weight: bold; font-family:'Byekan'; padding:10px 0;">
-                                            شما خرید ملک مورد نظر را نهایی کرده اید.
+                                            شما خرید ملک مورد نظر را نهایی کرده اید، لطفا منتظر پاسخ فروشنده بمانید.
                                             </span>
                                         </div>
                                     {%elif status == 'is_finalized' %}
@@ -132,7 +132,7 @@
                                             <hr>
                                             <span>
                                                 {% for accept_reject_item in buy_req.buy_request.all %}
-                                                <a id="buy_operation" href="#" data-buy_request_prepayment="{{buy_req.buy_request_prepayment}}" data-token_id="{{buy_req.token.token_id}}" data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-accepted_buy_request="{{accept_reject_item.id}}"> خرید ملک </a>
+                                                <a id="buy_operation" href="#" data-buy_request_prepayment="{{buy_req.buy_request_prepayment}}" data-token_id="{{buy_req.token.token_id}}" data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-accepted_buy_request="{{accept_reject_item.id}}"> نهایی کردن خرید ملک </a>
                                                 
                                                 {% endfor %}
                                             </span>

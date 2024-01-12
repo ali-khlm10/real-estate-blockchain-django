@@ -272,7 +272,7 @@ class Blockchain:
                     "token_id": transaction_info.get(
                         "data").get("accept_reject_buy_request_information").get("token_id"),
                     "status": "accepted",
-                    "previous_prepayment" : transaction_info.get("previous_prepayment"),
+                    "previous_prepayment": transaction_info.get("previous_prepayment"),
                 }
             )
 
@@ -307,7 +307,7 @@ class Blockchain:
                     "token_id": transaction_info.get(
                         "data").get("accept_reject_buy_request_information").get("token_id"),
                     "status": "rejected",
-                    "previous_prepayment" : transaction_info.get("previous_prepayment"),
+                    "previous_prepayment": transaction_info.get("previous_prepayment"),
                 }
             )
 
@@ -339,12 +339,8 @@ class Blockchain:
                 "transaction_type")
             new_transaction.transaction_value = float(transaction_info.get(
                 "data").get("remaining_cost"))
-            new_transaction.transaction_data = json.dumps(
-                {
-                    "token_id": transaction_info.get("data").get("buy_operation_information").get("token_id"),
-                    "operation": "buy_operation",
-                }
-            )
+            new_transaction.transaction_data = transaction_info.get(
+                "data").get("buy_operation_information").get("token_id")
 
             new_transaction.save()
 
@@ -401,7 +397,6 @@ class Blockchain:
 
 
 # /////////////////////////////////////////////////////////////////
-
 
     def replace_chain(self):
         nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
