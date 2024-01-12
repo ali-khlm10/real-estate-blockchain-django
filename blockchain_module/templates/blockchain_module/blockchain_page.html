@@ -5,17 +5,61 @@
 
 {% block content %}
 
-    {% if blocks %}
-        {% for block in blocks %}
+<div class="all_body">
 
-            <p>{{block.block_hash}}</p>
+    <main class="blocks_body_main">
 
-        {% endfor %}        
-    {% endif %}
+            <section class="blocks_body_header">
+                <header>
+                    <h4>املاک و مستغلات/بلوک ها</h4>
+                </header>
+            </section>
 
 
+            <section class="main_dashbord">
+                <div class="dashboard_body">
+                    <header>
+                        <h3>تعداد کل بلوک های استخراج شده : {{blocks.count}}</h3>
+                    </header>
+                    <main class="mined_blocks">
+                        <table>
+                            <thead>
+                                <tr class="row_of_table">
+                                    <th id="block_number">شماره بلوک</th>
+                                    <th id="block_hash">هش بلوک</th>
+                                    <th id="block_status">وضعیت بلوک</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for block in blocks %}
+                                <tr class="row_of_table">
+                                    <td>{{block.block_number}}</td>
+                                    <td id="block_hash_number">
+                                        <a href="#">{{block.block_hash}}</a>
+                                    </td>
+                                    <td id="block_status_result">
+                                        {% if block.block_status.all.first.status %}
+                                            نهایی شده
+                                        {%else%}
+                                            نهایی شده
+                                        {% endif %}
+                                    </td>
+                                </tr>                                
+                                {% endfor %}
 
-    {% comment %} {% for block in blocks_of_blockchain %}
-    <p>{{block.block_hash}}</p>
-    {% endfor %} {% endcomment %}
+                            </tbody>    
+                        </table>
+                    </main>
+                </div>
+                
+            </section>
+
+        
+
+    </main>
+
+
+</div>
+
+
 {% endblock content %}

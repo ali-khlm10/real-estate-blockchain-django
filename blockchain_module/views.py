@@ -22,7 +22,7 @@ class blockchainView(View):
 
         else:
             chain: blockModel = blockModel.objects.all()
-        print(chain)
+        # print(chain)
         context = {
             "blocks": chain,
         }
