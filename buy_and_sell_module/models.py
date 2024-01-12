@@ -139,7 +139,7 @@ class buyStatusModel(models.Model):
 
     def status(self):
         if self.is_finalized:
-            return "is finalized"
+            return "is_finalized"
 
         else:
             return "pending"

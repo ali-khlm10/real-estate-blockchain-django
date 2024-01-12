@@ -359,8 +359,6 @@ class Blockchain:
             }
 
         elif transaction_info.get("transaction_type") == "sell_operation":
-            print("======================================================")
-            print(transaction_info.get("buy_id"))
             new_transaction: transactionsModel = transactionsModel.objects.create()
             new_transaction.transaction_from_address = transaction_info.get(
                 "data").get("sell_operation_information").get("sender")

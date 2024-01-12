@@ -78,7 +78,7 @@ $(document).ready(function () {
       .off("click")
       .one("click", function (e) {
         e.preventDefault();
-        console.log("java script");
+        console.log("started sell operation");
 
         $(this).addClass("loading");
 
@@ -112,11 +112,13 @@ $(document).ready(function () {
               console.log(response.status);
               sell_operation_modal_element.style.display = "none";
               body_element.style.overflow = "auto";
+
               var sell_result_modal = document.getElementById(
                 "sell_operation_result_modal"
               );
               sell_result_modal.style.display = "block";
               body_element.style.overflow = "hidden";
+              
               sell_result_modal.querySelector("p").innerHTML = response.message;
 
               $(

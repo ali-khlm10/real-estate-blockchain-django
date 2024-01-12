@@ -880,13 +880,6 @@ def selling_operation(request: HttpRequest):
         if verify_sell_operation_transaction(data=data):
             response_data = add_sell_operation_trx_and_mine_block(data=data)
 
-        # return JsonResponse(
-        #     {
-        #         "status" : True,
-        #         "message" : "python"
-        #     }
-        # )
-
         else:
             response_data = {
                 "status": False,
@@ -898,7 +891,7 @@ def selling_operation(request: HttpRequest):
 def verify_sell_operation_transaction(data: dict):
 
     result: bool = sell_operation_signature_verification(data=data)
-    print(result)
+    # print(result)
     if result:
         verification_counter = 0
         nodes: nodeModel = nodeModel.objects.filter(is_disable=False).all()
@@ -929,6 +922,9 @@ def sell_operation_signature_verification(data: dict):
     current_sender: userModel = userModel.objects.filter(
         wallet__wallet_address__iexact=sell_operation_information.get("sender")).first()
 
+    current_token: propertyTokenModel = propertyTokenModel.objects.filter(
+        token_id__iexact=sell_operation_information.get("token_id")).first()
+
     sender_public_key_str: str = current_sender.wallet.public_key[2:-1]
     sender_public_key_str = str(
         sender_public_key_str).split("\\n")
@@ -944,7 +940,15 @@ def sell_operation_signature_verification(data: dict):
         public_key=sender_public_key, signature=bytes.fromhex(sell_operation_signature), message=message_str)
 
     if verify_result:
-        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")):
+        if float(current_sender.wallet.inventory) >= float(data.get("transaction_fee")) and sell_operation_information.get(
+            "sender") == current_token.property_owner_address and real_estate_blockchain.is_chain_valid(
+                real_estate_blockchain.real_estate_chain):
+
+            # print(sell_operation_information.get("sender")
+            #       == current_token.property_owner_address)
+            # print(real_estate_blockchain.is_chain_valid(
+            #     real_estate_blockchain.real_estate_chain))
+
             return True
         else:
             return False
@@ -1010,13 +1014,13 @@ def add_sell_operation_trx_and_mine_block(data: dict):
                          "X-CSRFToken": csrf_token})
             print(response)
             if response.json()["status"]:
-                print("hello")
+                print("added block")
                 real_estate_blockchain.real_estate_transactions = []
                 real_estate_blockchain.real_estate_chain = real_estate_blockchain.get_real_estate_chain()
 
         return {
             "status": True,
-            "message": f" شما فروش ملک را با موفقیت نهایی کردید وتراکنش مربوطه در بلوک شماره {create_new_transaction.get('block_index')} قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد، نهایی شدن فروش ملک شما در اختیار خریدار قرار خواهد گرفت.",
+            "message": f" شما فروش ملک را با موفقیت انجام دادید وتراکنش مربوطه در بلوک شماره {create_new_transaction.get('block_index')} قرار گرفت و به محض این که بلوک مورد نظر در شبکه بلاکچین قرار گیرد، نهایی شدن فروش ملک شما در اختیار خریدار قرار خواهد گرفت و هزینه مرود نظر به حساب شما انتقال خواهد یافت و مالکیت ملک به نام خریدار خواهد شد.",
         }
     else:
         return {

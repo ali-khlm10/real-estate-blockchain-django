@@ -194,13 +194,22 @@
 
                                 {% if item.is_accepted %}
                                     {% if status != False %}
-                                    
-                                        <div id="sell_property_div">
-                                            <hr>
-                                            <span>
-                                                <a href="#" id="sell_operation" data-token_id="{{buy_req.token.token_id}}"  data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-buyer_address="{{buy_req.buy_request_from}}" data-prepayment="{{buy_req.buy_request_prepayment}}" data-buy_operation_id="{{buy_id}}"> نهایی کردن فروش ملک </a>
-                                            </span>
-                                        </div>
+                                        {% if status == 'pending' %}
+                                            <div id="sell_property_div">
+                                                <hr>
+                                                <span>
+                                                    <a href="#" id="sell_operation" data-token_id="{{buy_req.token.token_id}}"  data-property_price="{{buy_req.token.property_of_token.property_detailes.property_price}}" data-buyer_address="{{buy_req.buy_request_from}}" data-prepayment="{{buy_req.buy_request_prepayment}}" data-buy_operation_id="{{buy_id}}"> نهایی کردن فروش ملک </a>
+                                                </span>
+                                            </div>
+                                        {% elif status == 'is_finalized' %}
+                                            <div id="sell_property_div">
+                                                <hr>
+                                                <span style="font-weight: bold; font-family:'Byekan'; padding:10px 0;">
+                                                    <a style="background-color:aquamarine;" href="#">فروش ملک انجام شد، برای مشاهده نتیجه کلیک کنید.</a>
+                                                </span>
+                                            </div>
+                                        {% endif %}
+
                                     
                                     {% endif %}
                                 

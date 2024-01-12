@@ -133,7 +133,8 @@ class receivedRequestsView(View):
                     finalizing_buy_by=buy_request.buy_request_from,
                     finalizing_buy_to=buy_request.buy_request_to,
                     buyed_token=buy_request.token,
-                ).first()
+                ).last()
+                
                 if buy:
                     buy_finalazed_status_list.append(
                         buy.finalized_buy.all().first().status())
@@ -171,7 +172,8 @@ class sendedRequestsView(View):
                     finalizing_buy_by=buy_request.buy_request_from,
                     finalizing_buy_to=buy_request.buy_request_to,
                     buyed_token=buy_request.token,
-                ).first()
+                ).last()
+                
                 if buy:
                     buy_finalazed_status_list.append(
                         buy.finalized_buy.all().first().status())

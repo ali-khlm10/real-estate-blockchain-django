@@ -494,7 +494,6 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system.blockchain_inventory -= float(previous_prepayment)
                     system.save()
 
-
                     current_trx.transaction_position_in_block = index + 1
                     current_trx.transaction_block = new_block
 
@@ -519,7 +518,7 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 elif transaction.get("transaction_type") == "buy_operation":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
-                    
+
                     current_user: userModel = userModel.objects.filter(
                         wallet__wallet_address__iexact=current_trx.transaction_from_address).first()
 
@@ -570,6 +569,7 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                 elif transaction.get("transaction_type") == "sell_operation":
                     current_trx: transactionsModel = transactionsModel.objects.filter(
                         id=transaction.get("transaction_id")).first()
+
                     trx_data: dict = json.loads(current_trx.transaction_data)
                     remaining_cost = trx_data.get("remaining_cost")
                     buy_id = trx_data.get("buy_id")
@@ -592,21 +592,22 @@ def mine_new_block_by_winner_node(request: HttpRequest):
                     system: blockchainModel = blockchainModel.objects.filter(
                         blockchain_address__iexact="0x45888887ea8e9ee84f61d7805806fc905ce93bd8(real_estate_blockchain_system)").first()
                     system.blockchain_inventory += float(
-                        current_trx.transaction_fee) - current_node_reward
+                        current_trx.transaction_fee) - float(
+                        current_trx.transaction_fee) * 0.3
                     system.blockchain_inventory -= float(remaining_cost)
                     system.save()
 
                     buy: buyModel = buyModel.objects.filter(id=buy_id).first()
-                    for item in buy.finalized_buy.all():
-                        item: buyStatusModel
-                        item.pending = False
-                        item.is_finalized = True
-                        item.save()
+                    for buy_status in buy.finalized_buy.all():
+                        buy_status: buyStatusModel
+                        buy_status.pending = False
+                        buy_status.is_finalized = True
+                        buy_status.save()
 
-                    for item in buy.buy.all():
-                        item: sellModel
-                        item.sell_status = True
-                        item.save()
+                    for buy_operation in buy.buy.all():
+                        buy_operation: sellModel
+                        buy_operation.sell_status = True
+                        buy_operation.save()
 
                     token_id: propertyTokenModel = propertyTokenModel.objects.filter(
                         token_id=trx_data.get("token_id")).first()
