@@ -12,6 +12,8 @@ class propertyDetailesModel(models.Model):
         verbose_name="توضیحات کوتاه", max_length=200)
     property_image = models.ImageField(
         verbose_name="تصویر ملک", upload_to="property_images/", blank=True, null=True)
+    property_document = models.FileField(
+        verbose_name="سند ملک", upload_to="property_documents/", blank=True, null=True)
     property_description = models.TextField(verbose_name="توضیحات کامل")
     property_address = models.TextField(verbose_name="آدرس ملک")
 
@@ -30,6 +32,7 @@ class propertyDetailesModel(models.Model):
             "property_price": self.property_price,
             "property_short_description": self.property_short_description,
             "property_image": str(self.property_image),
+            "property_document": str(self.property_document),
             "property_description": self.property_description,
             "property_address": self.property_address,
         }
@@ -81,4 +84,3 @@ class propertyStatusModel(models.Model):
 
         else:
             return "pending"
-

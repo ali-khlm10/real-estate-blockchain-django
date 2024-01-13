@@ -47,6 +47,26 @@
     background-color: rgb(20, 151, 151);
 }
 
+
+.dashboard_create_property section{
+    /* background-color: red; */
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 50px;
+    margin-bottom: 20px;
+    direction: rtl;
+}
+
+
+.dashboard_create_property section div label,
+.dashboard_create_property section div input{
+    width: 100%;
+}
+
+
 #property_address, #property_description{
     width: 80%;
     display: flex;
@@ -75,4 +95,12 @@
     background-color: #9ac5cc;
     font-weight: bold;
     color: #abd5e3;
+}
+
+
+.dashboard_create_property section #property_document{
+    /* width: 100%; */
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
 }

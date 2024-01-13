@@ -50,6 +50,16 @@ class propertyForm(forms.Form):
             "requird": "پر کردن این فیلد الزامی است",
         }
     )
+    
+    document = forms.ImageField(
+        label="سند ملک",
+        widget=forms.FileInput(attrs={
+            "id": "property_document",
+        }),
+        error_messages={
+            "requird": "پر کردن این فیلد الزامی است",
+        }
+    )
 
     short_description = forms.CharField(
         label="توضیحات کوتاه",

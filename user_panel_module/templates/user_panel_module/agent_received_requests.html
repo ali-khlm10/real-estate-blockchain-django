@@ -39,7 +39,7 @@
                                     <td>{{forloop.counter}}</td>
                                     <td>{{req.property_detailes.property_title}}</td>
                                     <td id="applicant_wallet_address">{{req.property_creator.wallet.wallet_address}}</td>
-                                    <td><a href="#" style="padding:10px; background-color: skyblue; border-radius: 5px; text-decoration:none; color:white; color:white;">مشاهده</a></td>
+                                    <td><a href="{% url "property-detailes" property_id=req.id %}" style="padding:10px; background-color: skyblue; border-radius: 5px; text-decoration:none; color:white; color:white;">مشاهده</a></td>
                                     {% if req.is_verified and req.property_status.all.first.status == "accepted" %}
                                     <td>
                                         <span style="padding:10px 15px; background-color: rgb(42, 182, 42); border-radius: 5px;">

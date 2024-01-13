@@ -80,7 +80,7 @@
                     <span></span> 
                 {%elif status == 'gov_agent'%}
                     <span>
-                        <a style="padding: 10px 50px;" href="#">سند</a>
+                        <a style="padding: 10px 50px;" href="{{property.property_detailes.property_document.url}}">مشاهده سند</a>
                     </span> 
                 {% elif request.user.wallet.wallet_address == property.property_owner_address %}
                     <span style="color:green; font-weight:bold; padding:10px 20px; border:solid 1px white; border-radius:5px;">
@@ -116,7 +116,11 @@
                 </section>
                 <section>
                     <label for=""> مالک : </label>
-                    <p>{{property.property_owner_address}}</p>
+                    {% if property.property_owner_address %}
+                        <p>{{property.property_owner_address}}</p>
+                    {% else %}
+                        <p style="font-family:'Byekan'">نا مشخص</p>
+                    {% endif %}
                 </section>
                 <section>
                     <label for=""> زمان ایجاد ملک : </label>

@@ -55,6 +55,7 @@
                                 {% comment %} <label for="property_image">تصویر ملک : </label>
                                 <input type="file" name="image" id="property_image"> {% endcomment %}
                             </div>
+
                             <div>
                                 {{ property_form.short_description.label_tag }} {{ property_form.short_description }}
                                 {{ logination_form.short_description.errors }}
@@ -75,6 +76,16 @@
                                 <textarea name="address" id="property_address" cols="30" rows="8"></textarea> {% endcomment %}
                                 
                             </div>
+
+                            <section>
+                                <div>
+                                    {{ property_form.document.label_tag }} {{ property_form.document }}
+                                    {{ logination_form.document.errors }}
+                                    {% comment %} <label for="property_document">تصویر ملک : </label>
+                                    <input type="file" name="document" id="property_document"> {% endcomment %}
+                                </div>
+                            </section>
+
 
                             {% comment %} <div> {% endcomment %}
                                 <button type="submit" name="button" id="create_property_button">ایجاد</button>

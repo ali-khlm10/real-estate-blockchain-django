@@ -32,6 +32,7 @@ class createPropertyView(View):
             current_price = request.POST.get('price')
             current_short_description = request.POST.get('short_description')
             current_image = request.FILES["image"]
+            current_document = request.FILES["document"]
             current_description = request.POST.get('description')
             current_address = request.POST.get('address')
             new_property_detailes: propertyDetailesModel = propertyDetailesModel.objects.create(
@@ -41,6 +42,7 @@ class createPropertyView(View):
                 property_price=current_price,
                 property_short_description=current_short_description,
                 property_image=current_image,
+                property_document=current_document,
                 property_description=current_description,
                 property_address=current_address,
             )
@@ -101,6 +103,6 @@ class propertyDetailesPageView(View):
                 "property": property,
                 "status": status,
             }
-            
+
         return render(request, "property_module/property_detailes_page.html", context)
 # /////////////////////////////////////////////////////////////////
