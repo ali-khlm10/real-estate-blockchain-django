@@ -67,7 +67,7 @@
                                     <label for="">تراکنش ها : </label>
                                     <span id="block_detaile_trxs">
                                         {% for trx in current_block.trx_block.all %}
-                                            <a href="">{{trx.transaction_hash}}</a>
+                                            <a href="{% url "trx" trx_hash=trx.transaction_hash %}">{{trx.transaction_hash}}</a>
                                         {% endfor %}
                                     </span>
                                 </div>                            

@@ -62,7 +62,7 @@
                     </header>
                     <main class="dashboard_sended_requests">                     
                           
-                        {% for buy_req, status in zipped_list %}
+                        {% for buy_req, status,buy_id in zipped_list %}
                         <section>
 
                             <div>
@@ -124,7 +124,7 @@
                                         <div id="buy_property_div">
                                             <hr>
                                             <span style=" font-weight: bold; font-family:'Byekan'; padding:10px 0;">
-                                                <a style="background-color:aquamarine;" href="#">خرید ملک انجام شد، برای مشاهده نتیجه کلیک کنید.</a>
+                                                <a style="background-color:aquamarine;" href="{% url "buy-result" buy_id=buy_id %}">خرید ملک انجام شد، برای مشاهده نتیجه کلیک کنید.</a>
                                             </span>
                                         </div>
                                     {%else%}

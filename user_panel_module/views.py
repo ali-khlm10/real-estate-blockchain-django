@@ -13,7 +13,7 @@ from token_module.models import propertyTokenModel
 
 from .forms import increaseUserInventoryForm
 
-from buy_and_sell_module.models import buyRequestModel, buyModel, sellModel
+from buy_and_sell_module.models import buyRequestModel, buyModel, sellModel, accept_rejectBuyRequestModel
 # Create your views here.
 
 
@@ -164,6 +164,7 @@ class sendedRequestsView(View):
             buy_request_from__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date")
 
         buy_finalazed_status_list = []
+        buy_id_list = []
 
         for buy_request in buy_requests:
             buy_request: buyRequestModel
@@ -177,11 +178,14 @@ class sendedRequestsView(View):
                 if buy:
                     buy_finalazed_status_list.append(
                         buy.finalized_buy.all().first().status())
+                    buy_id_list.append(buy.id)
                 else:
                     buy_finalazed_status_list.append(False)
+                    buy_id_list.append(False)
 
             else:
                 buy_finalazed_status_list.append("rejected")
+                buy_id_list.append(False)
 
         # print(buy_finalazed_status_list)
 
@@ -197,7 +201,7 @@ class sendedRequestsView(View):
         context = {
             "buy_requests": buy_requests,
             "buy_finalazed_status_list": buy_finalazed_status_list,
-            "zipped_list": zip(buy_requests, buy_finalazed_status_list)
+            "zipped_list": zip(buy_requests, buy_finalazed_status_list, buy_id_list)
         }
         return render(request, "user_panel_module/sended_requests.html", context)
 
@@ -239,3 +243,26 @@ def user_panel_menu_component(request: HttpRequest):
         "current_user": current_user,
     }
     return render(request, 'user_panel_module/components/user_panel_menu_component.html', context)
+
+
+# ///////////////////////////////////////////////////////////
+
+
+class buyAndSellResultView(View):
+    def get(self, request: HttpRequest, buy_id: int):
+        current_buy: buyModel = buyModel.objects.filter(id=buy_id).first()
+        current_sell: sellModel = sellModel.objects.filter(
+            buy=current_buy).first()
+        accepted_buy_request_id = current_buy.accept_reject_buy_request_id
+        current_accepted_buy_request: accept_rejectBuyRequestModel = accept_rejectBuyRequestModel.objects.filter(
+            id=accepted_buy_request_id).first()
+        buy_request_id = current_accepted_buy_request.buy_request_id
+        current_buy_request: buyRequestModel = buyRequestModel.objects.filter(
+            id=buy_request_id).first()
+        context = {
+            "buy_request": current_buy_request,
+            "accepted_buy_request": current_accepted_buy_request,
+            "buy_operation": current_buy,
+            "sell_operation": current_sell,
+        }
+        return render(request, "user_panel_module/buy_and_sell_result_page.html", context)
