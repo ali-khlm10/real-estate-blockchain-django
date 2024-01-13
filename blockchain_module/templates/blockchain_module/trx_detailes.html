@@ -9,6 +9,145 @@
 
 {% block content %}
 
-    <p>{{current_trx.transaction_hash}}</p>
+<div class="all_body">
+
+    <main class="trx_detaile_body_main">
+
+            <section class="trx_detaile_body_header">
+                <header>
+                    <h4>املاک و مستغلات/جزئیات تراکنش</h4>
+                </header>
+            </section>
+
+
+            <section class="main_dashbord">
+                <div class="dashboard_body">
+                    <main class="trx_detailes_style">
+                        <div>
+                            <label for="">هش تراکنش : </label>
+                            <span >
+                                {{current_trx.transaction_hash}}
+                            </span>
+                        </div>
+                        <div>
+                            <label for="">وضعیت تراکنش : </label>
+                            <span id="trx_detaile_status">
+                                {% if current_trx.trx_status.all.first.status == "published"%}
+                                منتشر شده
+                                {% elif current_trx.trx_status.all.first.status == "not_published"%}
+                                منتشر نشده
+                                {% else %}
+                                   در صف انتشار
+                                {% endif %}
+                                
+                            </span>
+                        </div>
+                        <div>
+                            <label for=""> متعلق به بلوک شماره : </label>
+                            <span style="direction:rtl; color:burlywood; font-weight:bold;">
+                                {{current_trx.transaction_block.block_number}} #
+                            </span>
+                        </div>
+                        <div>
+                            <label for="">مهر زمانی : </label>
+                            <span>
+                                {{current_trx.transaction_timestamp}}
+                            </span>
+                        </div>
+
+                        <div>
+                            <hr>
+                        </div>
+
+                        <div>
+                            <label for="">از طرف : </label>
+                            <span >
+                                {{current_trx.transaction_from_address}}
+                            </span>
+                        </div>
+                        <div>
+                            <label for="">به طرف : </label>
+                            <span >
+                                {{current_trx.transaction_to_address}}
+                            </span>
+                        </div>
+
+                        <div>
+                            <hr>
+                        </div>
+                        
+                        <div>
+                            <label for="">مقدار پول ارسالی : </label>
+                            <span >
+                                {{current_trx.transaction_value}}
+                            </span>
+                        </div>
+
+                        <div>
+                            <label for=""> هزینه تراکنش : </label>
+                            <span >
+                                {{current_trx.transaction_fee}}
+                            </span>
+                        </div>
+                        
+                        <div>
+                            <hr>
+                        </div>
+
+                        <div id="trx_detaile_trx_type">
+                            <label for=""> نوع تراکنش : </label>
+                            {% if current_trx.transaction_type == "tokenization" %}
+                                <span >
+                                    عملیات توکن سازی ملک
+                                </span>
+                            {% elif current_trx.transaction_type == "buy_request" %}
+                                <span >
+                                    عملیات درخواست خرید ملک
+                                </span>
+                            {% elif current_trx.transaction_type == "accept_buy_request" %}
+                                <span >
+                                    عملیات پذیرش درخواست خرید
+                                </span>
+                            {% elif current_trx.transaction_type == "reject_buy_request" %}
+                                <span >
+                                    عملیات رد درخواست خرید
+                                </span>
+                            {% elif current_trx.transaction_type == "buy_operation" %}
+                                <span >
+                                    عملیات خرید ملک
+                                </span>
+                            {% elif current_trx.transaction_type == "sell_operation" %}
+                                <span >
+                                    عملیات فروش ملک
+                                </span>
+                             {% elif current_trx.transaction_type == "miner_reward" %}
+                                <span >
+                                    عملیات انتقال پاداش
+                                </span>
+                            {% endif %}
+                        </div>      
+                        <div>
+                            <label for=""> شماره نانس تراکنش : </label>
+                            <span >
+                                {{current_trx.transaction_nonce}}
+                            </span>
+                        </div>   
+                        <div>
+                            <label for=""> موقعیت تراکنش در بلوک : </label>
+                            <span style="font-family:'Byekan';">
+                                تراکنش <span>{{current_trx.transaction_position_in_block}}</span>
+                            </span>
+                        </div>   
+                    </main>
+                </div>
+                
+            </section>
+
+        
+
+    </main>
+
+
+</div>
 
 {% endblock content %}

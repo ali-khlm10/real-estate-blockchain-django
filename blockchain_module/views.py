@@ -54,9 +54,8 @@ class transactionsView(View):
                     json_file.close()
             except:
                 trxs = []
-            # print(chain)
             context = {
-                "zipped_list": zip(trxs, trxs_status),
+                "zipped_list": zip(reversed(trxs), reversed(trxs_status)),
                 "current_port": int(current_port),
                 "transactions_count": len(trxs),
             }
