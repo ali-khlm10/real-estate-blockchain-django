@@ -35,7 +35,7 @@
                                     {% for trx,trx_status in zipped_list %}
                                         <tr class="row_of_table">
                                             <td id="trx_hash_number">
-                                                <a href="#">{{trx.transaction_hash}}</a>
+                                                <a href="{% url "trx" trx_hash=trx.transaction_hash %}">{{trx.transaction_hash}}</a>
                                             </td>
                                             <td id="trx_operation_style">
                                                 {% if trx.transaction_type == "miner_reward" %}
@@ -76,7 +76,7 @@
                                     {% for trx in trxs %}
                                         <tr class="row_of_table">
                                             <td id="trx_hash_number">
-                                                <a href="#">{{trx.transaction_hash}}</a>
+                                                <a href="{% url "trx" trx_hash=trx.transaction_hash %}">{{trx.transaction_hash}}</a>
                                             </td>
                                             <td id="trx_operation_style">
                                                 {% if trx.transaction_type == "miner_reward" %}

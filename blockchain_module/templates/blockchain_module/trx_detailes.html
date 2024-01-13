@@ -1,0 +1,14 @@
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}
+
+    {{current_trx.transaction_hash}}
+
+{% endblock title %}
+
+{% block content %}
+
+    <p>{{current_trx.transaction_hash}}</p>
+
+{% endblock content %}

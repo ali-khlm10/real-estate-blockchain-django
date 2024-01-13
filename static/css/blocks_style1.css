@@ -68,7 +68,7 @@
 
 
 
-.mined_blocks table tbody .row_of_table{
+.mined_blocks table tbody .row_of_table {
     width: 100%;
     display: flex;
     flex-flow: wrap row;
@@ -99,7 +99,7 @@
 }
 
 
-.mined_blocks .row_of_table #block_hash{
+.mined_blocks .row_of_table #block_hash {
     flex-grow: 10;
     text-align: center;
 }
@@ -108,22 +108,28 @@
     flex-grow: 1;
 }
 
+.mined_blocks .row_of_table #block_index {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: burlywood;
+    direction: ltr;
+}
 
 /* ///////////////////////////////////// */
 
-.mined_blocks .row_of_table #block_hash_number{
+.mined_blocks .row_of_table #block_hash_number {
     font-family: 'Courier New', Courier, monospace;
 }
 
 
-.mined_blocks .row_of_table #block_hash_number a{
+.mined_blocks .row_of_table #block_hash_number a {
     text-decoration: none;
     color: skyblue;
 }
 
 /* //////////////////////////////// */
 
-.mined_blocks .row_of_table #block_status_result{
+.mined_blocks .row_of_table #block_status_result {
     color: green;
     font-weight: bold;
 }

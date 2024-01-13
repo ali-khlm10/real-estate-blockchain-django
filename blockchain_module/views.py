@@ -19,14 +19,21 @@ class blocksView(View):
                     json_file.close()
             except:
                 chain = []
-
+                
+            context = {
+                "blocks": reversed(chain),
+                "chain_length" : len(chain),
+            }
+            return render(request, "blockchain_module/blockchain_page.html", context)
+        
         else:
-            chain: blockModel = blockModel.objects.all()
+            chain: blockModel = blockModel.objects.all().order_by("-block_number")
         # print(chain)
-        context = {
-            "blocks": chain,
-        }
-        return render(request, "blockchain_module/blockchain_page.html", context)
+            context = {
+                "blocks": chain,
+                "chain_length" : len(chain),
+            }
+            return render(request, "blockchain_module/blockchain_page.html", context)
 
 
 class transactionsView(View):
@@ -66,3 +73,29 @@ class transactionsView(View):
 
             }
             return render(request, "blockchain_module/transactions_page.html", context)
+
+
+# ////////////////////////////////////////////////////////////////////
+
+
+class blockView(View):
+    def get(self, request: HttpRequest, block_number: int):
+        block: blockModel = blockModel.objects.filter(
+            block_number__iexact=block_number).first()
+        print(block.block_hash)
+        context = {
+            "current_block": block,
+        }
+        return render(request, "blockchain_module/block_detailes.html", context)
+
+
+
+
+class trxView(View):
+    def get(self, request: HttpRequest, trx_hash: str):
+        trx: transactionsModel = transactionsModel.objects.filter(
+            transaction_hash__iexact=trx_hash).first()
+        context = {
+            "current_trx": trx,
+        }
+        return render(request, "blockchain_module/trx_detailes.html", context)

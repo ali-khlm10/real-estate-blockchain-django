@@ -19,7 +19,7 @@
             <section class="main_dashbord">
                 <div class="dashboard_body">
                     <header>
-                        <h3>تعداد کل بلوک های استخراج شده : {{blocks.count}}</h3>
+                        <h3 >تعداد کل بلوک های استخراج شده : <span style="font-family: 'Courier New', Courier, monospace;">{{chain_length}}</span></h3>
                     </header>
                     <main class="mined_blocks">
                         <table>
@@ -33,9 +33,9 @@
                             <tbody>
                                 {% for block in blocks %}
                                 <tr class="row_of_table">
-                                    <td>{{block.block_number}}</td>
+                                    <td id="block_index"># {{block.block_number}}</td>
                                     <td id="block_hash_number">
-                                        <a href="#">{{block.block_hash}}</a>
+                                        <a href="{% url "block" block_number=block.block_number %}">{{block.block_hash}}</a>
                                     </td>
                                     <td id="block_status_result">
                                         {% if block.block_status.all.first.status %}

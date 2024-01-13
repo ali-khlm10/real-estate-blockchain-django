@@ -45,7 +45,7 @@ class userPropertiesView(View):
             property_owner_address__iexact=current_user.wallet.wallet_address, property_of_token__property_creator=current_user).all()
 
         user_bought_tokens: buyModel = buyModel.objects.filter(
-            finalizing_buy_by=current_user.wallet.wallet_address, finalized_buy__is_finalized=True).all()
+            finalizing_buy_by=current_user.wallet.wallet_address, finalized_buy__is_finalized=True, buyed_token__property_owner_address=current_user.wallet.wallet_address).all()
 
         user_sold_tokens: sellModel = sellModel.objects.filter(
             finalizing_sell_by=current_user.wallet.wallet_address, sell_status=True).all()
@@ -134,7 +134,7 @@ class receivedRequestsView(View):
                     finalizing_buy_to=buy_request.buy_request_to,
                     buyed_token=buy_request.token,
                 ).last()
-                
+
                 if buy:
                     buy_finalazed_status_list.append(
                         buy.finalized_buy.all().first().status())
@@ -162,7 +162,7 @@ class sendedRequestsView(View):
             id=request.user.id).first()
         buy_requests: buyRequestModel = buyRequestModel.objects.filter(
             buy_request_from__iexact=current_user.wallet.wallet_address).all().order_by("-buy_request_created_date")
-        
+
         buy_finalazed_status_list = []
 
         for buy_request in buy_requests:
@@ -173,7 +173,7 @@ class sendedRequestsView(View):
                     finalizing_buy_to=buy_request.buy_request_to,
                     buyed_token=buy_request.token,
                 ).last()
-                
+
                 if buy:
                     buy_finalazed_status_list.append(
                         buy.finalized_buy.all().first().status())

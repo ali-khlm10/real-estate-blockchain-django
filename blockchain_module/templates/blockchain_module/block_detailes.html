@@ -1,0 +1,158 @@
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}
+
+    {{current_block.block_number}}
+
+{% endblock title %}
+
+{% block content %}
+
+    <div class="all_body">
+
+        <main class="block_detaile_body_main">
+
+                <section class="block_detaile_body_header">
+                    <header>
+                        <h4>املاک و مستغلات/جزئیات بلوک شماره {{current_block.block_number}}</h4>
+                    </header>
+                </section>
+
+
+                <section class="main_dashbord">
+                    <div class="dashboard_body">
+                        <main class="block_detailes_style">
+                            {% if current_block.block_number == 1 %}
+                            <div>
+                                <label for="">نام بلوک : </label>
+                                <span style="font-family:'Byekan'; color: aqua; font-weight:bold;">
+                                    بلاک پیدایش
+                                </span>
+                            </div>
+                            {% endif %}
+                            <div>
+                                <label for="">شماره بلوک : </label>
+                                <span style="direction:ltr; color: burlywood; font-weight:bold;">
+                                    # {{current_block.block_number}}
+                                </span>
+                            </div>
+                            <div>
+                                <label for="">وضعیت بلوک : </label>
+                                <span id="block_detaile_status">
+                                    {% if current_block.block_status.all.first.status%}
+                                        نهایی شده
+                                    {% else %}
+                                        نهایی نشده
+                                    {% endif %}
+                                    
+                                </span>
+                            </div>
+
+                            <div>
+                                <label for="">مهر زمانی : </label>
+                                <span>
+                                    {{current_block.block_timestamp}}
+                                </span>
+                            </div>
+                            {% if current_block.block_number == 1 %}
+                                <div>
+                                    <label for="">تراکنش ها : </label>
+                                    <span style="font-family:'Byekan';">
+                                        بدون تراکنش
+                                    </span>
+                                </div>                           
+                            {%else%}
+                                <div>
+                                    <label for="">تراکنش ها : </label>
+                                    <span id="block_detaile_trxs">
+                                        {% for trx in current_block.trx_block.all %}
+                                            <a href="">{{trx.transaction_hash}}</a>
+                                        {% endfor %}
+                                    </span>
+                                </div>                            
+                            {%endif%}
+
+
+                            <div>
+                                <hr>
+                            </div>
+
+                            <div>
+                                <label for="">استخراج شده توسط : </label>
+                                <span>
+                                    {{current_block.mined_by}}
+                                </span>
+                            </div>
+                            <div>
+                                <label for=""> پاداش بلوک : </label>
+                                <span>
+                                    {{current_block.block_reward}}
+                                </span>
+                            </div>
+                            {% if current_block.block_number == 1 %}
+                                <div>
+                                    <label for="">شماره نانس بلوک : </label>
+                                    <span style="font-family:'Byekan';">
+                                        وجود ندارد
+                                    </span>
+                                </div>                           
+                            {%else%}
+                                <div>
+                                    <label for="">شماره نانس بلوک : </label>
+                                    <span>
+                                        {{current_block.block_nonce}}
+                                    </span>
+                                </div>
+                            {%endif%}
+                            <div>
+                                <label for="">رقم اثبات کار : </label>
+                                <span>
+                                    {{current_block.block_proof_number}}
+                                </span>
+                            </div>
+                            <div>
+                                <hr>
+                            </div>
+                            <div>
+                                <label for="">هش بلوک : </label>
+                                <span>
+                                    {{current_block.block_hash}}
+                                </span>
+                            </div>
+                            <div>
+                                <label for="">هش بلوک قبلی : </label>
+                                <span>
+                                    {{current_block.previous_block_hash}}
+                                </span>
+                            </div>
+                            {% if current_block.block_number == 1 %}
+                                <div>
+                                    <label for="">هش ریشه درخت مرکل : </label>
+                                    <span style="font-family:'Byekan';">
+                                        وجود ندارد
+                                    </span>
+                                </div>                         
+                            {%else%}
+                                <div>
+                                    <label for="">هش ریشه درخت مرکل : </label>
+                                    <span>
+                                        {{current_block.block_merkel_tree_root_hash}}
+                                    </span>
+                                </div>
+                            {%endif%}
+
+                            
+                        </main>
+                    </div>
+                    
+                </section>
+
+            
+
+        </main>
+
+
+    </div>
+
+{% endblock content %}
