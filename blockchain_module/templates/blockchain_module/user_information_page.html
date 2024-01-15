@@ -1,0 +1,139 @@
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}{% endblock title %}
+
+{% block content %}
+
+    <div class="all_body">
+
+        <main class="searched_user_body_main">
+
+                <section class="searched_user_body_header">
+                    <header>
+                        <h4>املاک و مستغلات/مشخصات کاربر</h4>
+                    </header>
+                </section>
+
+
+                <section class="main_dashbord">
+                    <div class="dashboard_body">
+                        <header>
+                            <h3>صفحه مشخصات کاربر</h3>
+                        </header>
+                        <main id="searched_user_information">
+                            {% if status %}
+                                <div>
+                                    <div>
+                                        <label for="">آدرس کیف پول : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;">{{current_user.wallet.wallet_address}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">موجودی حساب کیف پول : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;">{{current_user.wallet.inventory}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">تعداد تراکنش های انجام داده شده : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;">{{current_user.user_transactions_count}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">اولین تراکنش : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;">{{first_trx.transaction_hash}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">آخرین تراکنش : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;"> {{last_trx.transaction_hash}}</span>    
+                                    </div>
+                                </div>
+                                {% if tokens %}
+                                    <div id="current_user_tokens">
+                                            <label for="">توکن ها : </label>
+                                            {% for token in tokens %}
+                                            <span style="font-family: 'Courier New', Courier, monospace;">
+                                                {{token.token_id}}
+                                            </span>
+                                        {% endfor %}
+                            
+                                    </div>
+                                {% endif %}
+
+
+                                <hr>
+                                <div>
+                                    <main class="mined_trxs">
+                                        <table>
+                                            <thead>
+                                                <tr class="row_of_table">
+                                                    <th id="trx_hash">هش تراکنش</th>
+                                                    <th id="trx_operation">عملیات</th>
+                                                    <th id="trx_status">وضعیت</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    {% for trx in trxs %}
+                                                        <tr class="row_of_table">
+                                                            <td id="trx_hash_number">
+                                                                <a href="{% url "trx" trx_hash=trx.transaction_hash %}">{{trx.transaction_hash}}</a>
+                                                            </td>
+                                                            <td id="trx_operation_style">
+                                                                {% if trx.transaction_type == "miner_reward" %}
+                                                                    <span >انتقال پاداش</span>
+                                                                {% elif trx.transaction_type == "tokenization" %}
+                                                                    <span >توکن سازی ملک</span>
+                
+                                                                {% elif trx.transaction_type == "buy_request" %}
+                                                                    <span >درخواست خرید ملک</span>
+                
+                                                                {% elif trx.transaction_type == "accept_buy_request" %}
+                                                                    <span >پذیرش درخواست خرید</span>
+                
+                                                                {% elif trx.transaction_type == "reject_buy_request" %}
+                                                                <span >رد درخواست خرید</span>
+                                                            
+                                                                {% elif trx.transaction_type == "buy_operation" %}
+                                                                <span >خرید ملک</span>
+                                                                                                    
+                                                                {% else %}
+                                                                <span >فروش ملک</span>
+                                                                
+                                                                {% endif %}
+                                                            </td>
+                                                            <td id="trx_status_result">
+                                                                {% if trx.trx_status.all.first.status == "published" %}
+                                                                    منتشر شده 
+                                                                {% elif trx.trx_status.all.first.status == "not_published" %}
+                                                                    منتشر نشده
+                                                                {%else%}
+                                                                    در صف انتشار
+                                                                {% endif %}  
+                                                    
+                                                            </td>
+                                                        </tr>                                
+                                                    {% endfor %}  
+                
+                
+                                            </tbody>    
+                                        </table>
+                                    </main>
+                                </div>
+                            {% else %}
+                                <span id="no_user_info">چنین کاربری یافت نشد</span>
+                            {% endif %}
+                        </main>
+                    </div>
+                    
+                </section>
+
+            
+
+        </main>
+
+
+    </div>
+
+
+{% endblock content %}

@@ -23,27 +23,28 @@
                             <h3>صفحه پیگیری</h3>
                         </header>
                         <main id="search_cases">
-                                <form action="" method="get">
+                                <form action="{% url "user-info" %}" method="get">
                                     <div>
-
                                         <label for="">جستجوی کاربر : </label>
-                                        <input type="search" name="user_input" id="">
-                                        <a href="#">جستجو</a>
+                                        <input type="search" name="user_input" id="" autocomplete="off">
+                                        <button type="submit">جستجو</button>
                                     </div>
                                 </form>
                                 <form action="" method="get">
                                     <div>
                                         <label for="">جستجوی گره : </label>
-                                        <input type="search" name="node_input" id="">
-                                        <a href="">جستجو</a>
+                                        <input type="search" name="node_input" id="" autocomplete="off">
+                                        <button type="submit">جستجو</button>
+
                                     </div>
                                 </form>
 
                                 <form action="" method="get">
                                     <div>
                                         <label for="">جستجوی توکن : </label>
-                                        <input type="search" name="token_input" id="">
-                                        <a href="">جستجو</a>
+                                        <input type="search" name="token_input" id="" autocomplete="off">
+                                        <button type="submit">جستجو</button>
+
                                     </div>
 
                                 </form>
@@ -52,8 +53,9 @@
                                     <div>
 
                                     <label for="">جستجوی قرارداد هوشمند : </label>
-                                    <input type="search" name="smart_contract_input" id="">
-                                    <a href="">جستجو</a>
+                                    <input type="search" name="smart_contract_input" id="" autocomplete="off">
+                                    <button type="submit">جستجو</button>
+
                                     </div>
     
                                 </form>

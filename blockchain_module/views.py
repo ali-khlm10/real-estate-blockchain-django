@@ -3,9 +3,9 @@ from django.views import View
 from django.http import HttpRequest
 from .models import blockModel, transactionsModel, transactionStatusModel
 from utils.blockchain import real_estate_blockchain
-import os
 import json
-import socket
+from account_module.models import userModel
+from token_module.models import propertyTokenModel
 # Create your views here.
 
 
@@ -104,3 +104,32 @@ class searchInformationView(View):
     def get(self, request: HttpRequest):
         context = {}
         return render(request, "blockchain_module/search_page.html", context)
+
+
+class searchUserInformationView(View):
+    def get(self, request: HttpRequest):
+        user_address: str = request.GET.get("user_input")
+        current_user: userModel = userModel.objects.filter(
+            wallet__wallet_address__iexact=user_address).first()
+        if current_user:
+            trxs: transactionsModel = transactionsModel.objects.filter(
+                transaction_from_address__iexact=current_user.wallet.wallet_address).all().order_by("-transaction_timestamp")
+            last_trx = trxs.first()
+            first_trx = trxs.last()
+            tokens: propertyTokenModel = propertyTokenModel.objects.filter(
+                property_owner_address__iexact=current_user.wallet.wallet_address)
+            context = {
+                "status": True,
+                "current_user": current_user,
+                "trxs": trxs,
+                "first_trx": first_trx,
+                "last_trx": last_trx,
+                "tokens" : tokens,
+            }
+
+        else:
+            context = {
+                "status": False,
+
+            }
+        return render(request, "blockchain_module/user_information_page.html", context)

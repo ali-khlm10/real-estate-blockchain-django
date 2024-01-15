@@ -69,16 +69,16 @@
     background-color: rgb(29, 175, 175);
 }
 
-.search_body_main #search_cases div a{
+.search_body_main #search_cases div button{
     width: 20%;
     display: flex;
     flex-flow: wrap row;
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    padding: 6px;
     text-align: center;
     background-color: #54afca;
-    text-decoration: none;
     color: white;
+    border: none;
+    height: 35px;
 }

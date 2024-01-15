@@ -8,4 +8,5 @@ urlpatterns = [
     path("hash/<str:trx_hash>", views.trxView.as_view(), name="trx"),
 
     path("serach/", views.searchInformationView.as_view(), name="search-page"),
+    path("user_info/", views.searchUserInformationView.as_view(), name="user-info"),
 ]
