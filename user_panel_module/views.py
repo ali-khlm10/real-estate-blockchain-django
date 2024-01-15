@@ -248,7 +248,7 @@ def user_panel_menu_component(request: HttpRequest):
 # ///////////////////////////////////////////////////////////
 
 
-class buyAndSellResultView(View):
+class buyResultView(View):
     def get(self, request: HttpRequest, buy_id: int):
         current_buy: buyModel = buyModel.objects.filter(id=buy_id).first()
         current_sell: sellModel = sellModel.objects.filter(
@@ -265,4 +265,24 @@ class buyAndSellResultView(View):
             "buy_operation": current_buy,
             "sell_operation": current_sell,
         }
-        return render(request, "user_panel_module/buy_and_sell_result_page.html", context)
+        return render(request, "user_panel_module/buy_result_page.html", context)
+
+
+class sellResultView(View):
+    def get(self, request: HttpRequest, buy_id: int):
+        current_buy: buyModel = buyModel.objects.filter(id=buy_id).first()
+        current_sell: sellModel = sellModel.objects.filter(
+            buy=current_buy).first()
+        accepted_buy_request_id = current_buy.accept_reject_buy_request_id
+        current_accepted_buy_request: accept_rejectBuyRequestModel = accept_rejectBuyRequestModel.objects.filter(
+            id=accepted_buy_request_id).first()
+        buy_request_id = current_accepted_buy_request.buy_request_id
+        current_buy_request: buyRequestModel = buyRequestModel.objects.filter(
+            id=buy_request_id).first()
+        context = {
+            "buy_request": current_buy_request,
+            "accepted_buy_request": current_accepted_buy_request,
+            "buy_operation": current_buy,
+            "sell_operation": current_sell,
+        }
+        return render(request, "user_panel_module/sell_result_page.html", context)

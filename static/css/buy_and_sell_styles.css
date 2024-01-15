@@ -1,0 +1,81 @@
+.buy_result_detaile_body_main {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 450px;
+}
+
+
+.buy_result_detaile_body_header {
+    /* background-color: yellow; */
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    /* flex-grow: 1; */
+    /* width: 100%; */
+    border-bottom: solid 1px white;
+}
+
+
+.buy_result_detaile_body_main #buy_result_detailes {
+    display: flex;
+    flex-flow: wrap row;
+    direction: rtl;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 20px 40px;
+}
+
+.buy_result_detaile_body_main #buy_result_detailes p{
+   line-height: 0.7in;
+   text-align: justify;
+   display: inline;
+}
+
+/* //////////////////////////////////////////// */
+
+.sell_result_detaile_body_main {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 450px;
+}
+
+
+.sell_result_detaile_body_header {
+    /* background-color: yellow; */
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    /* flex-grow: 1; */
+    /* width: 100%; */
+    border-bottom: solid 1px white;
+}
+
+
+.sell_result_detaile_body_main #sell_result_detailes {
+    display: flex;
+    flex-flow: wrap row;
+    direction: rtl;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 20px 40px;
+}
+
+.sell_result_detaile_body_main #sell_result_detailes p{
+    line-height: 0.7in;
+    text-align: justify;
+    display: inline;
+ }

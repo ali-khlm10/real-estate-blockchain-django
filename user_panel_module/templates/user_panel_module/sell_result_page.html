@@ -1,0 +1,46 @@
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}
+
+{% endblock title %}
+
+{% block content %}
+
+<div class="all_body">
+
+    <main class="sell_result_detaile_body_main">
+
+            <section class="sell_result_detaile_body_header">
+                <header>
+                    <h4>املاک و مستغلات/جزئیات فروش ملک</h4>
+                </header>
+            </section>
+
+
+            <section class="main_dashbord">
+                <div class="dashboard_body">
+                    <main id="sell_result_detailes">
+                        <p>
+                            شما در تاریخ <span style="font-weight:bold; color: aqua; padding: 0 10px;">{{buy_request.buy_request_created_date}}</span> 
+                            یک درخواست خرید ملک، با مقدار بیعانه <span style="font-weight:bold; color: aqua; padding: 0 10px;">{{buy_request.buy_request_prepayment}}</span> از سمت کاربر با آدرس <span style="font-weight:bold; color: aqua; padding: 0 10px; font-family:'Courier New', Courier, monospace;">{{buy_request.buy_request_from}}</span>  برای خرید ملک شما با شماره توکن 
+                            <span style="font-weight:bold; color: aqua; padding: 0 10px;  font-family:'Courier New', Courier, monospace;">{{buy_request.token.token_id}}</span> دریافت کرده اید. و شما این درخواست خرید را در تاریخ <span style="font-weight:bold; color: aqua; padding: 0 10px;">{{accepted_buy_request.accepted_rejected_buy_request_date}}</span>
+                             پذیرفته اید. در نهایت خریدار مورد نظر با آدرس <span style="font-weight:bold; color: aqua; padding: 0 10px; font-family:'Courier New', Courier, monospace;">{{buy_operation.finalizing_buy_by}}</span> در تاریخ <span style="font-weight:bold; color: aqua; padding: 0 10px;">{{buy_operation.finalizing_buy_date}}</span> 
+                             با پرداخت مابقی هزینه ملک، خرید ملک با شماره توکن <span style="font-weight:bold; color: aqua; padding: 0 10px; font-family:'Courier New', Courier, monospace;">{{buy_operation.buyed_token.token_id}}</span> 
+                             را نهایی کرده است و شما  در تاریخ <span style="font-weight:bold; color: aqua; padding: 0 10px;">{{sell_operation.finalizing_sell_date}}</span> عملیات فروش ملک را با شماره توکن <span style="font-weight:bold; color: aqua; padding: 0 10px;  font-family:'Courier New', Courier, monospace;">{{sell_operation.selled_token.token_id}}</span> 
+                              نهایی کرده اید و این ملک به مالکیت خریدار مورد نظر ثبت شده است و هزینه مربوطه به حساب شما واریز شده است و تمام مراحل و عملیات خرید و فروش ملک در شبکه بلاکچین ثبت شده است.
+                        </p>
+                    </main>
+                </div>
+                
+            </section>
+
+        
+
+    </main>
+
+
+</div>
+
+
+{% endblock content %}

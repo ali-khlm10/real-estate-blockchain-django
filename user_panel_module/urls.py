@@ -21,8 +21,8 @@ urlpatterns = [
     path("user_wallet/", views.userWalletView.as_view(), name='user-wallet'),
 
     path('buy_result/<int:buy_id>',
-         views.buyAndSellResultView.as_view(), name="buy-result"),
+         views.buyResultView.as_view(), name="buy-result"),
     path('sell_result/<int:buy_id>',
-         views.buyAndSellResultView.as_view(), name="sell-result"),
+         views.sellResultView.as_view(), name="sell-result"),
 
 ]
