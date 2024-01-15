@@ -11,7 +11,7 @@ from property_module.models import propertyModel
 class homeView(View):
     def get(self, request: HttpRequest):
         properties: propertyModel = propertyModel.objects.filter(
-            token_generated=True).order_by("-property_of_token__token_created_date")[:4]
+            token_generated=True).order_by("-property_of_token__token_created_date")
         context = {
             "properties": properties
         }

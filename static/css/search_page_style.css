@@ -1,0 +1,84 @@
+.search_body_main {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 450px;
+}
+
+
+.search_body_header {
+    /* background-color: yellow; */
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    /* flex-grow: 1; */
+    /* width: 100%; */
+    border-bottom: solid 1px white;
+}
+
+
+.search_body_main #search_cases{
+    width: 100%;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 25px;
+}
+
+
+.search_body_main #search_cases form{
+    width: 100%;
+}
+
+.search_body_main #search_cases div{
+    /* background-color: red; */
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    direction: rtl;
+    margin: 20px 0;
+}
+
+
+.search_body_main #search_cases div label{
+    width: 15%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.search_body_main #search_cases div input{
+    width: 60%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: rgb(29, 175, 175);
+}
+
+.search_body_main #search_cases div a{
+    width: 20%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding: 6px;
+    text-align: center;
+    background-color: #54afca;
+    text-decoration: none;
+    color: white;
+}

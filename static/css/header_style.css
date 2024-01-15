@@ -161,3 +161,17 @@
     height: auto;
     display: block;
 }
+
+/* ///////////////////////////////////////// */
+
+
+.menu_links #search_operation{
+    text-decoration: none;
+    color: #abd5e3;
+    font-weight: bold;
+}
+
+
+.menu_links #searchDropdown{
+    padding: 10px 0;
+}

@@ -92,3 +92,9 @@ class logoutView(View):
     def get(self,request):
         logout(request)
         return redirect(reverse("login-page"))
+    
+    
+    
+# /////////////////////////////////////////////////////
+
+

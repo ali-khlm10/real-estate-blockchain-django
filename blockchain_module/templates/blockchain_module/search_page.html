@@ -1,0 +1,72 @@
+
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}{% endblock title %}
+
+{% block content %}
+
+    <div class="all_body">
+
+        <main class="search_body_main">
+
+                <section class="search_body_header">
+                    <header>
+                        <h4>املاک و مستغلات/پیگیری ها</h4>
+                    </header>
+                </section>
+
+
+                <section class="main_dashbord">
+                    <div class="dashboard_body">
+                        <header>
+                            <h3>صفحه پیگیری</h3>
+                        </header>
+                        <main id="search_cases">
+                                <form action="" method="get">
+                                    <div>
+
+                                        <label for="">جستجوی کاربر : </label>
+                                        <input type="search" name="user_input" id="">
+                                        <a href="#">جستجو</a>
+                                    </div>
+                                </form>
+                                <form action="" method="get">
+                                    <div>
+                                        <label for="">جستجوی گره : </label>
+                                        <input type="search" name="node_input" id="">
+                                        <a href="">جستجو</a>
+                                    </div>
+                                </form>
+
+                                <form action="" method="get">
+                                    <div>
+                                        <label for="">جستجوی توکن : </label>
+                                        <input type="search" name="token_input" id="">
+                                        <a href="">جستجو</a>
+                                    </div>
+
+                                </form>
+
+                                <form action="" method="get">
+                                    <div>
+
+                                    <label for="">جستجوی قرارداد هوشمند : </label>
+                                    <input type="search" name="smart_contract_input" id="">
+                                    <a href="">جستجو</a>
+                                    </div>
+    
+                                </form>
+                        </main>
+                    </div>
+                    
+                </section>
+
+            
+
+        </main>
+
+
+    </div>
+
+{% endblock content %}
