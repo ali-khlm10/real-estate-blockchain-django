@@ -2,7 +2,7 @@
 {% extends "shared/_layout.html" %}
 
 
-{% block title %}{% endblock title %}
+{% block title %}صفحه پیگیری زنجیره بلوکی{% endblock title %}
 
 {% block content %}
 
@@ -30,7 +30,7 @@
                                         <button type="submit">جستجو</button>
                                     </div>
                                 </form>
-                                <form action="" method="get">
+                                <form action="{% url "node-info" %}" method="get">
                                     <div>
                                         <label for="">جستجوی گره : </label>
                                         <input type="search" name="node_input" id="" autocomplete="off">

@@ -10,4 +10,5 @@ urlpatterns = [
     path("serach/", views.searchInformationView.as_view(), name="search-page"),
     path("user_info/", views.searchUserInformationView.as_view(), name="user-info"),
     path("token_info/", views.searchTokenInformationView.as_view(), name="token-info"),
+    path("node_info/", views.searchNodeInformationView.as_view(), name="node-info"),
 ]

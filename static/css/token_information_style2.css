@@ -34,7 +34,7 @@
 }
 
 
-.searched_token_body_main #searched_user_information #no_token_info {
+.searched_token_body_main #searched_token_information #no_token_info {
     margin-top: 100px;
     color: rgb(194, 71, 71);
     font-weight: bold;

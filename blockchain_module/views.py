@@ -6,6 +6,7 @@ from utils.blockchain import real_estate_blockchain
 import json
 from account_module.models import userModel
 from token_module.models import propertyTokenModel
+from node_module.models import nodeModel
 # Create your views here.
 
 
@@ -161,8 +162,6 @@ class searchTokenInformationView(View):
                         if trx.transaction_type == "sell_operation" and trx_data.get("token_id") == current_token_id:
                             property_transfers.append(trx)
 
- 
-
             context = {
                 "status": True,
                 "token": token,
@@ -174,3 +173,20 @@ class searchTokenInformationView(View):
                 "status": False,
             }
         return render(request, "blockchain_module/token_information_page.html", context)
+
+
+class searchNodeInformationView(View):
+    def get(self, request: HttpRequest):
+        node_address: str = request.GET.get("node_input")
+        current_node: nodeModel = nodeModel.objects.filter(
+            node_address__iexact=node_address).first()
+        if current_node:
+            context = {
+                "status": True,
+                "current_node": current_node,
+            }
+        else:
+            context = {
+                "status": False,
+            }
+        return render(request, "blockchain_module/node_information_page.html", context)

@@ -1,0 +1,89 @@
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}
+    {{current_node.node_port}}
+{% endblock title %}
+
+{% block content %}
+
+    <div class="all_body">
+
+        <main class="searched_node_body_main">
+
+                <section class="searched_node_body_header">
+                    <header>
+                        <h4>املاک و مستغلات/مشخصات گره شبکه</h4>
+                    </header>
+                </section>
+
+
+                <section class="main_dashbord">
+                    <div class="dashboard_body">
+                        <header>
+                            <h3>صفحه مشخصات گره</h3>
+                        </header>
+                        <main id="searched_node_information">
+                            {% if status %}
+                                <div>
+                                    <div>
+                                        <label for="">نام گره : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace; font-weight:bold;">{{current_node.node_name}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">شماره پورت گره : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace; color:yellow; font-weight:bold;">{{current_node.node_port}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for=""> موجودی حساب گره : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace; color:aqua; font-weight:bold;">{{current_node.node_inventory}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">تاریخ متصل شدن به شبکه : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;">{{current_node.node_join_to_network}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">آدرس گره : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;"> {{current_node.node_address}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">وضعیت گره : </label>
+                                        {% if current_node.is_disable %}
+                                            <span id="disable_node_status"> 
+                                                غیر فعال
+                                            </span>  
+                                        {% else %}
+                                            <span id="not_disable_node_status"> 
+                                                فعال
+                                            </span>  
+                                        {% endif %}
+  
+                                    </div>
+                                    <div>
+                                        <label for="">تعداد بلوک های استخراج شده توسط گره : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;"> {{current_node.mined_block_count}}</span>    
+                                    </div>
+                                </div>
+
+                            {% else %}
+                                <span id="no_node_info">چنین گرهی یافت نشد</span>
+                            {% endif %}
+                        </main>
+                    </div>
+                    
+                </section>
+
+            
+
+        </main>
+
+
+    </div>
+
+
+{% endblock content %}

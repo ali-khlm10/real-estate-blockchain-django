@@ -680,6 +680,7 @@ def mine_new_block_by_winner_node(request: HttpRequest):
             miner_node: nodeModel = nodeModel.objects.filter(
                 node_address__iexact=data.get("mined_by")).first()
             miner_node.node_inventory += current_node_reward
+            miner_node.mined_block_count += 1
             miner_node.save()
 
             new_block.block_merkel_tree_root_hash = merkel_root_hash
