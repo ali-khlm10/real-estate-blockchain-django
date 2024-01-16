@@ -124,7 +124,7 @@ class searchUserInformationView(View):
                 "trxs": trxs,
                 "first_trx": first_trx,
                 "last_trx": last_trx,
-                "tokens" : tokens,
+                "tokens": tokens,
             }
 
         else:
@@ -133,3 +133,38 @@ class searchUserInformationView(View):
 
             }
         return render(request, "blockchain_module/user_information_page.html", context)
+
+
+class searchTokenInformationView(View):
+    def get(self, request: HttpRequest):
+        current_token_id: str = request.GET.get("token_input")
+        token: propertyTokenModel = propertyTokenModel.objects.filter(
+            token_id__iexact=current_token_id).first()
+        if token:
+            final_trxs = []
+            all_trxs: transactionsModel = transactionsModel.objects.all().order_by("-transaction_timestamp")
+
+            for trx in all_trxs:
+                trx: transactionsModel
+                if trx.transaction_type == "tokenization" or trx.transaction_type == "buy_request" or trx.transaction_type == "buy_operation":
+                    if trx.transaction_data == current_token_id:
+                        final_trxs.append(trx)
+
+                else:
+                    if trx.transaction_data is not None:
+                        trx_data: dict = json.loads(trx.transaction_data)
+                        if trx_data.get("token_id") == current_token_id:
+                            final_trxs.append(trx)
+
+            print(final_trxs)
+
+            context = {
+                "status": True,
+                "token": token,
+                "trxs" : final_trxs,
+            }
+        else:
+            context = {
+                "status": False,
+            }
+        return render(request, "blockchain_module/token_information_page.html", context)

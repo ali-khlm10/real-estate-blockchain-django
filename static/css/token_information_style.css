@@ -1,0 +1,82 @@
+.searched_token_body_main {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 450px;
+}
+
+
+.searched_token_body_header {
+    /* background-color: yellow; */
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    /* flex-grow: 1; */
+    /* width: 100%; */
+    border-bottom: solid 1px white;
+}
+
+
+.dashboard_body #searched_token_information {
+    display: flex;
+    flex-flow: wrap column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* background-color: rebeccapurple; */
+
+}
+
+
+.searched_token_body_main #searched_user_information #no_token_info {
+    margin-top: 100px;
+    color: rgb(194, 71, 71);
+    font-weight: bold;
+}
+
+.dashboard_body #searched_token_information div,
+.dashboard_body #searched_token_information hr {
+    display: flex;
+    flex-flow: wrap row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.dashboard_body #searched_token_information div:first-child div {
+    justify-content: space-between;
+    direction: rtl;
+    padding: 20px;
+
+}
+
+
+.dashboard_body #searched_token_information #current_token {
+    overflow: hidden;
+}
+
+
+/* 
+.dashboard_body #searched_token_information #current_token label{
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-start;
+}
+
+
+.dashboard_body #searched_token_information #current_token span{
+    width: 100%;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: flex-end;
+    padding: 15px 0;
+    overflow: hidden;
+} */
