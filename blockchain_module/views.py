@@ -142,7 +142,10 @@ class searchTokenInformationView(View):
             token_id__iexact=current_token_id).first()
         if token:
             final_trxs = []
-            all_trxs: transactionsModel = transactionsModel.objects.all().order_by("-transaction_timestamp")
+            property_transfers = []
+
+            all_trxs: transactionsModel = transactionsModel.objects.all().order_by(
+                "-transaction_timestamp")
 
             for trx in all_trxs:
                 trx: transactionsModel
@@ -155,13 +158,16 @@ class searchTokenInformationView(View):
                         trx_data: dict = json.loads(trx.transaction_data)
                         if trx_data.get("token_id") == current_token_id:
                             final_trxs.append(trx)
+                        if trx.transaction_type == "sell_operation" and trx_data.get("token_id") == current_token_id:
+                            property_transfers.append(trx)
 
-            print(final_trxs)
+ 
 
             context = {
                 "status": True,
                 "token": token,
-                "trxs" : final_trxs,
+                "trxs": final_trxs,
+                "property_transfers": reversed(property_transfers),
             }
         else:
             context = {

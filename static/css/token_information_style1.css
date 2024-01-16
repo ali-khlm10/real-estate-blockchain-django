@@ -63,8 +63,8 @@
 }
 
 
-/* 
-.dashboard_body #searched_token_information #current_token label{
+
+.dashboard_body #searched_token_information #token_transfers_history label:first-child(){
     width: 100%;
     display: flex;
     flex-flow: wrap row;
@@ -72,11 +72,26 @@
 }
 
 
-.dashboard_body #searched_token_information #current_token span{
+.dashboard_body #searched_token_information #token_transfers_history section{
+    background-color: #67a4af;
+    border-radius: 5px;
     width: 100%;
     display: flex;
     flex-flow: wrap row;
-    justify-content: flex-end;
-    padding: 15px 0;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px 20px;
+    margin: 5px 0;
+}
+
+.dashboard_body #searched_token_information #token_transfers_history section span{
+    padding: 15px;
     overflow: hidden;
-} */
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.dashboard_body #searched_token_information #token_transfers_history section span a{
+    text-decoration: none;
+    color: burlywood;
+    font-weight: bold;
+}

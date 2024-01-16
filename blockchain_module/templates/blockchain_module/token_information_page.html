@@ -75,6 +75,35 @@
                                         <a href="#" style="text-decoration:none;"> {{token.property_owner_address}} </a>
                                     </span>    
                                 </div>
+
+                                {% if property_transfers %}
+                                    <hr>
+                                    <div id="token_transfers_history">
+                                        <label for="">تاریخچه نقل و انتقالات توکن : </label>
+                                        {% for transfer in property_transfers %}
+                                            <section>
+                                                    <label for="">انتقال از کاربر: </label>
+                                                    <span>
+                                                        <a href="#">
+                                                            {{transfer.transaction_from_address}}
+                                                        </a>
+                                                    </span>
+                                                    <label for="">انتقال به کاربر: </label>
+                                                    <span>
+                                                        <a href="#">
+                                                            {{transfer.transaction_to_address}}
+                                                        </a>
+                                                    </span>
+                                                    <label for=""> تاریخ : </label>
+                                                    <span style="color:aqua; font-weight:bold;">
+                                                        {{transfer.transaction_timestamp}}
+                                                    </span>
+                                            </section>
+                                        {% endfor %} 
+
+                                    </div>                                 
+                                {% endif %}  
+
                                 <hr>
 
                                 <div>
@@ -134,7 +163,7 @@
                                         </table>
                                     </main>
                                 </div>
-
+                                
                             </div>
                             {% else %}
                                 <span id="no_token_info">چنین توکنی یافت نشد</span>
