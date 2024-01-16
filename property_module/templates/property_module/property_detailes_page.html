@@ -75,8 +75,10 @@
         <div>
             <section class = "property_img_and_button">
                 <img src="{{property.property_detailes.property_image.url}}" alt="تصویر ملک">
-
-                {%if status == 'super_user'%}
+                
+                {%if status == 'no_logined'%}
+                    <span></span>
+                {%elif status == 'super_user'%}
                     <span></span> 
                 {%elif status == 'gov_agent'%}
                     <span>

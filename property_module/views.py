@@ -76,33 +76,39 @@ class propertyDetailesPageView(View):
             id=property_id).first()
         current_user: userModel = userModel.objects.filter(
             id=request.user.id).first()
+        if property and current_user:
+            if current_user.is_gov_agent:
+                context = {
+                    "property": property,
+                    "status": "gov_agent",
+                }
 
-        if current_user.is_gov_agent:
-            context = {
-                "property": property,
-                "status": "gov_agent",
-            }
-
-        elif current_user.is_superuser:
-            context = {
-                "property": property,
-                "status": "super_user",
-            }
+            elif current_user.is_superuser:
+                context = {
+                    "property": property,
+                    "status": "super_user",
+                }
+            else:
+                sended_buy_requests: buyRequestModel = buyRequestModel.objects.filter(
+                    buy_request_from=current_user.wallet.wallet_address, request__pending=True)
+                # print(sended_buy_requests)
+                for buy_request in sended_buy_requests:
+                    buy_request: buyRequestModel
+                    for field in property.property_of_token.all():
+                        field: propertyTokenModel
+                        if buy_request.token.token_id == field.token_id:
+                            status = True
+                            break
+                context = {
+                    "property": property,
+                    "status": status,
+                }
         else:
-            sended_buy_requests: buyRequestModel = buyRequestModel.objects.filter(
-                buy_request_from=current_user.wallet.wallet_address, request__pending=True)
-            # print(sended_buy_requests)
-            for buy_request in sended_buy_requests:
-                buy_request: buyRequestModel
-                for field in property.property_of_token.all():
-                    field: propertyTokenModel
-                    if buy_request.token.token_id == field.token_id:
-                        status = True
-                        break
             context = {
                 "property": property,
-                "status": status,
+                "status": "no_logined",
             }
-
+        
         return render(request, "property_module/property_detailes_page.html", context)
+        
 # /////////////////////////////////////////////////////////////////
