@@ -1,0 +1,66 @@
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}
+    {{current_smart_contract.contract_name}}
+{% endblock title %}
+
+{% block content %}
+
+    <div class="all_body">
+
+        <main class="searched_smart_contract_body_main">
+
+                <section class="searched_smart_contract_body_header">
+                    <header>
+                        <h4>املاک و مستغلات/مشخصات قرارداد هوشمند</h4>
+                    </header>
+                </section>
+
+
+                <section class="main_dashbord">
+                    <div class="dashboard_body">
+                        <header>
+                            <h3>صفحه مشخصات قرارداد هوشمند</h3>
+                        </header>
+                        <main id="searched_smart_contract_information">
+                            {% if status %}
+                                <div>
+                                    <div>
+                                        <label for="">نام قرارداد هوشمند : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace; font-weight:bold;">{{current_smart_contract.contract_name}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for=""> موجودی حساب قرارداد هوشمند : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace; color:aqua; font-weight:bold;">{{current_smart_contract.contract_inventory}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">آدرس قرارداد هوشمند : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;"> {{current_smart_contract.contract_address}}</span>    
+                                    </div>
+
+                                    <div>
+                                        <label for="">تعداد دفعات فراخوانی قرارداد هوشمند : </label>
+                                        <span style="font-family: 'Courier New', Courier, monospace;"> {{current_smart_contract.nonce}}</span>    
+                                    </div>
+                                </div>
+
+                            {% else %}
+                                <span id="no_smart_contract_info">چنین قرارداد هوشمندی یافت نشد</span>
+                            {% endif %}
+                        </main>
+                    </div>
+                    
+                </section>
+
+            
+
+        </main>
+
+
+    </div>
+
+
+{% endblock content %}

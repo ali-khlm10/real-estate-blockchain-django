@@ -7,6 +7,7 @@ import json
 from account_module.models import userModel
 from token_module.models import propertyTokenModel
 from node_module.models import nodeModel
+from token_module.models import smartContractModel
 # Create your views here.
 
 
@@ -190,3 +191,20 @@ class searchNodeInformationView(View):
                 "status": False,
             }
         return render(request, "blockchain_module/node_information_page.html", context)
+
+
+class searchSmartContractInformationView(View):
+    def get(self, request: HttpRequest):
+        smart_contract_address: str = request.GET.get("smart_contract_input")
+        current_smart_contract: smartContractModel = smartContractModel.objects.filter(
+            contract_address__iexact=smart_contract_address).first()
+        if current_smart_contract:
+            context = {
+                "status": True,
+                "current_smart_contract": current_smart_contract,
+            }
+        else:
+            context = {
+                "status": False,
+            }
+        return render(request, "blockchain_module/smart_contract_information_page.html", context)

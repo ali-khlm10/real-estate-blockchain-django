@@ -1,0 +1,48 @@
+.searched_smart_contract_body_main {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 450px;
+}
+
+
+.searched_smart_contract_body_header {
+    /* background-color: yellow; */
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
+    align-items: center;
+    /* flex-grow: 1; */
+    /* width: 100%; */
+    border-bottom: solid 1px white;
+}
+
+
+
+.searched_smart_contract_body_main #no_smart_contract_info{
+    padding-top: 100px;
+    color: red;
+    font-weight: bold;
+}
+
+
+.dashboard_body #searched_smart_contract_information div,
+.dashboard_body #searched_smart_contract_information hr{
+    display: flex;
+    flex-flow: wrap row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard_body #searched_smart_contract_information div:first-child div{
+    justify-content: space-between;
+    direction: rtl;
+    padding: 20px 30px;
+
+}
+
