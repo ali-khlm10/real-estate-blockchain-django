@@ -14,6 +14,7 @@ urlpatterns = [
     path("smart_contract_info/", views.searchSmartContractInformationView.as_view(),
          name="smart-contract-info"),
 
-    path("verify_trx/", views.verify_transactionView.as_view(), name="verify-trx"),
+    path("verify_trx/", views.verifyTransactionView.as_view(), name="verify-trx"),
+    path("verify_blockchain/", views.verifyBlockchainView.as_view(), name="verify-blockchain"),
 
 ]

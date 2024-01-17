@@ -1,0 +1,52 @@
+{% extends "shared/_layout.html" %}
+
+
+{% block title %}
+    {{valid}}
+{% endblock title %}
+
+{% block content %}
+
+    <div class="all_body">
+
+        <main class="searched_verify_blockchain_body_main">
+
+                <section class="searched_verify_blockchain_body_header">
+                    <header>
+                        <h4>املاک و مستغلات/تایید اعتبار زنجیره بلوکی</h4>
+                    </header>
+                </section>
+
+
+                <section class="main_dashbord">
+                    <div class="dashboard_body">
+                        <header>
+                            <h3>صفحه تاییدیه اعتبار زنجیره بلوکی</h3>
+                        </header>
+                        <main id="searched_verify_blockchain_information">
+                            <div>
+                                {% if valid %}
+                                    <span style="color: green; font-weight:bold; direction:rtl;">
+                                        {{message}}
+                                    </span>
+                                {%else%}
+                                    <span style="color: rgb(216, 68, 68); font-weight:bold; direction:rtl;">
+                                        {{message}}
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                        </main>
+                    </div>
+                    
+                </section>
+
+            
+
+        </main>
+
+
+    </div>
+
+
+{% endblock content %}

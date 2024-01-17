@@ -489,11 +489,6 @@ class Blockchain:
             merkel_hash.current_hash = hashes[i]
             merkel_hash.combined_hash = hashes[i+1]
             merkel_hash.save()
-            
-            # merkel_hash: merkelTreeHashesModel = merkelTreeHashesModel.objects.create()
-            # merkel_hash.current_hash = hashes[i+1]
-            # merkel_hash.combined_hash = hashes[i]
-            # merkel_hash.save()
 
             new_hashes.append('0x' + new_hash[:64])
 
@@ -511,17 +506,6 @@ class Blockchain:
 
         return self.merkel_tree_root_hash(new_hashes)
 
-    # def verify_transaction(transaction_hash, merkle_root, transaction_hashes):
-    #     if transaction_hash in transaction_hashes and merkle_root == build_merkle_tree(transaction_hashes):
-    #         return True
-    #     return False
-
-    # # Example usage
-    # block_transaction_hashes = ["hash1", "hash2", "hash3", "hash4"]
-    # merkle_root = build_merkle_tree(block_transaction_hashes)
-    # transaction_hash_to_verify = "hash2"
-    # is_valid = verify_transaction(transaction_hash_to_verify, merkle_root, block_transaction_hashes)
-    # print(is_valid)
 
 
 real_estate_blockchain: Blockchain = Blockchain()

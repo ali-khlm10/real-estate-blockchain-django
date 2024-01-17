@@ -9,6 +9,8 @@ from token_module.models import propertyTokenModel
 from node_module.models import nodeModel
 from token_module.models import smartContractModel
 import hashlib
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 
 
@@ -166,6 +168,7 @@ class searchTokenInformationView(View):
                         if trx.transaction_type == "sell_operation" and trx_data.get("token_id") == current_token_id:
                             property_transfers.append(trx)
 
+            # print(property_transfers)
             context = {
                 "status": True,
                 "token": token,
@@ -216,7 +219,7 @@ class searchSmartContractInformationView(View):
 # ////////////////////////////////////////////////
 
 
-class verify_transactionView(View):
+class verifyTransactionView(View):
     def get(self, request: HttpRequest):
         trx_hash: str = request.GET.get("trx_input")
         current_trx: transactionsModel = transactionsModel.objects.filter(
@@ -277,3 +280,26 @@ class verify_transactionView(View):
                 "status": False,
             }
         return render(request, "blockchain_module/verify_trx_page.html", context)
+
+
+class verifyBlockchainView(View):
+    def get(self, request : HttpRequest):
+        current_chain = real_estate_blockchain.real_estate_chain
+        result: bool = real_estate_blockchain.is_chain_valid(
+            chain=current_chain)
+
+        if result:
+            message = "زنجیره بلوکی معتبر می باشد و هیچ گونه تغییری در بلوک ها وجود ندارد."
+            context = {
+                "message": message,
+                "valid": True,
+            }
+        else:
+            message = "زنجیره بلوکی نامعتبر است."
+            context = {
+                "message": message,
+                "valid": False,
+
+            }
+        return render(request, "blockchain_module/verify_blockchain_page.html", context)
+

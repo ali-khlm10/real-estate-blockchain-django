@@ -7,6 +7,26 @@
     min-height: 450px;
 }
 
+
+.blocks_body_main .main_dashbord .dashboard_body header{
+    display: flex;
+    flex-flow: wrap row;
+    direction: rtl;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.blocks_body_main .main_dashbord .dashboard_body header a{
+    padding: 10px 40px;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    background-color: #396972;
+    color: white;
+    font-weight: bold;
+}
+
 .blocks_body_header {
     /* background-color: yellow; */
     width: 100%;
