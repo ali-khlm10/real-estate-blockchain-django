@@ -1,6 +1,7 @@
 from node_module.models import nodeModel
 import json
 import hashlib
+from .blockchain import real_estate_blockchain
 
 
 def create_and_update_nodes():
@@ -21,10 +22,45 @@ SESSION_COOKIE_NAME = 'real_estate_blockchain_session_port_{node.node_port}'
                 )
                 file.close()
 
-        # for node in nodes:
-        #     node: nodeModel
-        #     with open(f'utils/nodes_DB/{node.node_port}_DB.json', 'w') as json_file:
-        #         json_file.close()
+        for node in nodes:
+            node: nodeModel
+            try:
+                with open(f'utils/nodes_DB/{node.node_port}_DB_trxs.json', 'w') as json_file:
+                    trxs = real_estate_blockchain.get_real_estate_transactions(
+                        status=True)
+                    final_trxs = {
+                        "transactions": trxs,
+                    }
+                    json.dump(final_trxs, json_file)
+                    json_file.close()
+
+            except:
+                with open(f'utils/nodes_DB/{node.node_port}_DB_trxs.json', 'w') as json_file:
+                    trxs = real_estate_blockchain.get_real_estate_transactions(
+                        status=True)
+                    final_trxs = {
+                        "transactions": trxs,
+                    }
+                    json.dump(final_trxs, json_file)
+                    json_file.close()
+
+            try:
+                with open(f'utils/nodes_DB/{node.node_port}_DB.json', 'w') as json_file:
+                    chain = real_estate_blockchain.get_real_estate_chain()
+                    final_chain = {
+                        "chain": chain,
+                    }
+                    json.dump(final_chain, json_file)
+                    json_file.close()
+
+            except:
+                with open(f'utils/nodes_DB/{node.node_port}_DB.json', 'w') as json_file:
+                    chain = real_estate_blockchain.get_real_estate_chain()
+                    final_chain = {
+                        "chain": chain,
+                    }
+                    json.dump(final_chain, json_file)
+                    json_file.close()
 
 
 def create_node_address(info):

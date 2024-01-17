@@ -63,9 +63,12 @@ class Blockchain:
                 chain.append(block.block_information())
             return chain
 
-    def get_real_estate_transactions(self):
-        current_transactions: transactionsModel = transactionsModel.objects.filter(
-            trx_status__published=False)
+    def get_real_estate_transactions(self,status = False):
+        if status:
+            current_transactions: transactionsModel = transactionsModel.objects.all()
+        else:
+            current_transactions: transactionsModel = transactionsModel.objects.filter(
+                trx_status__published=False)
         if current_transactions is None:
             return []
         else:
