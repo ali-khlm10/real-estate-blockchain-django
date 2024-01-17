@@ -489,6 +489,11 @@ class Blockchain:
             merkel_hash.current_hash = hashes[i]
             merkel_hash.combined_hash = hashes[i+1]
             merkel_hash.save()
+            
+            # merkel_hash: merkelTreeHashesModel = merkelTreeHashesModel.objects.create()
+            # merkel_hash.current_hash = hashes[i+1]
+            # merkel_hash.combined_hash = hashes[i]
+            # merkel_hash.save()
 
             new_hashes.append('0x' + new_hash[:64])
 

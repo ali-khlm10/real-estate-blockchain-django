@@ -25,25 +25,25 @@
                         <main id="search_cases">
                                 <form action="{% url "user-info" %}" method="get">
                                     <div>
-                                        <label for="">جستجوی کاربر : </label>
+                                        <label for="">پیگیری کاربر : </label>
                                         <input type="search" name="user_input" id="" autocomplete="off">
-                                        <button type="submit">جستجو</button>
+                                        <button type="submit">پیگیری</button>
                                     </div>
                                 </form>
                                 <form action="{% url "node-info" %}" method="get">
                                     <div>
-                                        <label for="">جستجوی گره : </label>
+                                        <label for="">پیگیری گره : </label>
                                         <input type="search" name="node_input" id="" autocomplete="off">
-                                        <button type="submit">جستجو</button>
+                                        <button type="submit">پیگیری</button>
 
                                     </div>
                                 </form>
 
                                 <form action="{% url "token-info" %}" method="get">
                                     <div>
-                                        <label for="">جستجوی توکن : </label>
+                                        <label for="">پیگیری توکن : </label>
                                         <input type="search" name="token_input" id="" autocomplete="off">
-                                        <button type="submit">جستجو</button>
+                                        <button type="submit">پیگیری</button>
 
                                     </div>
 
@@ -52,9 +52,20 @@
                                 <form action="{% url "smart-contract-info" %}" method="get">
                                     <div>
 
-                                    <label for="">جستجوی قرارداد هوشمند : </label>
+                                    <label for="">پیگیری قرارداد هوشمند : </label>
                                     <input type="search" name="smart_contract_input" id="" autocomplete="off">
-                                    <button type="submit">جستجو</button>
+                                    <button type="submit">پیگیری</button>
+
+                                    </div>
+    
+                                </form>
+
+                                <form action="{% url "verify-trx" %}" method="get">
+                                    <div>
+
+                                    <label for="">پیگیری اعتبار تراکنش : </label>
+                                    <input type="search" name="trx_input" id="" autocomplete="off">
+                                    <button type="submit">پیگیری</button>
 
                                     </div>
     

@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpRequest
-from .models import blockModel, transactionsModel, transactionStatusModel
+from .models import blockModel, transactionsModel, transactionStatusModel, merkelTreeHashesModel
 from utils.blockchain import real_estate_blockchain
 import json
 from account_module.models import userModel
 from token_module.models import propertyTokenModel
 from node_module.models import nodeModel
 from token_module.models import smartContractModel
+import hashlib
 # Create your views here.
 
 
@@ -210,3 +211,69 @@ class searchSmartContractInformationView(View):
                 "status": False,
             }
         return render(request, "blockchain_module/smart_contract_information_page.html", context)
+
+
+# ////////////////////////////////////////////////
+
+
+class verify_transactionView(View):
+    def get(self, request: HttpRequest):
+        trx_hash: str = request.GET.get("trx_input")
+        current_trx: transactionsModel = transactionsModel.objects.filter(
+            transaction_hash__iexact=trx_hash).first()
+        if current_trx:
+            block_merkel_tree_hash = current_trx.transaction_block.block_merkel_tree_root_hash
+            current_hash = current_trx.transaction_hash
+            while current_hash:
+                merkel_tree_hash_left: merkelTreeHashesModel = merkelTreeHashesModel.objects.filter(
+                    current_hash__iexact=current_hash).first()
+
+                merkel_tree_hash_right: merkelTreeHashesModel = merkelTreeHashesModel.objects.filter(
+                    combined_hash__iexact=current_hash).first()
+
+                if merkel_tree_hash_left:
+                    if merkel_tree_hash_left.combined_hash is not None:
+                        merged_hash: str = current_hash + merkel_tree_hash_left.combined_hash
+                        new_hash = hashlib.sha512(
+                            merged_hash.encode('utf-8')).hexdigest()
+                        current_hash = "0x" + new_hash[:64]
+                        root_hash = "0x" + new_hash[:64]
+                    else:
+                        current_hash = None
+
+                elif merkel_tree_hash_right:
+                    if merkel_tree_hash_right.current_hash is not None:
+                        merged_hash: str = merkel_tree_hash_right.current_hash + current_hash
+                        new_hash = hashlib.sha512(
+                            merged_hash.encode('utf-8')).hexdigest()
+                        current_hash = "0x" + new_hash[:64]
+                        root_hash = "0x" + new_hash[:64]
+                    else:
+                        current_hash = None
+
+                else:
+                    current_hash = None
+
+            if root_hash == block_merkel_tree_hash:
+                message = "تراکنش مورد نظر معتبر می باشد و با توجه به تاییدیه درخت مرکل هیچ تغییر یا جابه جایی در اطلاعات این تراکنش صورت نگرفته است."
+                context = {
+                    "status": True,
+                    "current_node": current_trx,
+                    "message": message,
+                    "valid": True,
+                }
+            else:
+                message = "تراکنش نامعتبر است."
+                context = {
+                    "status": True,
+                    "current_node": current_trx,
+                    "message": message,
+                    "valid": False,
+
+                }
+
+        else:
+            context = {
+                "status": False,
+            }
+        return render(request, "blockchain_module/verify_trx_page.html", context)

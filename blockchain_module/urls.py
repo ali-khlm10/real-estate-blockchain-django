@@ -13,4 +13,7 @@ urlpatterns = [
     path("node_info/", views.searchNodeInformationView.as_view(), name="node-info"),
     path("smart_contract_info/", views.searchSmartContractInformationView.as_view(),
          name="smart-contract-info"),
+
+    path("verify_trx/", views.verify_transactionView.as_view(), name="verify-trx"),
+
 ]
