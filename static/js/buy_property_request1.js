@@ -128,7 +128,7 @@ $(document).ready(function () {
     ).innerHTML = property_price;
     buying_request_modal_element.querySelector(
       "#buy_request_transaction_fee"
-    ).innerHTML = parseFloat(property_price) * 0.000005;
+    ).innerHTML = parseFloat(property_price) * 0.000006;
 
     buying_request_modal_element.querySelector(
       "#buy_request_transaction_prepayment"
@@ -153,7 +153,7 @@ $(document).ready(function () {
         var jsonData = JSON.stringify({
           signature: response.signature,
           buy_request_information: response.buy_request_information,
-          transaction_fee: parseFloat(property_price) * 0.000005,
+          transaction_fee: parseFloat(property_price) * 0.000006,
           prepayment: prepayment,
         });
 

@@ -51,7 +51,7 @@ $(document).ready(function () {
       property_price;
     tokenization_modal_element.querySelector(
       "#property_transaction_fee"
-    ).innerHTML = parseFloat(property_price) * 0.0005;
+    ).innerHTML = parseFloat(property_price) * 0.0006;
 
     $("#do_tokenization")
       .off("click")
@@ -70,7 +70,7 @@ $(document).ready(function () {
         var jsonData = JSON.stringify({
           signature: response.signature,
           property_information: response.property_information,
-          transaction_fee: parseFloat(property_price) * 0.0005,
+          transaction_fee: parseFloat(property_price) * 0.0006,
         });
         // var jsonData = JSON.stringify(response);
 

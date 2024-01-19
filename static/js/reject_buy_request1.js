@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $("#accept_buy_request").click(function (e) {
+  $("#reject_buy_request").click(function (e) {
     e.preventDefault();
     var token_id = $(this).data("token_id");
     var buyer_address = $(this).data("buyer_address");
@@ -13,7 +13,7 @@ $(document).ready(function () {
     var data = {
       token_id: token_id,
       buyer_address: buyer_address,
-      operation: "accepting",
+      operation: "rejecting",
     };
     var jsonData = JSON.stringify(data);
 
@@ -28,7 +28,7 @@ $(document).ready(function () {
       dataType: "json",
       success: function (response) {
         if (response.status) {
-          accept_buy_request(
+          reject_buy_request(
             response,
             buyer_address,
             token_id,
@@ -46,33 +46,33 @@ $(document).ready(function () {
     });
   });
 
-  function accept_buy_request(
+  function reject_buy_request(
     response,
     buyer_address,
     token_id,
     property_price,
     prepayment
   ) {
-    var accept_buy_request_modal_element = document.getElementById(
-      "accepting_buy_request_modal"
+    var reject_buy_request_modal_element = document.getElementById(
+      "rejecting_buy_request_modal"
     );
     var body_element = document.body;
 
-    accept_buy_request_modal_element.style.display = "block";
+    reject_buy_request_modal_element.style.display = "block";
     body_element.style.overflow = "hidden";
 
-    accept_buy_request_modal_element.querySelector(
+    reject_buy_request_modal_element.querySelector(
       "#buy_request_buyer"
     ).innerHTML = buyer_address;
-    accept_buy_request_modal_element.querySelector(
+    reject_buy_request_modal_element.querySelector(
       "#buy_request_buyer_transaction_fee"
-    ).innerHTML = parseFloat(property_price) * 0.000005;
-    accept_buy_request_modal_element.querySelector(
+    ).innerHTML = parseFloat(property_price) * 0.000006;
+    reject_buy_request_modal_element.querySelector(
       "#buy_request_buyer_prepayment"
     ).innerHTML = prepayment;
 
     $(
-      "#accepting_buy_request_modal #dont_accept_buy_request, .internal_accept_buy_request_modal button"
+      "#rejecting_buy_request_modal #dont_reject_buy_request, .internal_reject_buy_request_modal button"
     )
       .off("click")
       .on("click", function (e) {
@@ -80,42 +80,42 @@ $(document).ready(function () {
 
         console.log("dont");
 
-        var accept_buy_request_modal_element = document.getElementById(
-          "accepting_buy_request_modal"
+        var reject_buy_request_modal_element = document.getElementById(
+          "rejecting_buy_request_modal"
         );
         var body_element = document.body;
 
-        accept_buy_request_modal_element.style.display = "none";
+        reject_buy_request_modal_element.style.display = "none";
         body_element.style.overflow = "auto";
       });
 
-    $("#accepting_buy_request_modal #do_accept_buy_request")
+    $("#rejecting_buy_request_modal #do_reject_buy_request")
       .off("click")
       .one("click", function (e) {
         e.preventDefault();
-        console.log("accepted_buy_request");
+        console.log("rejected_buy_request");
 
         $(this).addClass("loading");
 
         var currentPort = window.location.port;
-        var accept_buy_requestURL = `http://127.0.0.1:${currentPort}/accepting_buy_request/`;
+        var reject_buy_requestURL = `http://127.0.0.1:${currentPort}/rejecting_buy_request/`;
         var csrftoken = $('[name="csrfmiddlewaretoken"]').val();
         var jsonData = JSON.stringify({
           signature: response.signature,
           accept_reject_buy_request_information:
             response.accept_reject_buy_request_information,
-          transaction_fee: parseFloat(property_price) * 0.000005,
+          transaction_fee: parseFloat(property_price) * 0.000006,
           prepayment: prepayment,
         });
 
-        var accept_buy_request_modal_element = document.getElementById(
-          "accepting_buy_request_modal"
+        var reject_buy_request_modal_element = document.getElementById(
+          "rejecting_buy_request_modal"
         );
         var body_element = document.body;
 
         $.ajax({
           type: "post",
-          url: accept_buy_requestURL,
+          url: reject_buy_requestURL,
           data: jsonData,
           headers: {
             "Content-Type": "application/json",
@@ -125,37 +125,33 @@ $(document).ready(function () {
           success: function (response) {
             if (response.status) {
               console.log(response.status);
-              accept_buy_request_modal_element.style.display = "none";
+              reject_buy_request_modal_element.style.display = "none";
               body_element.style.overflow = "auto";
-
-              var accept_buy_request_result_modal_element =
-                document.getElementById("accepting_buy_reqiest_result_modal");
-
-              accept_buy_request_result_modal_element.style.display = "block";
+              var reject_buy_request_result_modal_element =
+                document.getElementById("rejecting_buy_reqiest_result_modal");
+              reject_buy_request_result_modal_element.style.display = "block";
               body_element.style.overflow = "hidden";
-
-              accept_buy_request_result_modal_element.querySelector(
+              reject_buy_request_result_modal_element.querySelector(
                 "p"
               ).innerHTML = response.message;
 
               $(
-                "#accepting_buy_reqiest_result_modal #ok_accept_buy_request_result,.internal_accept_buy_request_result_modal button"
+                "#rejecting_buy_reqiest_result_modal #ok_reject_buy_request_result,.internal_reject_buy_request_result_modal button"
               ).click(function (e) {
                 e.preventDefault();
-                accept_buy_request_result_modal_element.style.display = "none";
+                reject_buy_request_result_modal_element.style.display = "none";
                 body_element.style.overflow = "auto";
                 window.location.reload();
               });
             } else {
               console.log(response.message);
             }
-
-            $("#do_accept_buy_request").removeClass("loading");
+            $("#do_reject_buy_request").removeClass("loading");
           },
           error: function () {
             console.log("مشکل در ارتباط با سرور");
 
-            $("#do_accept_buy_request").removeClass("loading");
+            $("#do_reject_buy_request").removeClass("loading");
           },
         });
       });

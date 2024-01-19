@@ -72,7 +72,7 @@ $(document).ready(function () {
 
     sell_operation_modal_element.querySelector(
       "#sell_operation_transaction_fee"
-    ).innerHTML = parseFloat(property_price) * 0.0005;
+    ).innerHTML = parseFloat(property_price) * 0.0008;
 
     $("#do_sell_operation")
       .off("click")
@@ -92,7 +92,7 @@ $(document).ready(function () {
         var jsonData = JSON.stringify({
           signature: response.signature,
           sell_operation_information: response.sell_operation_information,
-          transaction_fee: parseFloat(property_price) * 0.0005,
+          transaction_fee: parseFloat(property_price) * 0.0008,
           buy_id: buy_id,
           remaining_cost: parseFloat(property_price) - parseFloat(prepayment),
         });

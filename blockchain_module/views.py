@@ -173,7 +173,7 @@ class searchTokenInformationView(View):
                 "status": True,
                 "token": token,
                 "trxs": final_trxs,
-                "property_transfers": reversed(property_transfers),
+                "property_transfers": None if len(property_transfers) == 0 else reversed(property_transfers),
             }
         else:
             context = {
@@ -283,7 +283,7 @@ class verifyTransactionView(View):
 
 
 class verifyBlockchainView(View):
-    def get(self, request : HttpRequest):
+    def get(self, request: HttpRequest):
         current_chain = real_estate_blockchain.real_estate_chain
         result: bool = real_estate_blockchain.is_chain_valid(
             chain=current_chain)
@@ -302,4 +302,3 @@ class verifyBlockchainView(View):
 
             }
         return render(request, "blockchain_module/verify_blockchain_page.html", context)
-
