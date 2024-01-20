@@ -10,7 +10,7 @@ class userWalletModel(models.Model):
         max_length=2000, verbose_name="کلید عمومی", editable=False)
     wallet_address = models.CharField(
         max_length=2000, verbose_name="آدرس کیف پول", editable=False)
-    inventory = models.FloatField(default=10000000000.0, verbose_name="موجودی",)
+    inventory = models.FloatField(verbose_name="موجودی", default=0.0)
 
     class Meta:
         verbose_name = "کیف پول"
@@ -38,7 +38,7 @@ class userModel(AbstractUser):
         verbose_name_plural = "کاربران"
 
     def __str__(self):
-        if self.first_name is not "" and self.last_name is not "":
+        if self.first_name != "" and self.last_name != "":
             return self.get_full_name()
         else:
             return self.username
