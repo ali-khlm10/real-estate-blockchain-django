@@ -9,6 +9,7 @@ urlpatterns = [
 
     path("serach/", views.searchInformationView.as_view(), name="search-page"),
     path("user_info/", views.searchUserInformationView.as_view(), name="user-info"),
+    path("user_info_from_token/<str:user_address>", views.searchUserInformationFromTokenView.as_view(), name="user-info-from-token"),
     path("token_info/", views.searchTokenInformationView.as_view(), name="token-info"),
     path("node_info/", views.searchNodeInformationView.as_view(), name="node-info"),
     path("smart_contract_info/", views.searchSmartContractInformationView.as_view(),

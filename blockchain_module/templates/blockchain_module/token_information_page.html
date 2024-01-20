@@ -86,13 +86,13 @@
                                             <section>
                                                     <label for="">انتقال از کاربر: </label>
                                                     <span>
-                                                        <a href="#">
+                                                        <a href="{% url "user-info-from-token" user_address=transfer.transaction_from_address %}">
                                                             {{transfer.transaction_from_address}}
                                                         </a>
                                                     </span>
                                                     <label for="">انتقال به کاربر: </label>
                                                     <span>
-                                                        <a href="#">
+                                                        <a href="{% url "user-info-from-token" user_address=transfer.transaction_to_address %}">
                                                             {{transfer.transaction_to_address}}
                                                         </a>
                                                     </span>
